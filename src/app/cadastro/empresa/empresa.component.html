@@ -1,0 +1,423 @@
+	
+    <section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Cadastro de Parceiros</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- MENSAGEM          -->        
+                <!-- ***************** -->
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <!-- ***************** -->
+                <!-- FORMULÁRIO        -->        
+                <!-- ***************** -->
+
+                <div class="row" >
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formEmpresa" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - ID, PLANO, CRÉDITOS ACUMULADOS E REPUTAÇÃO -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="id" name="id" >
+                                    </div>
+                                    <div class="form-group col-lg-5"
+                                        [class.has-error]="!plano.valid && plano.touched" 
+                                        [class.has-feedback]="!plano.valid && plano.touched">
+                                        <label for="objplano" class="control-label">Plano</label>
+                                        <div class="input-group">
+                                            <input type="hidden" id="plan_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plano.plan_sq_id" name="plan_sq_id">
+                                            <input type="text" id="plan_nm_plano" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.plano.plan_nm_plano" name="plan_nm_plano" #plano="ngModel" ngModel required>
+                                            <div class="input-group-btn">
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#modalPlano">Alterar...</a>
+                                            </div>
+                                        </div>
+                                        <span id="help_plano" class="help-block" *ngIf="!plano.valid && plano.touched">Plano é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!plano.valid && plano.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="plano" class="sr-only">(error)</span>                                          
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Créditos Acumulados</label>
+                                        <input type="text" id="empr_nr_credito" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nr_credito" name="empr_nr_credito" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Reputação</label>
+                                        <input type="text" id="empr_nr_reputacao" readonly class="form-control" [class.text-red]="modo=='excluir'"  [(ngModel)]="model.empr_nr_reputacao" name="empr_nr_reputacao" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - RAZÃO SOCIAL E TELEFONE PRINCIPAL          -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-7"
+                                        [class.has-error]="!empresa.valid && empresa.touched" 
+                                        [class.has-feedback]="!empresa.valid && empresa.touched" >
+                                        <label for="empr_nm_razaosocial" class="control-label">Razão Social</label>
+                                        <input type="text" id="empr_nm_razaosocial" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nm_razaosocial" name="empr_nm_razaosocial" #empresa="ngModel" ngModel required>
+                                        <span id="help_empresa" class="help-block" *ngIf="!empresa.valid && empresa.touched">Nome é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!empresa.valid && empresa.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="empresa" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-5"
+                                        [class.has-error]="!telefone_1.valid && telefone_1.touched" 
+                                        [class.has-feedback]="!telefone_1.valid && telefone_1.touched" >
+                                        <label for="empr_tx_telefone_1" class="control-label">Telefone Principal</label>
+                                        <input type="text" id="empr_tx_telefone_1" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_telefone_1" name="empr_tx_telefone_1" maxlength="16" #telefone_1="ngModel" ngModel required>
+                                        <span id="help_telefone_1" class="help-block" *ngIf="!telefone_1.valid && telefone_1.touched">Telefone é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!telefone_1.valid && telefone_1.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="telefone_1" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 3 - NOME FANTASIA E TELEFONE SECUNDÁRIO        -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-7">
+                                        <label for="empr_nm_fantasia" class="control-label">Fantasia</label>
+                                        <input type="text" id="empr_nm_fantasia" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nm_fantasia" name="empr_nm_fantasia" #fantasia="ngModel" ngModel>
+                                    </div>
+
+                                    <div class="form-group col-lg-5">
+                                        <label for="empr_tx_telefone_2" class="control-label">Telefone Secundário</label>
+                                        <input type="text" id="empr_tx_telefone_2" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_telefone_2" name="empr_tx_telefone_2" maxlength="16" #telefone_2="ngModel" ngModel kzMask="(99) 9 9999-9999">
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 4 - ENDERECO                                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="empr_tx_endereco" class="control-label">Endereço</label>
+                                        <input type="text" id="empr_tx_endereco" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_endereco" name="empr_tx_endereco" #endereco="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 5 - BAIRRO, CIDADE, UF E CEP                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="empr_tx_bairro" class="control-label">Bairro</label>
+                                        <input type="text" id="empr_tx_bairro" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_bairro" name="empr_tx_bairro" #bairro="ngModel" ngModel>
+                                    </div>
+
+                                    <div class="form-group col-lg-4">
+                                        <label for="empr_tx_cidade" class="control-label">Cidade</label>
+                                        <input type="text" id="empr_tx_cidade" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_cidade" name="empr_tx_cidade" #cidade="ngModel" ngModel>
+                                    </div>
+
+                                    <div class="form-group col-lg-1">
+                                        <label for="empr_sg_uf" class="control-label">UF</label>
+                                        <div>
+                                            <select id="empr_sg_uf" name="empr_sg_uf" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_sg_uf" name="empr_sg_uf" #uf="ngModel" ngModel>
+                                                <option value="AC">AC</option>
+                                                <option value="AL">AL</option>
+                                                <option value="AP">AP</option>
+                                                <option value="AM">AM</option>
+                                                <option value="BA">BA</option>
+                                                <option value="CE">CE</option>
+                                                <option value="DF">DF</option>
+                                                <option value="ES">ES</option>
+                                                <option value="GO">GO</option>
+                                                <option value="MA">MA</option>
+                                                <option value="MT">MT</option>
+                                                <option value="MS">MS</option>
+                                                <option value="MG">MG</option>
+                                                <option value="PA">PA</option>
+                                                <option value="PB">PB</option>
+                                                <option value="PR">PR</option>
+                                                <option value="PE">PE</option>
+                                                <option value="PI">PI</option>
+                                                <option value="RJ">RJ</option>
+                                                <option value="RN">RN</option>
+                                                <option value="RS">RS</option>
+                                                <option value="RO">RO</option>
+                                                <option value="RR">RR</option>
+                                                <option value="SC">SC</option>
+                                                <option value="SP">SP</option>
+                                                <option value="SE">SE</option>
+                                                <option value="TO">TO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="empr_nr_cep" class="control-label">CEP</label>
+                                        <input type="text" id="empr_nr_cep" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nr_cep" name="empr_nr_cep" maxlength="9" #cep="ngModel" ngModel kzMask="99999-999">
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 6 - CONTATO E EMAIL                            -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_nm_contato" class="control-label">Contato</label>
+                                        <input type="text" id="empr_nm_contato" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nm_contato" name="empr_nm_contato" #contato="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_ds_email" class="control-label">Email</label>
+                                        <input type="email" id="empr_ds_email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_ds_email" name="empr_ds_email" #email="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ************************************************************************ -->
+                                <!-- LINHA 7 - TIPO DOCUMENTO, CNPJ/CPF, INSCRIÇÃO ESTADUAL E MUNICIPAL       -->
+                                <!-- ************************************************************************ -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label for="empr_sg_pessoa" class="control-label">Tipo Pessoa</label>
+                                        <div>
+                                            <select id="empr_sg_pessoa" name="empr_sg_pessoa" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_sg_pessoa" name="empr_sg_pessoa" #pessoa="ngModel" ngModel>
+                                                <option value="PF">PF</option>
+                                                <option selected value="PJ">PJ</option>
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="form-group col-lg-3" [style.display]="pessoa.value == 'PF' ? 'block' : 'none'">
+                                        <label for="empr_nr_documento" class="control-label">CPF</label>
+                                        <input type="text" id="empr_nr_documento" class="form-control cpf" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" maxlength="14" [(ngModel)]="model.empr_nr_documento" name="empr_nr_documento" #documento="ngModel" kzMask="999.999.999-99" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-3" [style.display]="pessoa.value != 'PF' ? 'block' : 'none'">
+                                        <label for="empr_nr_documento" class="control-label">CNPJ</label>
+                                        <input type="text" id="empr_nr_documento" class="form-control cnpj" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" maxlength="18" [(ngModel)]="model.empr_nr_documento" name="empr_nr_documento" #documento="ngModel" kzMask="99.999.999/9999-99" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="empr_nr_inscestadual" class="control-label">Inscrição Estadual</label>
+                                        <input type="text" id="empr_nr_inscestadual" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nr_inscestadual" name="empr_nr_inscestadual" #inscestadual="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="empr_nr_inscmunicipal" class="control-label">Inscrição Municipal</label>
+                                        <input type="text" id="empr_nr_inscmunicipal" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nr_inscmunicipal" name="empr_nr_inscmunicipal" #inscmunicipal="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 8 - LOGOMARCA E UPLOAD                         -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_logomarca" class="control-label">Logomarca</label>
+                                        <input type="text" id="empr_tx_logomarca" name="empr_tx_logomarca" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_logomarca" #logomarca="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_googlemaps" class="control-label">Upload Logomarca</label>
+                                        <input type="file" id="arquivoupload" class="form-control" (change)="fileChange($event, 'logomarca')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileInput="ngModel" name="arquivoupload" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 9 - CARTÃO DE VISITA E UPLOAD                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_cartaovisita" class="control-label">Cartão de Visita</label>
+                                        <input type="text" id="empr_tx_cartaovisita" name="empr_tx_cartaovisita" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_cartaovisita" #cartaovisita="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_upload_cartaovisita" class="control-label">Upload Cartão de Visita</label>
+                                        <input type="file" id="empr_tx_upload_cartaovisita" class="form-control" (change)="fileChange($event, 'cartaovisita')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileInput="ngModel" name="empr_tx_upload_cartaovisita" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 10 - COORDENADAS GOOGLE MAPS                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="empr_tx_googlemaps" class="control-label">Coordenada no Google Maps</label>
+                                        <input type="text" id="empr_tx_googlemaps" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_googlemaps" name="empr_tx_googlemaps" #googlemaps="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 10 - CATEGORIA E SUBCATEGORIA                  -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6"
+                                        [class.has-error]="!categoria.valid && categoria.touched" 
+                                        [class.has-feedback]="!categoria.valid && categoria.touched">
+                                        <label for="objcategoria" class="control-label">Categoria</label>
+                                        <div class="input-group">
+                                            <input type="hidden" id="cate_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.categoria.cate_sq_id" name="cate_sq_id">
+                                            <input type="text" id="cate_nm_categoria" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.categoria.cate_nm_categoria" name="cate_nm_categoria" #categoria="ngModel" ngModel required>
+                                            <div class="input-group-btn">
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#modalCategoria">Selecionar...</a>
+                                            </div>
+                                        </div>
+                                        <span id="help_categoria" class="help-block" *ngIf="!categoria.valid && categoria.touched">Categoria é obrigatória!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!categoria.valid && categoria.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="categoria" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_subcategoria" class="control-label">Subcategoria</label>
+                                        <input type="text" id="empr_tx_subcategoria" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_subcategoria" name="empr_tx_subcategoria" #subcategoria="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 11 - SITE                                      -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="empr_ds_site" class="control-label">Site</label>
+                                        <input type="text" id="empr_ds_site" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_ds_site" name="empr_ds_site" #site="ngModel" ngModel>
+                                    </div>
+                                </div>                                
+                                <!-- **************************************************** -->
+                                <!-- LINHA 12 - SOBRE E OBSERVAÇÕES                       -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_sobre" class="control-label">Sobre</label>
+                                        <textarea id="empr_tx_sobre" class="form-control" rows="6" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_sobre" name="empr_tx_sobre" #sobre="ngModel" ngModel></textarea>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_observacao" class="control-label">Observações</label>
+                                        <textarea id="empr_tx_observacao" class="form-control" rows="6" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_observacao" name="empr_tx_observacao" #observacao="ngModel" ngModel></textarea>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 12 - INDICADOR SE DESEJA RECEBER MENSAGENS E   --> 
+                                <!-- E SE É PARCEIRO DE NEGÓCIOS                          -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <div class="checkbox">
+                                            <label for="empr_in_mensagem" class="control-label">
+                                                <input type="checkbox" id="empr_in_mensagem" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_mensagem" name="empr_in_mensagem" ngModel> Desejo trocar mensagens com usuários.
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label for="empr_in_parceiro" class="control-label">
+                                                <input type="checkbox" id="empr_in_parceiro" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_parceiro" name="empr_in_parceiro" ngModel> Sou um parceiro.
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload" [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirEmpresa()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/empresa/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE CATEGORIA                                   -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalCategoria" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Categoria</h4>
+            </div>
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <input type="search" id="categoria_busca" class="form-control" placeholder="Digite sua busca..." #txtCategoria (keyup)="buscarCategoriaPorNome(txtCategoria.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box" style="margin: 15px 0px 0px 15px;">
+                        <div class="list-group col-lg-12" >
+                            <a *ngFor="let c of listaCategorias" class="list-group-item" data-dismiss="modal" (click)="selecionaCategoria(c.key, c.val())">
+                                {{ c.val().cate_nm_categoria }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>          
+    
+    <!-- **************************************************** -->
+    <!-- MODAL DE PLANO                                       -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalPlano" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Plano</h4>
+            </div>
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <input type="search" id="plano_busca" class="form-control" placeholder="Digite sua busca..." #txtPlano (keyup)="buscarPlanoPorNome(txtPlano.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box" style="margin: 15px 0px 0px 15px;">
+                        <div class="list-group col-lg-12" >
+                            <a *ngFor="let c of listaPlanos" class="list-group-item" data-dismiss="modal" (click)="selecionaPlano(c.key, c.val())">
+                                {{ c.val().plan_nm_plano }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>          
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE UPLOAD                                      -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalUpload" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+                <!-- HEADER -->
+                <!-- CONTEÚDO PRINCIPAL -->            
+                <div class="modal-body">
+                    <div style="margin: 20px">
+                     <h3>Aguarde....salvando dados.</h3>
+                    </div>
+                </div>
+                <!-- FOOTER -->
+            </div>
+        </div>
+    </div>          
+
+

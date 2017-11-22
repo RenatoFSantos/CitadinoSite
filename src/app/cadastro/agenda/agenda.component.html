@@ -1,0 +1,232 @@
+	
+    <section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Anúncio Agendado</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- MENSAGEM          -->        
+                <!-- ***************** -->
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+                <div [hidden]="flagHidden">
+                    <button type="button" class="btn btn-primary" [routerLink]="['/agenda/lista']">Voltar</button>
+                </div>
+
+                <!-- ***************** -->
+                <!-- FORMULÁRIO        -->        
+                <!-- ***************** -->
+
+                <div class="row" [hidden]="!flagHidden">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formAgenda" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - ID AGENDA                                  -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="agen_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_sq_id" value="{{model.agen_sq_id}}" name="agen_sq_id" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - DATA DE INÍCIO E TÉRMINO                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="agen_dt_inicio" class="control-label">Data de Início</label>
+                                        <input type="date" id="agen_dt_inicio" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_dt_inicio" value="{{model.agen_dt_inicio}}" name="agen_dt_inicio" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="agen_dt_termino" class="control-label">Data de Término</label>
+                                        <input type="date" id="agen_dt_termino" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_dt_termino" value="{{model.agen_dt_termino}}" name="agen_dt_termino" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="agen_in_status" class="control-label">Status</label>
+                                        <input type="text" id="agen_in_status" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_in_status" value="{{model.agen_in_status=='A' ? 'Agendado': 'Publicado'}}" name="agen_in_status" ngModel>
+                                    </div>
+                                </div>
+                                <!-- *************************************************************************** -->
+                                <!-- LINHA 3 - ID ANUNCIO, NR. DE VISITAS, NR. DE CURTIDAS, NR. SALVOS E STATUS  -->
+                                <!-- *************************************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID Anúncio</label>
+                                        <input type="text" id="id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="id" name="id" >
+                                    </div>
+                                    <div class="form-group col-lg-offset-1 col-lg-2">
+                                        <label>Nr. de Visitas</label>
+                                        <input type="text" id="anun_nr_visitas" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_nr_visitas" name="anun_nr_visitas" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Nr. de Curtidas</label>
+                                        <input type="text" id="anun_nr_curtidas" readonly class="form-control" [class.text-red]="modo=='excluir'"  [(ngModel)]="model.anuncio.anun_nr_curtidas" name="anun_nr_curtidas" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Nr. de Salvos</label>
+                                        <input type="text" id="anun_nr_salvos" readonly class="form-control" [class.text-red]="modo=='excluir'"  [(ngModel)]="model.anuncio.anun_nr_salvos" name="anun_nr_salvos" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Nr. de Salvos</label>
+                                        <input type="text" id="anun_in_status" readonly class="form-control" [class.text-red]="modo=='excluir'"  [(ngModel)]="model.anuncio.anun_in_status" name="anun_in_status" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 4 - DESCRIÇÃO DO ANUNCIO                                      -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_ds_anuncio" class="control-label">Descrição</label>
+                                        <input type="text" id="anun_ds_anuncio" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_ds_anuncio" name="anun_ds_anuncio" #anuncio="ngModel" ngModel required>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 5 - EMPRESA, MUNICÍPIO E TIPO DE ANÚNCIO                      -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-5">
+                                        <label for="objempresa" class="control-label">Empresa</label>
+                                        <input type="hidden" id="empr_sq_id" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.empresa.empr_sq_id" name="empr_sq_id">
+                                        <input type="text" id="empr_nm_razaosocial" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.empresa.empr_nm_razaosocial" name="empr_nm_razaosocial" #empresa="ngModel" ngModel required>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="objmunicipio" class="control-label">Município</label>
+                                        <input type="hidden" id="muni_sq_id" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.municipio.muni_sq_id" name="muni_sq_id">
+                                        <input type="text" id="muni_nm_municipio" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.municipio.muni_nm_municipio" name="muni_nm_municipio" #municipio="ngModel" ngModel required>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="objtipoanuncio" class="control-label">Tipo de Anúncio</label>
+                                        <input type="hidden" id="tian_sq_id" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.tipoanuncio.tian_sq_id" name="tian_sq_id">
+                                        <input type="text" id="tian_nm_tipoanuncio" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.tipoanuncio.tian_nm_tipoanuncio" name="tian_nm_tipoanuncio" #tipoanuncio="ngModel" ngModel required>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 6 - TÍTULO                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_titulo" class="control-label">Título</label>
+                                        <input type="text" id="anun_tx_titulo" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_titulo" name="anun_tx_titulo" #titulo="ngModel" ngModel required>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 7 - SUBTITULO                                                 -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_subtitulo" class="control-label">Subtítulo</label>
+                                        <input type="text" id="anun_tx_subtitulo" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_subtitulo" name="anun_tx_subtitulo" #subtitulo="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 8 - TEXTO CURTO                                               -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_texto" class="control-label">Texto Curto</label>
+                                        <input type="text" id="anun_tx_texto" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_texto" name="anun_tx_texto" #subtitulo="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 9 - TEXTO LONGO                                               -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_texto" class="control-label">Texto Longo</label>
+                                        <input type="text" id="anun_tx_texto" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_texto" name="anun_tx_texto" #subtitulo="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 10 - AVATAR                                                   -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_urlavatar" class="control-label">Avatar</label>
+                                        <input type="text" id="anun_tx_urlavatar" name="anun_tx_urlavatar" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_urlavatar" #avatar="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 11 - BANNER                                                   -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_urlbanner" class="control-label">Banner</label>
+                                        <input type="text" id="anun_tx_urlbanner" name="anun_tx_urlbanner" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_urlbanner" #banner="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 12 - THUMBNAIL                                                -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_urlthumbnail" class="control-label">Thumbnail</label>
+                                        <input type="text" id="anun_tx_urlthumbnail" name="anun_tx_urlthumbnail" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_urlthumbnail" #thumbnail="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 13 - ICONE                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_urlicone" class="control-label">Ícone</label>
+                                        <input type="text" id="anun_tx_urlicone" name="anun_tx_urlicone" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_urlicone" #icone="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 14 - SLIDE 1                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_urlslide1" class="control-label">Slide 1</label>
+                                        <input type="text" id="anun_tx_urlslide1" name="anun_tx_urlslide1" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_urlslide1" #slide1="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 15 - SLIDE 2                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_urlslide2" class="control-label">Slide 2</label>
+                                        <input type="text" id="anun_tx_urlslide2" name="anun_tx_urlslide2" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_urlslide2" #slide2="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 16 - SLIDE 3                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_urlslide3" class="control-label">Slide 3</label>
+                                        <input type="text" id="anun_tx_urlslide3" name="anun_tx_urlslide3" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anuncio.anun_tx_urlslide3" #slide3="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" [disabled]="!f.valid">Publicar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirAgenda()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/agenda/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

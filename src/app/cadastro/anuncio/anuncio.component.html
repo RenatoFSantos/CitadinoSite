@@ -1,0 +1,561 @@
+	
+    <section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Anúncio</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- MENSAGEM          -->        
+                <!-- ***************** -->
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <!-- ***************** -->
+                <!-- FORMULÁRIO        -->        
+                <!-- ***************** -->
+
+                <div class="row" [hidden]="!flagHidden">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formAnuncio" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 3, título e subtítulo -->
+                                <!-- ANUNCIO - TIPO 2 - Avatar, banner, título e subtítulo               -->
+                                <!-- ANUNCIO - TIPO 3 - Thumbnail, título, subtítulo e texto curto       -->
+                                <!-- ANUNCIO - TIPO 4 - Ícone, título, subtítulo e texto longo           -->
+                                <!-- ANUNCIO - TIPO 5 - Ícone, título e subtítulo                        -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ANUNCIO - VALE-BRINDE - Banner                                      -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 1 - ID, NR. DE VISITAS, NR. DE CURTIDAS, NR. SALVOS E STATUS  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="id" name="id" >
+                                    </div>
+                                    <div class="form-group col-lg-offset-1 col-lg-2">
+                                        <label>Nr. de Visitas</label>
+                                        <input type="text" id="anun_nr_visitas" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_nr_visitas" name="anun_nr_visitas" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Nr. de Curtidas</label>
+                                        <input type="text" id="anun_nr_curtidas" readonly class="form-control" [class.text-red]="modo=='excluir'"  [(ngModel)]="model.anun_nr_curtidas" name="anun_nr_curtidas" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Nr. de Salvos</label>
+                                        <input type="text" id="anun_nr_salvos" readonly class="form-control" [class.text-red]="modo=='excluir'"  [(ngModel)]="model.anun_nr_salvos" name="anun_nr_salvos" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="anun_in_status" class="control-label">Status</label>
+                                        <div>
+                                            <select id="anun_in_status" name="anun_in_status" disabled class="form-control"  [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_in_status" name="anun_in_status" #uf="ngModel" ngModel>
+                                                <option value="A">Ativo</option>
+                                                <option selected value="I">Inativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 3, título e subtítulo -->
+                                <!-- ANUNCIO - TIPO 2 - Avatar, banner, título e subtítulo               -->
+                                <!-- ANUNCIO - TIPO 3 - Thumbnail, título, subtítulo e texto curto       -->
+                                <!-- ANUNCIO - TIPO 4 - Ícone, título, subtítulo e texto longo           -->
+                                <!-- ANUNCIO - TIPO 5 - Ícone, título e subtítulo                        -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ANUNCIO - VALE-BRINDE - Banner                                      -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 2 - DESCRIÇÃO DO ANUNCIO                                      -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!anuncio.valid && anuncio.touched" 
+                                        [class.has-feedback]="!anuncio.valid && anuncio.touched" >
+                                        <label for="anun_ds_anuncio" class="control-label">Descrição</label>
+                                        <input type="text" id="anun_ds_anuncio" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_ds_anuncio" name="anun_ds_anuncio" #anuncio="ngModel" ngModel required>
+                                        <span id="help_anuncio" class="help-block" *ngIf="!anuncio.valid && anuncio.touched">Descrição do anúncio é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!anuncio.valid && anuncio.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="anuncio" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 3, título e subtítulo -->
+                                <!-- ANUNCIO - TIPO 2 - Avatar, banner, título e subtítulo               -->
+                                <!-- ANUNCIO - TIPO 3 - Thumbnail, título, subtítulo e texto curto       -->
+                                <!-- ANUNCIO - TIPO 4 - Ícone, título, subtítulo e texto longo           -->
+                                <!-- ANUNCIO - TIPO 5 - Ícone, título e subtítulo                        -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ANUNCIO - VALE-BRINDE - Banner                                      -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 3 - EMPRESA, MUNICÍPIO E TIPO DE ANÚNCIO                      -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-5"
+                                        [class.has-error]="!empresa.valid && empresa.touched" 
+                                        [class.has-feedback]="!empresa.valid && empresa.touched">
+                                        <label for="objempresa" class="control-label">Empresa</label>
+                                        <div class="input-group">
+                                            <input type="hidden" id="empr_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empresa.empr_sq_id" name="empr_sq_id">
+                                            <input type="hidden" id="anun_in_smartsite" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_in_smartsite" name="anun_in_smartsite">
+                                            <input type="text" id="empr_nm_razaosocial" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.empresa.empr_nm_razaosocial" name="empr_nm_razaosocial" #empresa="ngModel" ngModel required>
+                                            <div class="input-group-btn">
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#modalEmpresa">Alterar...</a>
+                                            </div>
+                                        </div>
+                                        <span id="help_empresa" class="help-block" *ngIf="!empresa.valid && empresa.touched">Empresa é obrigatória!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!empresa.valid && empresa.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="empresa" class="sr-only">(error)</span>                                          
+                                    </div>
+                                    <div class="form-group col-lg-4"
+                                        [class.has-error]="!municipio.valid && municipio.touched" 
+                                        [class.has-feedback]="!municipio.valid && municipio.touched">
+                                        <label for="objmunicipio" class="control-label">Município</label>
+                                        <div class="input-group">
+                                            <input type="hidden" id="muni_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.municipio.muni_sq_id" name="muni_sq_id">
+                                            <input type="text" id="muni_nm_municipio" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.municipio.muni_nm_municipio" name="muni_nm_municipio" #municipio="ngModel" ngModel required>
+                                            <div class="input-group-btn">
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#modalMunicipio">Alterar...</a>
+                                            </div>
+                                        </div>
+                                        <span id="help_municipio" class="help-block" *ngIf="!municipio.valid && municipio.touched">Município é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!municipio.valid && municipio.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="municipio" class="sr-only">(error)</span>                                          
+                                    </div>
+                                    <div class="form-group col-lg-3"
+                                        [class.has-error]="!tipoanuncio.valid && tipoanuncio.touched" 
+                                        [class.has-feedback]="!tipoanuncio.valid && tipoanuncio.touched">
+                                        <label for="objtipoanuncio" class="control-label">Tipo de Anúncio</label>
+                                        <div class="input-group">
+                                            <input type="hidden" id="tian_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tipoanuncio.tian_sq_id" name="tian_sq_id">
+                                            <input type="text" id="tian_nm_tipoanuncio" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.tipoanuncio.tian_nm_tipoanuncio" name="tian_nm_tipoanuncio" #tipoanuncio="ngModel" ngModel required>
+                                            <div class="input-group-btn">
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#modalTipoAnuncio">Alterar...</a>
+                                            </div>
+                                        </div>
+                                        <span id="help_tipoanuncio" class="help-block" *ngIf="!tipoanuncio.valid && tipoanuncio.touched">Tipo de Anúncio é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!tipoanuncio.valid && tipoanuncio.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="tipoanuncio" class="sr-only">(error)</span>                                          
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 3, título e subtítulo -->
+                                <!-- ANUNCIO - TIPO 2 - Avatar, banner, título e subtítulo               -->
+                                <!-- ANUNCIO - TIPO 3 - Thumbnail, título, subtítulo e texto curto       -->
+                                <!-- ANUNCIO - TIPO 4 - Ícone, título, subtítulo e texto longo           -->
+                                <!-- ANUNCIO - TIPO 5 - Ícone, título e subtítulo                        -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 4 - TÍTULO                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value != 'vale-brinde' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!titulo.valid && titulo.touched" 
+                                        [class.has-feedback]="!titulo.valid && titulo.touched" >
+                                        <label for="anun_tx_titulo" class="control-label">Título</label>
+                                        <input type="text" id="anun_tx_titulo" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_titulo" name="anun_tx_titulo" #titulo="ngModel" ngModel required>
+                                        <span id="help_titulo" class="help-block" *ngIf="!titulo.valid && titulo.touched">Título é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!titulo.valid && titulo.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="titulo" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 3, título e subtítulo -->
+                                <!-- ANUNCIO - TIPO 2 - Avatar, banner, título e subtítulo               -->
+                                <!-- ANUNCIO - TIPO 3 - Thumbnail, título, subtítulo e texto curto       -->
+                                <!-- ANUNCIO - TIPO 4 - Ícone, título, subtítulo e texto longo           -->
+                                <!-- ANUNCIO - TIPO 5 - Ícone, título e subtítulo                        -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 5 - SUBTITULO                                                 -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value != 'vale-brinde' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_subtitulo" class="control-label">Subtítulo</label>
+                                        <input type="text" id="anun_tx_subtitulo" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_subtitulo" name="anun_tx_subtitulo" #subtitulo="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 3 - Thumbnail, título, subtítulo e texto curto       -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 6 - TEXTO CURTO/LONGO                                         -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-3' || tipoanuncio.value == 'tipo-4' || tipoanuncio.value == 'noticias' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_texto" class="control-label" [hidden]="tipoanuncio.value == 'tipo-3' ? false : true">Texto Curto</label>
+                                        <label for="anun_tx_texto" class="control-label" [hidden]="tipoanuncio.value == 'tipo-4' || tipoanuncio.value == 'noticias' ? false : true">Texto Longo</label>
+                                        <input [type]="tipoanuncio.value == 'tipo-3' ? 'text' : 'hidden'" id="anun_tx_texto" class="form-control" [readOnly]="modo=='excluir'" [maxlength]="tipoanuncio.value == 'tipo-3' ? 30 : 2000" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_texto" name="anun_tx_texto" ngModel>
+                                        <textarea [style.display]="tipoanuncio.value == 'tipo-4' || tipoanuncio.value == 'noticias' ? 'block' : 'none'" id="anun_tx_texto" class="form-control" rows="8" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" maxlength="2000" [(ngModel)]="model.anun_tx_texto" name="anun_tx_texto" ngModel></textarea>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 4 - Ícone, título, subtítulo e texto longo           -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 7 - TEXTO LONGO                                               -->
+                                <!-- ******************************************************************* -->
+                                <!--<div class="row" [style.display]="tipoanuncio.value == 'tipo-4' || tipoanuncio.value == 'noticias' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-12">
+                                        <label for="anun_tx_texto" class="control-label">Texto Longo</label>
+                                        <input type="text" id="anun_tx_texto" class="form-control" [readOnly]="modo=='excluir'" maxlength="1000" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_texto" name="anun_tx_texto" #subtitulo="ngModel" ngModel>
+                                    </div>
+                                </div>-->
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 3, título e subtítulo -->
+                                <!-- ANUNCIO - TIPO 2 - Avatar, banner, título e subtítulo               -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 8 - AVATAR                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-1' || tipoanuncio.value == 'tipo-2' || tipoanuncio.value == 'noticias' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlavatar" class="control-label">Avatar</label>
+                                        <input type="text" id="anun_tx_urlavatar" name="anun_tx_urlavatar" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlavatar" #avatar="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputavatar" class="control-label">Upload Avatar</label>
+                                        <input type="file" id="fileinputavatar" class="form-control" (change)="fileChange($event, 'avatar')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputavatar="ngModel" name="fileinputavatar" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 3, título e subtítulo -->
+                                <!-- ANUNCIO - TIPO 2 - Avatar, banner, título e subtítulo               -->
+                                <!-- ANUNCIO - NOTÍCIA - Avatar, Banner, Título, Subtítulo e texto longo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 9 - BANNER                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-1' || tipoanuncio.value == 'tipo-2' || tipoanuncio.value == 'noticias' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlbanner" class="control-label">Banner</label>
+                                        <input type="text" id="anun_tx_urlbanner" name="anun_tx_urlbanner" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlbanner" #banner="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputbanner" class="control-label">Upload Banner</label>
+                                        <input type="file" id="fileinputbanner" class="form-control" (change)="fileChange($event, 'banner')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputbanner="ngModel" name="fileinputbanner" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 3 - Thumbnail, título, subtítulo e texto curto       -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 10 - THUMBNAIL                                                -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-3' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlthumbnail" class="control-label">Thumbnail</label>
+                                        <input type="text" id="anun_tx_urlthumbnail" name="anun_tx_urlthumbnail" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlthumbnail" #thumbnail="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputthumbnail" class="control-label">Upload Thumbnail</label>
+                                        <input type="file" id="fileinputthumbnail" class="form-control" (change)="fileChange($event, 'thumbnail')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputthumbnail="ngModel" name="fileinputthumbnail" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 4 - Ícone, título, subtítulo e texto longo           -->
+                                <!-- ANUNCIO - TIPO 5 - Ícone, título e subtítulo                        -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 11 - ICONE                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-4' || tipoanuncio.value == 'tipo-5' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlicone" class="control-label">Ícone</label>
+                                        <input type="text" id="anun_tx_urlicone" name="anun_tx_urlicone" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlicone" #icone="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputicone" class="control-label">Upload Ícone</label>
+                                        <input type="file" id="fileinputicone" class="form-control" (change)="fileChange($event, 'icone')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputicone="ngModel" name="fileinputicone" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 4, título e subtítulo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 12 - SLIDE 1                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-1' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlslide1" class="control-label">Slide 1</label>
+                                        <input type="text" id="anun_tx_urlslide1" name="anun_tx_urlslide1" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlslide1" #slide1="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputslide1" class="control-label">Upload Slide 1</label>
+                                        <input type="file" id="fileinputslide1" class="form-control" (change)="fileChange($event, 'slide1')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputslide1="ngModel" name="fileinputslide1" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 4, título e subtítulo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 13 - SLIDE 2                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-1' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlslide2" class="control-label">Slide 2</label>
+                                        <input type="text" id="anun_tx_urlslide2" name="anun_tx_urlslide2" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlslide2" #slide2="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputslide2" class="control-label">Upload Slide 2</label>
+                                        <input type="file" id="fileinputslide2" class="form-control" (change)="fileChange($event, 'slide2')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputslide2="ngModel" name="fileinputslide2" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 4, título e subtítulo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 14 - SLIDE 3                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-1' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlslide3" class="control-label">Slide 3</label>
+                                        <input type="text" id="anun_tx_urlslide3" name="anun_tx_urlslide3" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlslide3" #slide3="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputslide3" class="control-label">Upload Slide 3</label>
+                                        <input type="file" id="fileinputslide3" class="form-control" (change)="fileChange($event, 'slide3')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputslide3="ngModel" name="fileinputslide3" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- ANUNCIO - TIPO 1 - Avatar, banner, slides 1 a 4, título e subtítulo -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 15 - SLIDE 4                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'tipo-1' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlslide4" class="control-label">Slide 4</label>
+                                        <input type="text" id="anun_tx_urlslide4" name="anun_tx_urlslide4" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlslide4" #slide4="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputslide4" class="control-label">Upload Slide 4</label>
+                                        <input type="file" id="fileinputslide4" class="form-control" (change)="fileChange($event, 'slide4')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputslide4="ngModel" name="fileinputslide4" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- VALE-BRINDE - Cupom Aberto, Cupom Fechado, N. de Cupons Total e N.  -->
+                                <!-- de Cupons para premiação                                            -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 16 - CUPOM ABERTO                                             -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'vale-brinde' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlcupomaberto" class="control-label">Imagem do Cupom em Aberto</label>
+                                        <input type="text" id="anun_tx_urlcupomaberto" name="anun_tx_urlcupomaberto" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlcupomaberto" #cupomaberto="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputcupomaberto" class="control-label">Imagem para Upload</label>
+                                        <input type="file" id="fileinputcupomaberto" class="form-control" (change)="fileChange($event, 'cupomaberto')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #filecupomaberto="ngModel" name="fileinputcupomaberto" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- VALE-BRINDE - Cupom Aberto, Cupom Fechado, N. de Cupons Total e N.  -->
+                                <!-- de Cupons para premiação                                            -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 17 - CUPOM FECHADO                                            -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'vale-brinde' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_tx_urlcupomfechado" class="control-label">Imagem do Cupom Fechado</label>
+                                        <input type="text" id="anun_tx_urlcupomfechado" name="anun_tx_urlcupomfechado" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.anun_tx_urlcupomfechado" #cupomfechado="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputcupomfechado" class="control-label">Imagem para Upload</label>
+                                        <input type="file" id="fileinputcupomfechado" class="form-control" (change)="fileChange($event, 'cupomfechado')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #filecupomfechado="ngModel" name="fileinputcupomfechado" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- ATENDE AOS SEGUINTES ANÚNCIOS:                                      -->
+                                <!-- VALE-BRINDE - Cupom Aberto, Cupom Fechado, N. de Cupons Total e N.  -->
+                                <!-- de Cupons para premiação                                            -->
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 18 - NÚMERO TOTAL DE CUPONS DA PROMOÇÃO                       -->
+                                <!--          - NÚMERO TOTAL DE CUPONS PARA PREMIAÇÃO                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row" [style.display]="tipoanuncio.value == 'vale-brinde' ? 'block' : 'none'">
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_nr_totalcupom" class="control-label">Total de Cupons da Promoção</label>
+                                        <input type="text" id="anun_nr_totalcupom" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" maxlength="3" [(ngModel)]="model.anun_nr_totalcupom" name="anun_nr_totalcupom" ngModel kzMask="999">
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="anun_nr_totalpremio" class="control-label">Total de Cupons para Premiação</label>
+                                        <input type="text" id="anun_nr_totalpremio" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" maxlength="3" [(ngModel)]="model.anun_nr_totalpremio" name="anun_nr_totalpremio" ngModel kzMask="999">
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload" [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirAnuncio()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/anuncio/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE EMPRESA                                     -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalEmpresa" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Empresa</h4>
+            </div>
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <input type="search" id="empresa_busca" class="form-control" placeholder="Digite sua busca..." #txtEmpresa (keyup)="buscarEmpresaPorNome(txtEmpresa.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box" style="margin: 15px 0px 0px 15px;">
+                        <div class="list-group col-lg-12" >
+                            <a *ngFor="let item of listaEmpresas" class="list-group-item" data-dismiss="modal" (click)="selecionaEmpresa(item.key, item.val())">
+                                {{ item.val().empr_nm_razaosocial }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>          
+    
+    <!-- **************************************************** -->
+    <!-- MODAL DE MUNICÍPIO                                   -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalMunicipio" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Município</h4>
+            </div>
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <input type="search" id="municipio_busca" class="form-control" placeholder="Digite sua busca..." #txtMunicipio (keyup)="buscarMunicipioPorNome(txtMunicipio.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box" style="margin: 15px 0px 0px 15px;">
+                        <div class="list-group col-lg-12" >
+                            <a *ngFor="let item of listaMunicipios" class="list-group-item" data-dismiss="modal" (click)="selecionaMunicipio(item.key, item.val())">
+                                {{ item.val().muni_nm_municipio }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>          
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE TIPO DE ANÚNCIO                             -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalTipoAnuncio" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tipo de Anúncio</h4>
+            </div>
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <input type="search" id="tipoanuncio_busca" class="form-control" placeholder="Digite sua busca..." #txtTipoAnuncio (keyup)="buscarTipoAnuncioPorNome(txtTipoAnuncio.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box" style="margin: 15px 0px 0px 15px;">
+                        <div class="list-group col-lg-12" >
+                            <a *ngFor="let item of listaTipoAnuncios" class="list-group-item" data-dismiss="modal" (click)="selecionaTipoAnuncio(item.key, item.val())">
+                                {{ item.val().tian_nm_tipoanuncio }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>          
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE UPLOAD                                      -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalUpload" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+                <!-- HEADER -->
+                <!-- CONTEÚDO PRINCIPAL -->            
+                <div class="modal-body">
+                    <div style="margin: 20px">
+                     <h3>Aguarde....salvando dados.</h3>
+                    </div>
+                </div>
+                <!-- FOOTER -->
+            </div>
+        </div>
+    </div>          
+
+

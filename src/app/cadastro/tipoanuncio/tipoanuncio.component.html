@@ -1,0 +1,97 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Cadastro de Tipos de Anúncio</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- Caixa de mensagem -->        
+                <!-- ***************** -->
+                
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <!-- ***************** -->
+                <!-- Formulário        -->        
+                <!-- ***************** -->
+
+                <div class="row" >
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formTipoAnuncio" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - ID                                         -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="tian_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tian_sq_id" name="tian_sq_id" >
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - NOME                                       -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!tipoanuncio.valid && tipoanuncio.touched" 
+                                        [class.has-feedback]="!tipoanuncio.valid && tipoanuncio.touched">
+                                        <label for="tian_nm_tipoanuncio" class="control-label">Nome</label>
+                                        <input type="text" id="tian_nm_tipoanuncio" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tian_nm_tipoanuncio" name="tian_nm_tipoanuncio" #tipoanuncio="ngModel" ngModel required>
+                                        <!--<input type="text" id="tian_nm_tipoanuncio" class="form-control" [(ngModel)]="model.tian_nm_tipoanuncio" name="tian_nm_tipoanuncio" #tipoanuncio="ngModel" ngModel required>-->
+                                        <span id="help_tipoanuncio" class="help-block" *ngIf="!tipoanuncio.valid && tipoanuncio.touched">Nome é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!tipoanuncio.valid && tipoanuncio.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="tipoanuncio" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 3 - NRs DE CRÉDITOS, DIAS E TIPO               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="tian_nr_creditos" class="control-label">Nr. de Créditos</label>
+                                        <input type="text" id="tian_nr_creditos" name="tian_nr_creditos" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tian_nr_creditos" #creditos="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="tian_nr_dias" class="control-label">Nr. de Dias</label>
+                                        <input type="text" id="tian_nr_dias" name="tian_nr_dias" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tian_nr_dias" #dias="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="tian_in_tipo" class="control-label">Tipo</label>
+                                        <div>
+                                            <select id="tian_in_tipo" name="tian_in_tipo" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tian_in_tipo" name="tian_in_tipo" #tipo="ngModel" ngModel>
+                                                <option selected value="P">Publicidade</option>
+                                                <option value="V">Vale-Brinde</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirTipoAnuncio()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/tipoanuncio/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+

@@ -1,0 +1,13 @@
+  <div class="progress-bar"
+    style="min-width: 0;"
+    role="progressbar"
+    [ngClass]="type && 'progress-bar-' + type"
+    [ngStyle]="{width: (percent < 100 ? percent : 100) + '%', transition: transition}"
+    aria-valuemin="0"
+    [attr.aria-valuenow]="value"
+    [attr.aria-valuetext]="percent.toFixed(0) + '%'"
+    [attr.aria-valuemax]="0" 
+    >
+    <!--// anteriomente o lugar do valor 0 atribuido ao [attr.aria-valuemax]="0" estava [attr.aria-valuemax]="max"  estava MAX que é uma variável que define o valor total-->
+    <ng-content></ng-content>
+  </div>

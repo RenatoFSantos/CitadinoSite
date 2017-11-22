@@ -1,0 +1,136 @@
+	
+    <section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Smartsite</strong>
+                            </h2>
+                            <hr>
+                            <h3>Parceiro: {{ empresa.empr_nm_razaosocial }}</h3>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- MENSAGEM          -->        
+                <!-- ***************** -->
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+                <button [style.display]="flagHidden ? 'none' : 'block'" type="button" class="btn btn-primary" [routerLink]="['/empresa/lista']">Voltar</button>
+
+                <!-- ***************** -->
+                <!-- FORMULÁRIO        -->        
+                <!-- ***************** -->
+                <div class="row" [hidden]="!flagHidden">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formSmartsite" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 1 - ID                                                        -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="smar_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.smar_sq_id" name="smar_sq_id" >
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 2 - TÍTULO                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!titulo.valid && titulo.touched" 
+                                        [class.has-feedback]="!titulo.valid && titulo.touched" >
+                                        <label for="smar_tx_titulo" class="control-label">Título</label>
+                                        <input type="text" id="smar_tx_titulo" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.smar_tx_titulo" name="smar_tx_titulo" #titulo="ngModel" ngModel required>
+                                        <span id="help_titulo" class="help-block" *ngIf="!titulo.valid && titulo.touched">Título é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!titulo.valid && titulo.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="titulo" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 3 - SUBTITULO                                                 -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="smar_tx_subtitulo" class="control-label">Subtítulo</label>
+                                        <input type="text" id="smar_tx_subtitulo" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.smar_tx_subtitulo" name="smar_tx_subtitulo" #subtitulo="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 4 - CONTEUDO                                                  -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="smar_tx_conteudo" class="control-label">Conteúdo</label>
+                                        <textarea id="smar_tx_conteudo" class="form-control" rows="6" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.smar_tx_conteudo" name="smar_tx_conteudo" #conteudo="ngModel" ngModel></textarea>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 5 - IMAGEM                                                    -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="smar_tx_imagem1" class="control-label">Slide</label>
+                                        <input type="text" id="smar_tx_imagem1" name="smar_tx_imagem1" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.smar_tx_imagem1" #slide1="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputslide1" class="control-label">Upload Slide</label>
+                                        <input type="file" id="fileinputslide1" class="form-control" (change)="fileChange($event)" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputslide1="ngModel" name="fileinputslide1" ngModel>
+                                    </div>
+                                </div>
+                                <!-- ******************************************************************* -->
+                                <!-- LINHA 6 - INDICADOR DE TABELA DE PREÇO                              -->
+                                <!-- ******************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12 checkbox">
+                                        <label for="smar_in_preco" class="control-label">
+                                            <input type="checkbox" id="smar_in_preco" class="form-control margin-checkbox" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.smar_in_preco" name="smar_in_preco" ngModel> Possui Tabela de Preço.
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload" [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='editar'" type="button" class="btn btn-danger" (click)="excluirSmartsite()" [disabled]="!f.valid || model.smar_sq_id==null">Excluir Smartsite</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/empresa/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- **************************************************** -->
+    <!-- MODAL DE UPLOAD                                      -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalUpload" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+                <!-- HEADER -->
+                <!-- CONTEÚDO PRINCIPAL -->            
+                <div class="modal-body">
+                    <div style="margin: 20px">
+                     <h3>Aguarde....salvando dados.</h3>
+                    </div>
+                </div>
+                <!-- FOOTER -->
+            </div>
+        </div>
+    </div>          
+
+

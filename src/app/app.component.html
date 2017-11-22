@@ -1,0 +1,108 @@
+    <!-- Barra de Navegação de Login -->
+	<section [style.display]="mostrarBarraLogin ? 'block' : 'none'" id="topo">
+        <!--<div class="container">-->
+          <nav class="navbar navbar-inverse navbar-fixed-top" >
+              <div class="container">
+                  <div class="navbar navbar-header margintop-20">
+                      <button type="button" class="navbar-toggle collapsed margintop30" data-toggle="collapse" data-target="#navbar1">
+                          <span class="sr-only"> Menu </span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </button>
+                      <a class="navbar-brand" [routerLink]="['/']">
+                          <img src="assets/img/citadino_small.png" style="margin-top:11px !important;" width="180" height="40" />
+                      </a>
+                  </div>
+                  <div class="collapse navbar-collapse" id="navbar1">
+                      <ul class="nav navbar-nav navbar-right">
+                        <li><a [routerLink]="['/contrato']" [queryParams]="{tela: 'termo'}">Termo de Uso</a></li>
+                        <li><a [routerLink]="['/contrato']" [queryParams]="{tela: 'politica'}">Política de Privacidade</a></li>
+                        <li><a [routerLink]="['/']">Voltar</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </nav>
+        <!--</div>-->
+	</section>
+
+    <!-- Barra de Navegação Principal -->
+	<section [style.display]="!mostrarBarraLogin ? 'block' : 'none'" id="topo">
+        <!--<div class="container">-->
+          <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+              <div class="container">
+                  <div class="navbar navbar-header margintop-20">
+                      <button type="button" class="navbar-toggle collapsed margintop30" data-toggle="collapse" data-target="#navbar1">
+                          <span class="sr-only"> Menu </span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                      </button>
+                      <a class="navbar-brand" [routerLink]="['/home']">
+                          <img src="assets/img/citadino_small.png" style="margin-top:11px !important;" width="180" height="40" />
+                      </a>
+                  </div>
+                  <div class="collapse navbar-collapse" id="navbar1" role="navigation">
+                      <ul class="nav navbar-nav navbar-right">
+                        <li><a [routerLink]="['/home']">Principal</a></li>
+                        <li [style.display]="perfil=='ADM' ? 'block' : 'none'" class="dropdown-submenu">
+                            <a href="#opc1" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastros <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/empresa/lista']">Parceiros</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/usuario/lista']">Usuários</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/categoria/lista']">Categorias</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/descritor/lista']">Descritores</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/plano/lista']">Planos</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/municipio/lista']">Municípios</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/tipoanuncio/lista']">Tipos de Anúncios</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Grupos de Usuários</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Categoria de<br>Produtos/Serviços</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Produtos/Serviços</a></li>
+                            </ul>
+                        </li>
+                        <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/anuncio/lista']">Anúncios</a></li>
+                        <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/agenda/lista']">Agenda</a></li>
+                        <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/vitrine/lista']">Vitrine</a></li>
+                        <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Tabela de Preço</a></li>
+                        <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/usuario/config']">Alterar Senha</a></li>
+                        <li><a [routerLink]="['/']">Sair</a></li>
+                      </ul>
+                  </div>
+                  <div>
+                      
+                  </div>
+              </div>
+          </nav>
+        <!--</div>-->
+        <div class="barralogin">
+            <div class="container" >
+                <div class="row">
+                    <div class="col-lg-12 text-right">
+                        <span class="login">Usuário conectado: {{ nomeUsuario!=null ? nomeUsuario : 'Visitante' }} ({{ perfil }})</span>
+                    </div>
+                </div>
+            </div>        
+        </div>
+	</section>
+    <router-outlet></router-outlet>
+        
+    <br/>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-right">
+                    <p style="padding-top:1px;">Versão 1.0 - Copyright &copy; Citadino 2017</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<footer class="faixa_preta">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-right">
+                    <p style="padding-top:5px;">Copyright &copy; Citadino 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>-->

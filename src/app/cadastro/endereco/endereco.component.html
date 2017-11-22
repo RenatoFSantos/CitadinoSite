@@ -1,0 +1,145 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Cadastro de Endereços</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- MENSAGEM          -->        
+                <!-- ***************** -->
+                
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <!-- ***************** -->
+                <!-- FORMULÁRIO        -->        
+                <!-- ***************** -->
+
+                <div class="row" >
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formEndereco" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - ID, USUÁRIO                                -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="idEnd" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="idEnd" name="idEnd" >
+                                    </div>
+                                    <div class="form-group col-lg-offset-3 col-lg-6">
+                                        <label>Usuário</label>
+                                        <input type="text" id="usua_nm_usuario" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usuario.usua_nm_usuario" name="usua_nm_usuario" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - TIPO DE ENDEREÇO                           -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!tipo.valid && tipo.touched" 
+                                        [class.has-feedback]="!tipo.valid && tipo.touched" >
+                                        <label for="ende_cd_endereco" class="control-label">Tipo</label>
+                                        <input type="text" id="ende_cd_endereco" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.ende_cd_endereco" name="ende_cd_endereco" #tipo="ngModel" ngModel required>
+                                        <span id="help_tipo" class="help-block" *ngIf="!tipo.valid && tipo.touched">Tipo é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!tipo.valid && tipo.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="tipo" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 3 - ENDEREÇO                                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!endereco.valid && endereco.touched" 
+                                        [class.has-feedback]="!endereco.valid && endereco.touched" >
+                                        <label for="ende_tx_endereco" class="control-label">Endereço</label>
+                                        <input type="text" id="ende_tx_endereco" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.ende_tx_endereco" name="ende_tx_endereco" #endereco="ngModel" ngModel required>
+                                        <span id="help_endereco" class="help-block" *ngIf="!endereco.valid && endereco.touched">Endereço é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!endereco.valid && endereco.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="endereco" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 4 - BAIRRO, CIDADE, UF E CEP                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="ende_tx_bairro" class="control-label">Bairro</label>
+                                        <input type="text" id="ende_tx_bairro" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.ende_tx_bairro" name="ende_tx_bairro" #bairro="ngModel" ngModel>
+                                    </div>
+
+                                    <div class="form-group col-lg-4">
+                                        <label for="ende_tx_cidade" class="control-label">Cidade</label>
+                                        <input type="text" id="ende_tx_cidade" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.ende_tx_cidade" name="ende_tx_cidade" #cidade="ngModel" ngModel>
+                                    </div>
+
+                                    <div class="form-group col-lg-1">
+                                        <label for="ende_sg_uf" class="control-label">UF</label>
+                                        <div>
+                                            <select id="ende_sg_uf" name="ende_sg_uf" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.ende_sg_uf" name="empr_sg_uf" #uf="ngModel" ngModel>
+                                                <option value="AC">AC</option>
+                                                <option value="AL">AL</option>
+                                                <option value="AP">AP</option>
+                                                <option value="AM">AM</option>
+                                                <option value="BA">BA</option>
+                                                <option value="CE">CE</option>
+                                                <option value="DF">DF</option>
+                                                <option value="ES">ES</option>
+                                                <option value="GO">GO</option>
+                                                <option value="MA">MA</option>
+                                                <option value="MT">MT</option>
+                                                <option value="MS">MS</option>
+                                                <option value="MG">MG</option>
+                                                <option value="PA">PA</option>
+                                                <option value="PB">PB</option>
+                                                <option value="PR">PR</option>
+                                                <option value="PE">PE</option>
+                                                <option value="PI">PI</option>
+                                                <option value="RJ">RJ</option>
+                                                <option value="RN">RN</option>
+                                                <option value="RS">RS</option>
+                                                <option value="RO">RO</option>
+                                                <option value="RR">RR</option>
+                                                <option value="SC">SC</option>
+                                                <option value="SP">SP</option>
+                                                <option value="SE">SE</option>
+                                                <option value="TO">TO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-lg-3">
+                                        <label for="ende_nr_cep" class="control-label">CEP</label>
+                                        <input type="text" id="ende_nr_cep" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.ende_nr_cep" name="ende_nr_cep" maxlength="9" #cep="ngModel" ngModel kzMask="99999-999">
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirEndereco()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/usuario/', usuario.usua_sq_id, 'endereco']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+

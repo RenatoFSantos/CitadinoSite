@@ -1,0 +1,256 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Cadastro de Usuários</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- CAIXA DE MENSAGEM -->        
+                <!-- ***************** -->
+                
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <!-- ***************** -->
+                <!-- FORMULÁRIO        -->        
+                <!-- ***************** -->
+
+                <div class="row" [hidden]="!flagHidden">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formUsuario" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - ID, EMPRESA, DT INCLUSAO, REPUTACAO        -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="usua_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_sq_id" name="usua_sq_id" >
+                                    </div>
+                                    <div class="form-group col-lg-5">
+                                        <label for="empr_nm_razaosocial" class="control-label">Empresa</label>
+                                        <div class="input-group">
+                                            <input type="hidden" id="empr_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empresa.empr_sq_id" name="empr_sq_id">
+                                            <input type="text" id="empr_nm_razaosocial" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.empresa.empr_nm_razaosocial" name="empr_nm_razaosocial" #empresa="ngModel" ngModel>
+                                            <div class="input-group-btn">
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#modalEmpresa">Alterar...</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="usua_dt_inclusao" class="control-label">Data Inclusão</label>
+                                        <input type="date" id="usua_dt_inclusao" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_dt_inclusao" value="{{model.usua_dt_inclusao}}" name="usua_dt_inclusao" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label>Reputação</label>
+                                        <input type="text" id="usua_nr_reputacao" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_nr_reputacao" name="usua_nr_reputacao" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - NOME USUÁRIO, PERFIL, SEXO                 -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-8"
+                                        [class.has-error]="!usuario.valid && usuario.touched" 
+                                        [class.has-feedback]="!usuario.valid && usuario.touched" >
+                                        <label for="usua_nm_usuario" class="control-label">Nome</label>
+                                        <input type="text" id="usua_nm_usuario" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_nm_usuario" name="usua_nm_usuario" #usuario="ngModel" ngModel required>
+                                        <span id="help_usuario" class="help-block" *ngIf="!usuario.valid && usuario.touched">Nome é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!usuario.valid && usuario.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="usuario" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="usua_sg_perfil" class="control-label">Perfil</label>
+                                        <div>
+                                            <select id="usua_sg_perfil" name="usua_sg_perfil" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_sg_perfil" name="usua_sg_perfil" #perfil="ngModel" ngModel>
+                                                <option selected value="USU">Usuário Comum</option>
+                                                <option value="ADM">Administrador</option>
+                                                <option value="PAR">Parceiro</option>
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                    <div class="form-group col-lg-2">
+                                        <label for="usua_ds_sexo" class="control-label">Sexo</label>
+                                        <div>
+                                            <select id="usua_ds_sexo" name="usua_ds_sexo" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_ds_sexo" name="usua_ds_sexo" #sexo="ngModel" ngModel>
+                                                <option value="F">Feminino</option>
+                                                <option ng-selected value="M">Masculino</option>
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 3 - USUÁRIO LOGIN, SENHA, CONFIRMAÇÃO SENHA    -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4"
+                                        [class.has-error]="!login.valid && login.touched" 
+                                        [class.has-feedback]="!login.valid && login.touched">
+                                    
+                                        <label for="usua_tx_login" class="control-label">Usuário de login</label>
+                                        <input type="text" id="usua_tx_login" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_tx_login" name="usua_tx_login" #login="ngModel" ngModel required>
+                                        <span id="help_login" class="help-block" *ngIf="!login.valid && login.touched">Usuário é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!login.valid && login.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="login" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-4"
+                                        [class.has-error]="!senha.valid && senha.touched" 
+                                        [class.has-feedback]="!senha.valid && senha.touched">
+                                    
+                                        <label for="usua_tx_senha" class="control-label">Senha</label>
+                                        <input type="password" id="usua_tx_senha" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" minlength="6" [(ngModel)]="model.usua_tx_senha" name="usua_tx_senha" #senha="ngModel" ngModel required >
+                                        <span id="help_senha" class="help-block" *ngIf="!senha.valid && senha.touched">Senha é obrigatória e com no mínimo 6 dígitos!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!senha.valid && senha.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="senha" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-4"
+                                        [class.has-error]="confirma.touched && senha.value!=confirma.value" 
+                                        [class.has-feedback]="confirma.touched && senha.value!=confirma.value">
+                                    
+                                        <label for="usua_tx_confirmasenha" class="control-label">Confirmar Senha</label>
+                                        <input type="password" id="usua_tx_confirmasenha" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" name="usu_tx_confirmasenha" #confirma="ngModel" ngModel>
+                                        <span id="help_confirma" class="help-block" *ngIf="confirma.touched && senha.value!=confirma.value">Senha não confere!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="confirma.touched && senha.value!=confirma.value" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="confirma" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 4 - EMAIL E TELEFONES                          -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6"
+                                        [class.has-error]="!email.valid && email.touched" 
+                                        [class.has-feedback]="!email.valid && email.touched">
+                                    
+                                        <label for="usua_ds_email" class="control-label">Email</label>
+                                        <input type="email" id="usua_ds_email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_ds_email" name="usua_ds_email" #email="ngModel" ngModel required >
+                                        <span id="help_email" class="help-block" *ngIf="!email.valid && email.touched">Email inválido!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!email.valid && email.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="email" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="usua_ds_telefone" class="control-label">Telefones</label>
+                                        <input type="tel" id="usua_ds_telefone" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_ds_telefone" name="usua_ds_telefone" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 5 - AVATAR DO USUARIO                          -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="usua_tx_urlprofile" class="control-label">Avatar</label>
+                                        <input type="text" id="usua_tx_urlprofile" name="usua_tx_urlprofile" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_tx_urlprofile" #avatar="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="fileinputavatar" class="control-label">Upload Avatar</label>
+                                        <input type="file" id="fileinputavatar" class="form-control" (change)="fileChange($event)" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileinputavatar="ngModel" name="fileinputavatar" ngModel>
+                                    </div>
+                                </div>                                
+                                <!-- **************************************************** -->
+                                <!-- LINHA 6 - OBSERVAÇÕES                                -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="usua_tx_observacao" class="control-label">Observações</label>
+                                        <textarea id="usua_tx_observacao" class="form-control" rows="6" [(ngModel)]="model.usua_tx_observacao" name="usua_tx_observacao" ngModel></textarea>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 7 - INDICADOR SE RESPONSÁVEL PELA EMPRESA      -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12 checkbox">
+                                        <label for="usua_in_empresa" class="control-label">
+                                            <input type="checkbox" id="usua_in_empresa" class="form-control margin-checkbox" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.usua_in_empresa" name="usua_in_empresa" ngModel> Sou um usuário PARCEIRO.
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload"  [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirUsuario()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/usuario/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE EMPRESA                                     -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalEmpresa" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Empresa</h4>
+            </div>
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <input type="search" id="busca" class="form-control" placeholder="Digite sua busca..." #txtBusca (keyup)="buscarEmpresaPorNome(txtBusca.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box" style="margin: 15px 0px 0px 15px;">
+                        <div class="list-group col-lg-12" >
+                            <a *ngFor="let c of listaEmpresas" class="list-group-item" data-dismiss="modal" (click)="selecionaEmpresa(c.key, c.val())">
+                                {{ c.val().empr_nm_razaosocial }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE UPLOAD                                      -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalUpload" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+                <!-- HEADER -->
+                <!-- CONTEÚDO PRINCIPAL -->            
+                <div class="modal-body">
+                    <div style="margin: 20px">
+                     <h3>Aguarde....salvando dados.</h3>
+                    </div>
+                </div>
+                <!-- FOOTER -->
+            </div>
+        </div>
+    </div>        
+
+

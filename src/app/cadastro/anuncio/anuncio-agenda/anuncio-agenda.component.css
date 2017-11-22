@@ -1,0 +1,21 @@
+div.list-group {
+    margin-bottom: 0px !important;
+}
+
+.row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+.col-lg-12, .col-lg-4, .col-lg-3 {
+    padding-left: 0px !important;
+}
+
+#agenda {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    background-color: gainsboro;
+}

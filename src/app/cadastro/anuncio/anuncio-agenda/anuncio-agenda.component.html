@@ -1,0 +1,159 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+           <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Agenda</strong>
+                            </h2>
+                            <h3>Anúncio: {{ anuncio.anun_ds_anuncio }}</h3>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- MENSAGEM          -->        
+                <!-- ***************** -->
+
+                <div class="row">
+                    <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{txtMensagem}}
+                    </div>
+                </div>                
+
+                <!-- **************************************************** -->
+                <!-- CABEÇALHO                                            -->
+                <!-- **************************************************** -->                
+                <div class="row">
+                    <div class="box">
+                        <div class="list-group col-lg-3" style="text-align: center;">
+                            <h3>Data de Início</h3>
+                            <hr>
+                        </div>
+                        <div class="list-group col-lg-3" style="text-align: center;">
+                            <h3>Data de Término</h3>
+                            <hr>
+                        </div>
+                        <div class="col-lg-6">
+                            <h3>Status</h3>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="agenda" class="row" *ngFor="let agenda of listaAgendas">
+                    <div class="box">
+                        <div class="list-group col-lg-3" style="text-align: center;">
+                                {{ agenda?.val().agen_dt_inicio | dateFormatPipe }}
+                        </div>
+                        <div class="list-group col-lg-3" style="text-align: center;">
+                                {{ agenda?.val().agen_dt_termino | dateFormatPipe }}
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="list-group">
+                                {{ agenda?.val().agen_in_status }}
+                                <div style="float: right; margin-top: -5px;">
+                                    <a class="btn btn-primary btn-sm" (click)="selecionaAgenda(agenda.key, agenda.val(), 'editar')">Editar</a>
+                                    <a class="btn btn-danger btn-sm" (click)="selecionaAgenda(agenda.key, agenda.val(), 'excluir')">Excluir</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- **************************************************** -->
+                <!-- BOTÕES                                               -->
+                <!-- **************************************************** -->
+                <div>
+                    <button type="button" class="btn btn-primary" [routerLink]="['/anuncio/lista']">Voltar</button>
+                </div>
+           </div>
+        </div>
+        <!-- **************************************************** -->
+        <!-- FORMULÁRIO DE EDIÇÃO                                 -->
+        <!-- **************************************************** -->
+        <div class="faixa-branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h3 class="titulo-pagina text-left">
+                                <strong>{{ tituloManutencao }}</strong>
+                            </h3>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formAgenda" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - DATA DE INICIO                             -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="agen_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_sq_id" value="{{model.agen_sq_id}}" name="agen_sq_id" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - DATA DE INÍCIO E TÉRMINO                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="agen_dt_inicio" class="control-label">Data de Início</label>
+                                        <input type="date" id="agen_dt_inicio" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_dt_inicio" value="{{model.agen_dt_inicio}}" name="agen_dt_inicio" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="agen_dt_termino" class="control-label">Data de Término</label>
+                                        <input type="date" id="agen_dt_termino" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_dt_termino" value="{{model.agen_dt_termino}}" name="agen_dt_termino" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label for="agen_in_status" class="control-label">Status</label>
+                                        <input type="text" id="agen_in_status" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.agen_in_status" value="{{model.agen_in_status=='A' ? 'Agendado': 'Publicado'}}" name="agen_in_status" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" [disabled]="!f.valid || model.agen_in_status==='P'">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirAgenda()" [disabled]="model.agen_in_status==='P'">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" (click)="cancelarAgenda()">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  <!-- **************************************************** -->
+  <!-- MODAL DE AGENDA                                      -->
+  <!-- **************************************************** -->
+  <div class="modal fade" id="modalAgenda" role="dialog">
+      <div class="modal-dialog">
+          <!-- Modal Content-->
+          <div class="modal-content">
+              <!-- HEADER -->
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Agenda</h4>
+              </div>
+              <!-- CONTEÚDO PRINCIPAL -->            
+              <!-- FOOTER -->
+              <!--<div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>-->
+          </div>
+      </div>
+  </div>  
+

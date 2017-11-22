@@ -1,0 +1,143 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Cadastro de Planos</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- Caixa de mensagem -->        
+                <!-- ***************** -->
+                
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <!-- ***************** -->
+                <!-- Formulário        -->        
+                <!-- ***************** -->
+
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formPlano" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- ************************************************************************* -->
+                                <!-- LINHA 1 - ID                                                              -->
+                                <!-- ************************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="plan_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_sq_id" name="plan_sq_id" >
+                                    </div>
+                                </div>
+                                <!-- ************************************************************************* -->
+                                <!-- LINHA 2 - NOME DO PLANO                                                   -->
+                                <!-- ************************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!plano.valid && plano.touched" 
+                                        [class.has-feedback]="!plano.valid && plano.touched" >
+                                        <label for="plan_nm_plano" class="control-label">Nome</label>
+                                        <input type="text" id="plan_nm_plano" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_nm_plano" name="plan_nm_plano" #plano="ngModel" ngModel required>
+                                        <span id="help_plano" class="help-block" *ngIf="!plano.valid && plano.touched">Nome é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!plano.valid && plano.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="plano" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- ************************************************************************* -->
+                                <!-- LINHA 3 - DESCRIÇÃO DO PLANO                                              -->
+                                <!-- ************************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="plan_ds_descricao" class="control-label">Descrição</label>
+                                        <textarea id="plan_ds_descricao" class="form-control" rows="6" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_ds_descricao" name="plan_ds_descricao" ngModel></textarea>
+                                    </div>
+                                </div>
+                                <!-- ************************************************************************* -->
+                                <!-- LINHA 4 - TIPO DE VALOR DO PLANO E VALOR                                  -->
+                                <!-- ************************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6"
+                                        [class.has-error]="!tipo.valid && tipo.touched" 
+                                        [class.has-feedback]="!tipo.valid && tipo.touched" >
+                                        <label for="plan_tp_valor" class="control-label">Tipo</label>
+                                        <div>
+                                            <select id="plan_tp_valor" name="plan_tp_valor" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_tp_valor" name="plan_tp_valor" #tipo="ngModel" ngModel required>
+                                                <option value="U">Unico</option>
+                                                <option ng-selected value="P">Promocional</option>
+                                                <option value="M">Mensal</option>
+                                                <option value="B">Bimestral</option>
+                                                <option value="T">Trimestral</option>
+                                                <option value="Q">Quadrimestral</option>
+                                                <option value="S">Semestral</option>
+                                                <option value="A">Anual</option>
+                                            </select>
+                                        </div>
+                                        <span id="help_tipo" class="help-block" *ngIf="!tipo.valid && tipo.touched">Tipo é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!tipo.valid && tipo.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="tipo" class="sr-only">(error)</span>  
+                                    </div>                                    
+
+                                    <div class="form-group col-lg-6"
+                                        [class.has-error]="!valor.valid && valor.touched" 
+                                        [class.has-feedback]="!valor.valid && valor.touched" >
+                                        <label for="plan_vl_plano" class="control-label">Valor R$</label>
+                                        <input type="text" id="plan_vl_plano" class="form-control" maxlength="15" placeholder="0,00" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_vl_plano" name="plan_vl_plano"  #valor="ngModel" ngModel required kzMaskCurrency>
+                                        <!--<input type="text" class="form-control" name="currencyMask" id="currencyMask" placeholder="0,00" maxlength="15" [(ngModel)]="model.plan_vl_plano" #valor="ngModel" kzMaskCurrency>-->
+                                                                                                                                
+                                        <span id="help_valor" class="help-block" *ngIf="!valor.valid && valor.touched">Valor é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!valor.valid && valor.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="valor" class="sr-only">(error)</span>  
+                                    </div>                                    
+                                </div>
+                                <!-- ************************************************************************* -->
+                                <!-- LINHA 5 - INDICADOR SE PLANO TEM SMARTSITE, TABELA DE PREÇO E E-COMMERCE  -->
+                                <!-- ************************************************************************* -->
+                                <div class="row" style="margin-bottom: 15px;">
+                                    <div class="form-group col-lg-3 checkbox" style="margin-top:-5px;">
+                                        <label for="plan_in_smartsite" class="checkbox">
+                                            <input type="checkbox" id="plan_in_smartsite" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_in_smartsite" name="plan_in_smartsite" ngModel> Smartsite
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-lg-offset-1 col-lg-3 checkbox">
+                                        <label for="plan_in_tabpreco" class="checkbox">
+                                            <input type="checkbox" id="plan_in_tabpreco" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_in_tabpreco" name="plan_in_tabpreco" ngModel> Tabela de Preço
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-lg-offset-1 col-lg-3 checkbox">
+                                        <label for="plan_in_ecommerce" class="checkbox">
+                                            <input type="checkbox" id="plan_in_ecommerce" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.plan_in_ecommerce" name="plan_in_ecommerce" ngModel> Smartsite
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- ************************************************************************* -->
+                                <!-- BOTÕES                                                                    -->
+                                <!-- ************************************************************************* -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <button *ngIf="modo=='editar'" type="submit" class="btn btn-primary" [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirPlano()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/plano/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+
+

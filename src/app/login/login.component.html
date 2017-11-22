@@ -1,0 +1,95 @@
+  
+    <section id="contato" style="margin-top:50px !important;">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12" [style.display]="tela == 'login' ? 'block' : 'none'">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Login</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                        <div class="col-lg-12" [style.display]="tela == 'senha' ? 'block' : 'none'">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Recuperação de Senha</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- Caixa de mensagem -->        
+                <!-- ***************** -->
+                <div class="row" [style.display]="flagHidden ? 'none' : 'block'">
+                    <div class="box">    
+                        <div class="{{ stsMensagem }}" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{txtMensagem}}
+                        </div>  
+                    </div>              
+                </div>
+
+                <!-- ************************* -->
+                <!-- FORMULÁRIO DE LOGIN       -->        
+                <!-- ************************* -->
+
+                <div class="row" [style.display]="tela == 'login' ? 'block' : 'none'">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form form id="formLogin" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-lg-offset-4">
+                                        <!--<input type="text" id="tela" class="form-control" name="tela" [(ngModel)]="tela" #tela ngModel>-->
+                                        <label>Email</label>
+                                        <input type="text" id="usua_ds_email" class="form-control" [(ngModel)]="model.usua_ds_email" name="usua_ds_email" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-lg-offset-4">
+                                        <label>Senha</label>
+                                        <input type="password" id="usua_tx_senha" class="form-control" [(ngModel)]="model.usua_tx_senha" name="usua_tx_senha" ngModel>
+                                        <small class="form-text text-muted">Informe a senha cadastrada</small>
+                                    </div>
+                                    <div class="form-group col-lg-2 col-lg-offset-4">
+                                        <button type="submit" class="btn btn-primary btn-block" >Login</button>
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <button type="button" class="btn btn-primary btn-block" (click)="recuperarSenha()">Esqueci a senha</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************************** -->
+                <!-- FORMULÁRIO ESQUECEU A SENHA   -->        
+                <!-- ***************************** -->
+
+                <div class="row"  [style.display]="tela == 'senha' ? 'block' : 'none'">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form form id="formLogin" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label>Por favor, informe um email cadastrado para recuperação da senha.</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-lg-offset-4">
+                                        <input type="text" id="usua_ds_email" class="form-control" [(ngModel)]="model.usua_ds_email" name="usua_ds_email" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-2 col-lg-offset-5">
+                                        <button type="submit" class="btn btn-primary btn-block" >Enviar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>

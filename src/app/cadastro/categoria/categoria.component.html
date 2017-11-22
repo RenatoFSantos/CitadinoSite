@@ -1,0 +1,117 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Cadastro de Categorias</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- Caixa de mensagem -->        
+                <!-- ***************** -->
+                
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <!-- ***************** -->
+                <!-- Formulário        -->        
+                <!-- ***************** -->
+
+                <div class="row" >
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <form id="formCategoria" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - ID                                         -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-3">
+                                        <label>ID</label>
+                                        <input type="text" id="cate_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.cate_sq_id" name="cate_sq_id" >
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - NOME                                       -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-10"
+                                        [class.has-error]="!categoria.valid && categoria.touched" 
+                                        [class.has-feedback]="!categoria.valid && categoria.touched">
+                                        <label for="cate_nm_categoria" class="control-label">Nome</label>
+                                        <input type="text" id="cate_nm_categoria" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.cate_nm_categoria" name="cate_nm_categoria" #categoria="ngModel" ngModel required>
+                                        <!--<input type="text" id="cate_nm_categoria" class="form-control" [(ngModel)]="model.cate_nm_categoria" name="cate_nm_categoria" #categoria="ngModel" ngModel required>-->
+                                        <span id="help_categoria" class="help-block" *ngIf="!categoria.valid && categoria.touched">Nome é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!categoria.valid && categoria.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="categoria" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-2">
+                                        <label for="cate_in_tipo" class="control-label">Tipo</label>
+                                        <div>
+                                            <select id="cate_in_tipo" name="cate_in_tipo" class="form-control" [disabled]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.cate_in_tipo" name="cate_in_tipo" #tipo="ngModel" ngModel>
+                                                <option ng-selected value="CT">Categoria</option>
+                                                <option value="PF">Plantão de Farmárcia</option>
+                                                <option value="HO">Horário de Ônibus</option>
+                                            </select>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 3 - IMAGEM E UPLOAD                            -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-6">
+                                        <label for="cate_tx_imagem" class="control-label">Imagem</label>
+                                        <input type="text" id="cate_tx_imagem" name="cate_tx_imagem" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.cate_tx_imagem" #imagem="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_tx_googlemaps" class="control-label">Upload Imagem</label>
+                                        <input type="file" id="arquivoupload" class="form-control" (change)="fileChange($event)" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileInput="ngModel" name="arquivoupload" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- BOTÕES                                               -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <button *ngIf="modo=='editar'"  type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload" [disabled]="!f.valid">Salvar</button>
+                                        <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirCategoria()">Confirmar Exclusão</button>
+                                        <button type="button" class="btn btn-primary" [routerLink]="['/categoria/lista']">Voltar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE UPLOAD                                      -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalUpload" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+                <!-- HEADER -->
+                <!-- CONTEÚDO PRINCIPAL -->            
+                <div class="modal-body">
+                    <div style="margin: 20px">
+                     <h3>Aguarde....salvando dados.</h3>
+                    </div>
+                </div>
+                <!-- FOOTER -->
+            </div>
+        </div>
+    </div>   
+

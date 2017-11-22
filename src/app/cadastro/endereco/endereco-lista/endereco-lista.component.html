@@ -1,0 +1,70 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+      <div class="container">
+          <div class="row">
+              <div class="box">
+                  <div class="col-lg-12">
+                      <hr>
+                      <h2 class="titulo-pagina text-left">
+                          <strong>Cadastro de Endereços</strong>
+                      </h2>
+                      <h3>Usuário: {{ usuario.usua_nm_usuario }}</h3>
+                      <hr>
+                  </div>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="box">
+                  <div class="col-lg-12">
+                    <div style="margin-bottom: 5px;">
+                        <a class="btn btn-success" [routerLink]="['/usuario/', usuario.usua_sq_id, 'endereco', 'novo']" [queryParams]="{modo: 'editar'}" role="button">Novo</a>
+                    </div>    
+                    <div class="list-group">
+
+                      <a *ngFor="let endereco of listaEnderecos" class="list-group-item" >
+                        {{ endereco?.val().ende_cd_endereco }}
+                        <div style="float: right; margin-top: -5px;">
+                            <a class="btn btn-primary" [routerLink]="['/usuario', usuario.usua_sq_id, 'endereco', endereco.key]" [queryParams]="{modo: 'editar'}">Editar</a>
+                            <a class="btn btn-danger" [routerLink]="['/usuario', usuario.usua_sq_id, 'endereco', endereco.key]" [queryParams]="{modo: 'excluir'}">Excluir</a>
+                        </div>
+                      </a>
+                    </div>
+                    <!-- **************************************************** -->
+                    <!-- BOTÕES                                               -->
+                    <!-- **************************************************** -->
+                    <div>
+                        <button type="button" class="btn btn-primary" [routerLink]="['/usuario/lista']">Voltar</button>
+                    </div>
+
+
+                  </div>
+              </div>
+          </div>
+          <div class="text-center">     
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li>
+                <a href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li>
+              <a href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+              </a>
+              </li>
+            </ul>
+          </nav>          
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+

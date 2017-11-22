@@ -1,0 +1,625 @@
+	<section id="topo">
+        <div class="container">
+
+            <nav class="navbar navbar-inverse navbar-fixed-top" >
+                <div class="container">
+                    <div class="navbar navbar-header margintop-20">
+                        <button type="button" class="navbar-toggle collapsed margintop30" data-toggle="collapse" data-target="#navbar1">
+                            <span class="sr-only"> Menu </span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">
+                            <img src="assets/img/citadino_small.png" style="margin-top:11px !important;" width="180" height="40" />
+                        </a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar1">
+                        <ul class="nav navbar-nav navbar-right">
+                          <li><a href="#topo">Início</a></li>
+                          <li><a href="#produto">Produto</a></li>
+                          <li><a href="#plano">Planos</a></li>
+                          <li><a href="#galeria">Galeria</a></li>
+                          <li><a href="#contato" (click)="fazerContato()">Contato</a></li>
+                          <li>
+                              <button type="button" style="margin-top:8px !important;" class="btn btn-default" (click)="telaLogin()">Entrar</button>
+                          </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+	</section>
+
+    <!-- Cabeçalho -->
+
+    <div class="container header">
+        <a href="#cadastro" id="btnCadastro">
+            <button type="button" class="btn btn-primary btn-lg" (click)="divulgarDados()">Quero divulgar meus dados na Lista Telefônica</button>
+        </a>
+    </div>
+
+    <!-- Produto -->
+
+    <section id="produto">
+        <div class="container-fluid" style="padding:0px !important;">
+            <div class="jumbotron">
+                <div class="container">
+                    <h1>Bem vindos</h1>
+                    <p class="text-justify" style="padding-bottom:30px !important;">
+                        Há tempos o homem vem buscando meios para tornar sua vida mais confortável e perene. Nós últimos 60 anos, após o desenvolvimento das tecnologias computacionais estes avanços se
+                        aceleraram e vivemos um grande progresso em diversas áreas. Com o surgimento da internet as pessoas se conectaram e as distâncias se encurtaram, gerando uma nova revolução em nosso
+                        modo de viver, de pensar e de fazer. A necessidade de se adaptar a este novo mundo se tornou preponderante para todos e principalmente para o comércio que, com o agravamento da crise
+                        política e financeira em nosso país, vem buscando soluções eficazes para superar seus limites.<br />
+						Alinhado com este pensando, estamos lançando o CITADINO, uma solução tecnológica para smartphones que conecta o seu negócio ao seu cliente de uma maneira muita mais eficiente até mesmo
+                        quando você está dormindo.
+                    </p>
+                </div>
+            </div>
+        </div>
+	</section>
+
+
+    <!-- Produto - Continuação -->
+
+    <section id="oquee">
+        <div class="container-fluid faixa_bege" style="margin-top:-30px !important; padding:20px 0px 20px 0px !important;">
+            <div class="container">
+                <h1>O que é o Citadino?</h1>
+                <p class="text-justify conteudo120">
+                    O Citadino é uma plataforma de publicidade, conteúdo e comércio eletrônico para smartphones, que tem por objetivo potencializar as ações comerciais de seus parceiros, garantindo maior
+                    controle e retorno dos seus investimentos além de conectar sua empresa, 24h/dia, diretamente, com seu público alvo.
+                </p>
+
+                <br /><br />
+                <span class="text-center"><h2>Características</h2></span>
+                <br />
+
+                <div class="row">
+                    <div class="faixa_begeescuro col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Foco em microrregiões</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-building fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	elaborado para atender um público regional o Citadino foca suas ações em um mercado mais específico, para pessoas que buscam produtos e serviços em sua cidade para atender as
+                            suas necessidades emergenciais e cotidianas.
+                        </p>
+                    </div>
+                    <div class="faixa_laranja col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Guia</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-compass fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	muitas vezes precisamos de serviços/produtos que estão a nossa volta, mas não temos conhecimento das opções disponíveis ou temos seus contatos espalhados em agendas de papel,
+                            celular, cartões, panfletos, imãs de geladeira, etc. Com o Citadino estas informações estarão organizadas e categorizadas facilitando o acesso e aumentando a opções de
+                            produtos/serviços disponíveis.
+                        </p>
+                    </div>
+                    <div class="faixa_begeescuro col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Publicidade</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-thumbs-o-up fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	no Citadino além de um guia categorizado de produtos e serviços, nossos parceiros também terão a disposição uma ferramenta de publicidade, onde através de uma tela chamada
+                            <strong>Vitrine</strong> ele poderá veicular sua publicidade de forma a garantir uma maior visibilidade de produto/serviço ou promover ações direcionadas e periódicas para
+                            potencializar suas vendas.
+                        </p>
+                    </div>
+                    <div class="faixa_laranja col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Notícias</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-newspaper-o fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	conteúdos diversos, com notícias da região, agenda de eventos, serviços de utilidade pública e fatos que marcaram nosso dia, serão postados periodicamente por
+                            nossos colaboradores.
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="faixa_laranja col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Smartsite</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-mobile fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	dentro do Citadino nossos parceiros poderão ter um espaço exclusivo para sua empresa, onde além de uma maior área para apresentação de seus produtos/serviços
+                            poderá contar com serviços próprios como comércio eletrônico e chat.
+                        </p>
+                    </div>
+                    <div class="faixa_begeescuro col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Classificados</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-car fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	outra funcionalidade muito útil, os classificados são uma forma organizada de centralizar interesses diversos para venda ou troca de produtos/serviços.
+                        </p>
+                    </div>
+                    <div class="faixa_laranja col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Empregos</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-link fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	nossos parceiros também poderão anunciar as oportunidades de emprego que seu negócio oferece, centralizando em um único canal a divulgação e facilitando a consulta
+                        	dos usuários de toda a microrregião na busca destas oportunidades.
+                        </p>
+                    </div>
+                    <div class="faixa_begeescuro col-xs-12 col-sm-6 col-md-3 text-center min-height">
+                    	<h3>Favoritos</h3>
+                        <span class="fa-stack fa-4x">
+                            <i class="fa fa-circle fa-inverse fa-stack-2x"></i>
+                            <i class="fa fa-star fa-stack-1x"></i>
+                        </span>
+                        <p class="text-justify">
+                        	opção conhecida por todos em outros aplicativos, aqui no Citadino o usuário também poderá selecionar as empresas que mais se identifica e ter uma maior interação com seus
+                        	produtos/serviços.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
+
+    <!-- Planos -->
+
+    <section id="plano">
+        <div class="container-fluid faixa_azul" class="cabecalho">
+            <div class="container">
+                <h1>Nossos Planos</h1>
+                <p class="conteudo150">
+                	Para usufruir das funcionalidades disponíveis na plataforma Citadino, criamos algumas opções de planos mensais para nossos parceiros de negócio.
+                </p>
+                <br />
+                <div class="row">
+                	<div class="col-md-3">
+                    	<img src="assets/img/plano_rubi.jpg" width="100%" height="100%" />
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr  class="fundo_rubi">
+                                    <th>R$ implantação</th>
+                                    <th>R$ mensal</th>
+                                    <th>Créditos</th>
+                                    <th>Smartsite</th>
+                                    <th>Tb. Preço</th>
+                                    <th>E-commerce</th>
+                                </tr>
+                                <tr>
+                                    <td>consulte</td>
+                                    <td>consulte</td>
+                                    <td>--</td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                	<div class="col-md-3">
+                    	<img src="assets/img/plano_safira.jpg" width="100%" height="100%" />
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr  class="fundo_safira">
+                                    <th>R$ implantação</th>
+                                    <th>R$ mensal</th>
+                                    <th>Créditos</th>
+                                    <th>Smartsite</th>
+                                    <th>Tb. Preço</th>
+                                    <th>E-commerce</th>
+                                </tr>
+                                <tr>
+                                    <td>consulte</td>
+                                    <td>consulte</td>
+                                    <td>--</td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                	<div class="col-md-3">
+                    	<img src="assets/img/plano_diamente.jpg" width="100%" height="100%" />
+                    </div>
+                    <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr  class="fundo_diamante_azul">
+                                    <th>R$ implantação</th>
+                                    <th>R$ mensal</th>
+                                    <th>Créditos</th>
+                                    <th>Smartsite</th>
+                                    <th>Tb. Preço</th>
+                                    <th>E-commerce</th>
+                                </tr>
+                                <tr>
+                                	<td>consulte</td>
+                                    <td>consulte</td>
+                                    <td>--</td>
+                                    <td><i class="fa fa-check fa-1x color-green"></i></td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                </tr>
+                                <tr  class="fundo_diamante_champagne">
+                                    <th>R$ implantação</th>
+                                    <th>R$ mensal</th>
+                                    <th>Créditos</th>
+                                    <th>Smartsite</th>
+                                    <th>Tb. Preço</th>
+                                    <th>E-commerce</th>
+                                </tr>
+                                <tr>
+                                    <td>consulte</td>
+                                    <td>consulte</td>
+                                    <td>--</td>
+                                    <td><i class="fa fa-check fa-1x color-green"></i></td>
+                                    <td><i class="fa fa-check fa-1x color-green"></i></td>
+                                    <td><i class="fa fa-close fa-1x color-red"></i></td>
+                                </tr>
+                                <tr  class="fundo_diamante_cristal">
+                                    <th>R$ implantação</th>
+                                    <th>R$ mensal</th>
+                                    <th>Créditos</th>
+                                    <th>Smartsite</th>
+                                    <th>Tb. Preço</th>
+                                    <th>E-commerce</th>
+                                </tr>
+                                <tr>
+                                    <td>consulte</td>
+                                    <td>consulte</td>
+                                    <td>--</td>
+                                    <td><i class="fa fa-check fa-1x color-green"></i></td>
+                                    <td><i class="fa fa-check fa-1x color-green"></i></td>
+                                    <td><i class="fa fa-check fa-1x color-green"></i></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+	</section>
+
+    <!-- Carousel de Imagens -->
+
+    <section id="galeria">
+    	<div class="faixa_azul" class="cabecalho">
+            <div class="container">
+                <h1>Galeria</h1>
+                <div class="row">
+                	<div class="col-md-2"></div>
+                    <div class="col-md-8">
+                        <!-- Full Page Image Background Carousel Header -->
+                        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                            <!-- Indicators -->
+                            <ol class="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                <li data-target="#myCarousel" data-slide-to="1"></li>
+                                <li data-target="#myCarousel" data-slide-to="2"></li>
+                            </ol>
+
+                            <!-- Wrapper for Slides -->
+                            <div class="carousel-inner" role="listbox">
+                                <div class="item active">
+                                    <!-- Set the first background image using inline CSS below. -->
+                                    <img src="assets/img/celular_3.png" width="100%" class="img-responsive" />
+                                    <div class="carousel-caption">
+                                        <h3>Vitrine - Anúncios publicitários, informativos, culturais e sociais</h3>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <!-- Set the second background image using inline CSS below. -->
+                                    <img src="assets/img/celular_2.png" width="100%" class="img-responsive" />
+                                    <div class="carousel-caption">
+                                        <h3>Citadino - Sua plataforma de negócios na cidade</h3>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <!-- Set the third background image using inline CSS below. -->
+                                    <img src="assets/img/celular_1.png" width="100%" class="img-responsive" />
+                                    <div class="carousel-caption">
+                                        <h3>Promoções, troca de mensagens, guia de contatos e muito mais.</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Controls -->
+                            <a class="left carousel-control" href="#myCarousel" data-slide="prev" role="button">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </a>
+                            <a class="right carousel-control" href="#myCarousel" data-slide="next" role="button">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </a>
+                        </div>
+                    </div>
+                	<div class="col-md-2"></div>
+                </div>
+            </div>
+            <br /><br />
+		</div>
+    </section>
+
+    <!-- Contato -->
+
+	<section [style.display]="mostraCadastro==false ? 'block' : 'none'"  id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="intro-text text-center">
+                                <strong>Contato</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                        <div class="col-md-8">
+                            <!-- Embedded Google Map using an iframe - to select your location find it on Google maps and paste the link as the iframe src. If you want to use the Google Maps API instead then have at it! -->
+                            <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4314.87155527133!2d-43.061219384622646!3d-21.712993385631787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa28382c3dc72df%3A0x8de0711e5ded5e03!2sR.+Ildeu+Fernandes+Alhadas%2C+103+-+Gilson+Lamha%2C+Bicas+-+MG%2C+36600-000!5e1!3m2!1spt-BR!2sbr!4v1469038966062" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        </div>
+                        <div class="col-md-4">
+                            <p>Telefones:<br />
+                                <strong>(32) 3271-3576</strong>
+                            </p>
+                            <p>email:
+                                <strong><a href="mailto:contato@citadino.com.br">contato@citadino.com.br</a></strong>
+                            </p>
+                            <p>Endereço:<br />
+                                <strong>Rua Ildeu Fernandes Alhadas, 103 - Lj. 02
+                                    <br>Bicas/MG, 36600-000</strong>
+                            </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <!-- ********************* -->
+                <!-- Formulário de Contato -->
+                <!-- ********************* -->
+
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="intro-text text-center">Formulário de
+                                <strong>Contato</strong>
+                            </h2>
+                            <hr>
+                            <!-- ***************** -->
+                            <!-- MENSAGEM          -->        
+                            <!-- ***************** -->
+
+                            <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{txtMensagem}}
+                            </div>
+                            <div [hidden]="!flagHidden">
+                                <p>
+                                    Deixe sua mensagem aqui e aguarde nosso contato!
+                                </p>
+                            </div>
+                            <form id="formContato" (ngSubmit)="onSubmit(f)" #f="ngForm" role="form">
+                                <input type="hidden" id="meunome" class="form-control" name="meunome" [ngModel]="'contato'" ngModel>
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label>Nome</label>
+                                        <input type="text" id="cont_nm_nome" class="form-control" [(ngModel)]="model.cont_nm_nome" name="cont_nm_nome" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label>email</label>
+                                        <input type="email" id="cont_ds_email" class="form-control" [(ngModel)]="model.cont_ds_email" name="cont_ds_email" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-4">
+                                        <label>Telefones</label>
+                                        <input type="tel" id="cont_ds_telefone" class="form-control" [(ngModel)]="model.cont_ds_telefone" name="cont_ds_telefone" ngModel>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="form-group col-lg-12">
+                                        <label>Mensagem</label>
+                                        <textarea class="form-control" id="cont_tx_mensagem" rows="6" [(ngModel)]="model.cont_tx_mensagem" name="cont_tx_mensagem" ngModel></textarea>
+                                    </div>
+                                    <div class="form-group col-lg-2 col-lg-offset-5">
+                                        <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quero divulgar meus dados na guia -->
+
+	<section [style.display]="mostraCadastro==true ? 'block' : 'none'" id="cadastro" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+
+                <!-- ********************* -->
+                <!-- Formulário de Contato -->
+                <!-- ********************* -->
+
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="intro-text text-center">Quero divulgar meus dados na Guia</h2>
+                            <hr>
+                            <!-- ***************** -->
+                            <!-- MENSAGEM          -->        
+                            <!-- ***************** -->
+
+                            <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                {{txtMensagem}}
+                            </div>
+                            <div [hidden]="!flagHidden">
+                                <p>
+                                    Informe seus dados para divulgação na Lista Telefônica GRATUITAMENTE!<br/>
+                                    Após o recebimento e análise dos dados, enviaremos um email para confirmar as informações.
+                                </p>
+                            </div>
+                            <form id="formCadastro" (ngSubmit)="onSubmit(fcadastro)" #fcadastro="ngForm" role="form">
+                                <input type="hidden" id="meunome" class="form-control" name="meunome" [ngModel]="'cadastro'" ngModel>
+                                <input type="hidden" id="cont_tx_mensagem" class="form-control" name="cont_tx_mensagem" [(ngModel)]="model.cont_tx_mensagem" ngModel>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 1 - RAZÃO SOCIAL E TELEFONE PRINCIPAL          -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-7"
+                                        [class.has-error]="!contato.valid && contato.touched" 
+                                        [class.has-feedback]="!contato.valid && contato.touched" >
+                                        <label for="cont_nm_nome" class="control-label">Nome</label>
+                                        <input type="text" id="cont_nm_nome" class="form-control" [(ngModel)]="model.cont_nm_nome" name="cont_nm_nome" #contato="ngModel" ngModel required>
+                                        <span id="help_contato" class="help-block" *ngIf="!contato.valid && contato.touched">Nome é obrigatório</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!contato.valid && contato.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="contato" class="sr-only">(error)</span>  
+                                    </div>
+                                    <div class="form-group col-lg-5"
+                                        [class.has-error]="!telefone_1.valid && telefone_1.touched" 
+                                        [class.has-feedback]="!telefone_1.valid && telefone_1.touched" >
+                                        <label for="cont_ds_telefone" class="control-label">Telefone Principal</label>
+                                        <input type="text" id="cont_ds_telefone" class="form-control" [(ngModel)]="model.cont_ds_telefone" name="cont_ds_telefone" maxlength="16" #telefone_1="ngModel" ngModel required>
+                                        <span id="help_telefone_1" class="help-block" *ngIf="!telefone_1.valid && telefone_1.touched">Telefone é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!telefone_1.valid && telefone_1.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="telefone_1" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 2 - EMAIL                                      -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12"
+                                        [class.has-error]="!email.valid && email.touched" 
+                                        [class.has-feedback]="!email.valid && email.touched">
+                                        <label>email</label>
+                                        <input type="email" id="cont_ds_email" class="form-control" [(ngModel)]="model.cont_ds_email" name="cont_ds_email" #email ngModel>
+                                        <span id="help_email" class="help-block" *ngIf="!email.valid && email.touched">Email é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!email.valid && email.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="email" class="sr-only">(error)</span>  
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 3 - ENDERECO                                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <label for="cont_tx_endereco" class="control-label">Endereço</label>
+                                        <input type="text" id="cont_tx_endereco" class="form-control" [(ngModel)]="model.cont_tx_endereco" name="cont_tx_endereco" #endereco="ngModel" ngModel>
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 4 - BAIRRO, CIDADE, UF E CEP                   -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-4">
+                                        <label for="cont_tx_bairro" class="control-label">Bairro</label>
+                                        <input type="text" id="cont_tx_bairro" class="form-control" [(ngModel)]="model.cont_tx_bairro" name="cont_tx_bairro" #bairro="ngModel" ngModel>
+                                    </div>
+
+                                    <div class="form-group col-lg-4">
+                                        <label for="cont_tx_cidade" class="control-label">Cidade</label>
+                                        <input type="text" id="cont_tx_cidade" class="form-control" [(ngModel)]="model.cont_tx_cidade" name="cont_tx_cidade" #cidade="ngModel" ngModel>
+                                    </div>
+
+                                    <div class="form-group col-lg-1">
+                                        <label for="cont_sg_uf" class="control-label">UF</label>
+                                        <div>
+                                            <select id="cont_sg_uf" name="cont_sg_uf" class="form-control" [(ngModel)]="model.cont_sg_uf" name="cont_sg_uf" #uf="ngModel" ngModel>
+                                                <option value="AC">AC</option>
+                                                <option value="AL">AL</option>
+                                                <option value="AP">AP</option>
+                                                <option value="AM">AM</option>
+                                                <option value="BA">BA</option>
+                                                <option value="CE">CE</option>
+                                                <option value="DF">DF</option>
+                                                <option value="ES">ES</option>
+                                                <option value="GO">GO</option>
+                                                <option value="MA">MA</option>
+                                                <option value="MT">MT</option>
+                                                <option value="MS">MS</option>
+                                                <option value="MG">MG</option>
+                                                <option value="PA">PA</option>
+                                                <option value="PB">PB</option>
+                                                <option value="PR">PR</option>
+                                                <option value="PE">PE</option>
+                                                <option value="PI">PI</option>
+                                                <option value="RJ">RJ</option>
+                                                <option value="RN">RN</option>
+                                                <option value="RS">RS</option>
+                                                <option value="RO">RO</option>
+                                                <option value="RR">RR</option>
+                                                <option value="SC">SC</option>
+                                                <option value="SP">SP</option>
+                                                <option value="SE">SE</option>
+                                                <option value="TO">TO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-3">
+                                        <label for="cont_nr_cep" class="control-label">CEP</label>
+                                        <input type="text" id="cont_nr_cep" class="form-control" [(ngModel)]="model.cont_nr_cep" name="cont_nr_cep" maxlength="9" #cep="ngModel" ngModel kzMask="99999-999">
+                                    </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 5 - AUTORIZAÇÃO DE DIVULGAÇÃO DOS DADOS        -->
+                                <!-- **************************************************** -->
+                                <div class="row">
+                                    <div class="form-group col-lg-12">
+                                        <div class="checkbox">
+                                            <label for="cont_in_autorizacao" class="control-label">
+                                                <input type="checkbox" id="cont_in_autorizacao" class="form-control margin-checkbox noborder" disabled [(ngModel)]="model.cont_in_autorizacao" name="cont_in_autorizacao" ngModel> Autorizo a divulgação dos meus dados na Guia.
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-2 col-lg-offset-5">
+                                        <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br/>
+    <!--<footer class="faixa_azulescuro">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-right">
+                    <p style="padding-top:5px;">Copyright &copy; Citadino 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>-->
+
+
+

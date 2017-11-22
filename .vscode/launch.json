@@ -1,0 +1,53 @@
+// {
+//     "version": "0.2.0",
+//     "compounds": [
+//         {
+//             "name": "Full-Stack",
+//             "configurations": ["Node", "Chrome"]
+//         }
+//     ],
+//     "configurations": [
+        
+//         {
+//             "name": "Chrome",
+//             "type": "chrome",
+//             "request": "launch",
+//             "url": "http://localhost:4200",
+//             "port": 9222,
+//             "userDataDir": "${workspaceRoot}/.vscode/chrome",
+//             "webRoot": "${workspaceRoot}/public",
+//             "sourceMaps": true
+//         },
+//         {
+//             "name": "Node",
+//             "type": "node2",
+//             "request": "launch",
+//             "program": "${workspaceRoot}/server.js",
+//             "cwd": "${workspaceRoot}"
+//         }
+//     ]
+// }
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Chrome against localhost",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4200",
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}/project/www/build"
+        },
+        {
+            "name": "Attach to Chrome",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "url": "http://localhost:4200",
+            "sourceMaps": true,
+            "webRoot": "${workspaceRoot}/project/www/build"
+        }
+    ]
+}
+

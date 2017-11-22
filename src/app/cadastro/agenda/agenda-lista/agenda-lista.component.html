@@ -1,0 +1,89 @@
+	<section id="contato" class="cabecalho">
+		<div class="faixa_branca">
+            <div class="container">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <hr>
+                            <h2 class="titulo-pagina text-left">
+                                <strong>Lista de Anúncios Agendados</strong>
+                            </h2>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ***************** -->
+                <!-- MENSAGEM          -->        
+                <!-- ***************** -->
+
+                <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+
+                <div style="margin-bottom: 5px;" [hidden]="!flagHidden">
+                    <form id="formListaAgenda" class="form-inline" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                        <div class="form-group">
+                            <label for="dtFiltro" class="control-label">Exibir até a data de início: </label>
+                            <input type="date" id="dtFiltro" class="form-control" [(ngModel)]="dtFiltro" value="{{dtFiltro}}" name="dtFiltro" ngModel>
+                        </div>
+                        <button type="submit" class="btn btn-default">Filtrar</button>
+                        <a class="btn btn-success" (click)="publicarAgenda()" role="button" data-toggle="modal" data-target="#modalPublicacao">Publicar Todas</a>
+                    </form>
+                    <hr>
+                </div>
+
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <div class="list-group">
+                                <a *ngFor="let agenda of listaAgendas" class="list-group-item" >
+                                    {{ agenda.agen_dt_inicio | date:'shortDate' }} até {{ agenda.agen_dt_termino | date:'shortDate' }} - {{ agenda.anuncio.anun_ds_anuncio }}
+                                    <div style="float: right; margin-top: -5px;">
+                                        <a class="btn btn-primary" [routerLink]="['/agenda', agenda.agen_sq_id]" [queryParams]="{modo: 'editar'}">Publicar</a>
+                                        <a class="btn btn-danger" [routerLink]="['/agenda', agenda.agen_sq_id]" [queryParams]="{modo: 'excluir'}">Excluir</a>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <section>
+                        <article>
+                            <kz-paginacao 
+                                [qtdPorPagina]="qtdPorPagina" 
+                                [totalRegistros]="totalRegistros"
+                                [qtdAdjacentes]="qtdAdjacentes"
+                                (onPaginate)="paginar($event)">
+                            </kz-paginacao>
+                        </article>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- **************************************************** -->
+    <!-- MODAL DE PUBLICAÇÃO DE ANÚNCIOS                      -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalPublicacao" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+                <!-- HEADER -->
+                <!-- CONTEÚDO PRINCIPAL -->            
+                <div class="modal-body">
+                    <div style="margin: 20px">
+                        <h3>Aguarde....publicando todos os anúncios.</h3>
+                    </div>
+                </div>
+                <!-- FOOTER -->
+            </div>
+        </div>
+    </div>          
+
+
+
+
