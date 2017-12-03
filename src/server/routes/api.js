@@ -1,7 +1,15 @@
-
 var sender = require('./sender');
+var agenda = require('./agenda');
 const express = require('express');
 const router = express.Router();
+
+// --- Verificando se a Vitrine está alé do limite estabelecido para compactar dados
+setInterval(function() {
+  // --- Verificando e excluindo registros se a vitrine estiver com mais de 100 registros. Frequência 1x/dia
+  agenda.vitrine();
+}, 86400000);
+
+// ---- Rotas Definidas
 
 router.get('/', (req, res) => {
   res.send('Api acessada.');
@@ -49,6 +57,22 @@ router.post('/enviaremail', (req, res) => {
   }
 	sender.send(configuracoes);
   res.send('Concluido');
+});
+
+router.get('/varrevitrine', (req, res) => {
+  // res.send(agenda.vitrine());
+  var result = 0;
+  db.ref('/municipio').orderByChild('muni_nm_municipio').once('value', function(municipios) {
+    console.log('Estou na busca do municipio');
+    res.send(municipios);
+    // if(municipios.val()) {
+    //   var totregs = Object.keys(municipios.val());
+    //   result = totregs.length;
+    //   res.send('Resultado da pesquisa='+ result);
+    // }
+  }, function (errorObject) {
+    console.log("Problemas na leitura: " + errorObject.code);
+  });
 });
 
 module.exports = router;

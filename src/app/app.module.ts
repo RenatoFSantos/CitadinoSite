@@ -74,7 +74,7 @@ export const firebaseConfig = {
     LoginComponent,
     SiteComponent,
     HomeComponent,
-    ContratoComponent,
+    ContratoComponent
   ],
   imports: [
     BrowserModule,

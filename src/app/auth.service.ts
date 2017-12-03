@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { ContatoVO } from './model/contatoVO';
 import { UsuarioService } from './provider/service/usuario.service';
 import { UsuarioVO } from './model/usuarioVO';
@@ -5,8 +6,6 @@ import { Router } from '@angular/router';
 import { Injectable, EventEmitter } from '@angular/core';
 import { FirebaseService } from './../app/provider/database/firebase.service'
 import * as firebase from 'firebase';
-
-import { Observable } from 'rxjs/Rx';
 import { Http, HttpModule, RequestOptions, Headers, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
@@ -32,7 +31,8 @@ export class AuthService {
 
   private extractData(res: Response) {
 	    // let body = res.json();
-	    let body = JSON.parse(JSON.stringify(res));
+      let body = JSON.parse(JSON.stringify(res));
+      console.log('retorno da api=', body.data);
       return body.data || {};
   }
  

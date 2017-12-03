@@ -1,3 +1,4 @@
+import { AuthService } from './../../../auth.service';
 import { MunicipioVO } from './../../../model/municipioVO';
 import { MunicipioService } from './../../../provider/service/municipio.service';
 import { CtdFuncoes } from './../../../../ctd-funcoes';
@@ -122,6 +123,16 @@ export class VitrineListaComponent implements OnInit {
         setTimeout(() => { this.flagHidden = true; }, 3000);        
       }
     })
+  }
+
+  compactarVitrine() {
+    // --- Rotina para verificar se vitrine está com excesso de registro e limpar uma quantidade
+    this.vitrineService.limparVitrine().subscribe(res => {
+      console.log('Resposta=', res);
+      setTimeout(() => { 
+        jQuery("#modalPublicacao").modal("hide"); 
+      }, 3000);  
+    });
   }
 
   excluirVitrine(obj: VitrineVO) {

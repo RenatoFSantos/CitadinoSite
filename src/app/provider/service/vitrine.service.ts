@@ -1,13 +1,18 @@
 import { AnuncioService } from './anuncio.service';
 import { CtdFuncoes } from './../../../ctd-funcoes';
 import { VitrineVO } from './../../model/vitrineVO';
+import { MunicipioVO } from './../../model/municipioVO';
 import { FirebaseService } from './../database/firebase.service';
 import { Injectable, Component } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Http, HttpModule, RequestOptions, Headers, Response } from '@angular/http';
+import 'rxjs/add/operator/map';
+
 import * as firebase from 'firebase';
 
 @Injectable()
 export class VitrineService {
-  constructor(private fbSrv: FirebaseService) { }
+  constructor(private http: Http, private fbSrv: FirebaseService) { }
   
     getVitrinesPorMunicipio(idMunicipio: string) {
       return firebase.database().ref(`/vitrine/${idMunicipio}/`).orderByChild('vitr_dt_agendada').once('value')
@@ -43,7 +48,36 @@ export class VitrineService {
       var objRef = firebase.database().ref(`/vitrine/${vitrine.muni_sq_id}/${vitrine.vitr_sq_id}`);
       return objRef.remove();
     }
-  
+
+    limparVitrine():Observable<any> {
+      let _headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: _headers });
+      // return this.http.post('/api/varrevitrine', '', options)
+      //                 .map(this.extractData)
+      //                 .catch(this.handleErrorObservable);
+      console.log('Executando chamada a api');
+      return this.http.get('/api/varrevitrine')
+                      .map(res=> {
+                        //res.json()
+                        let objs = res.json();
+                        let keys = Object.keys(objs);
+                        return keys.length;
+                      })
+                      .catch(this.handleErrorObservable);                                       
+    }
+
+    private extractData(res: Response) {
+	    // let body = res.json();
+      let body = JSON.parse(JSON.stringify(res));
+      console.log('retorno da api=', body.data);
+      return body.data || {};
+    }
+
+    private handleErrorObservable (error: Response | any) {
+      console.error(error.message || error);
+	    return Observable.throw(error.message || error);
+    }
+
     carregaObjeto(objVitrine):Promise<VitrineVO> {
       let objRetorno: VitrineVO = new VitrineVO();
       let objValor = objVitrine.val();
