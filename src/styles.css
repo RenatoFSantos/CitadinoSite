@@ -38,7 +38,7 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
-	  background: url(assets/img/background_citadino.jpg) no-repeat center center scroll;
+	  background: url(assets/img/background-promocao.jpg) no-repeat center center scroll;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -154,6 +154,11 @@ body {
 	background-color:#000;
 }
 
+.faixa_ciano {
+	color:#000;
+	background-color:#9AACC2;
+}
+
 .faixa_bege {
 	color:#000;
 	background-color:#c2b49a;
@@ -169,6 +174,11 @@ body {
 	background-color:#F9A33E;
 }
 
+.faixa_laranjaclaro {
+	color: #000;
+	background-color:#FFBA6B;
+}
+
 .faixa_azulescuro {
 	color: #FFF;
 	background-color:#3366CC;
@@ -178,6 +188,12 @@ body {
 	color: #000;
 	background-color:#f3f0f0;
 }
+
+.faixa_azulclaro {
+	color: #000;
+	background-color:#90FFFE; 
+}
+
 
 .faixa_verde {
 	color: #FFF;
@@ -217,6 +233,9 @@ body {
 }
 
 /* Texto */
+.conteudo80 {
+  font-size: 80%;
+}
 
 .conteudo120 {
 	font-size: 120%;
