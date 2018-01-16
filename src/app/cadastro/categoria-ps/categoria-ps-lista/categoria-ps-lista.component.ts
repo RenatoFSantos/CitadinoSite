@@ -2,23 +2,23 @@ import { NgForm, FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs/Rx';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoriaService } from 'app/provider/service/categoria.service';
+
+import { CategoriaPSService } from './../../../provider/service/categoria-ps.service';
 
 @Component({
-  selector: 'app-categoria-lista',
-  templateUrl: './categoria-lista.component.html',
-  styleUrls: ['./categoria-lista.component.css']
+  selector: 'app-categoria-ps-lista',
+  templateUrl: './categoria-ps-lista.component.html',
+  styleUrls: ['./categoria-ps-lista.component.css']
 })
-
-export class CategoriaListaComponent implements OnInit {
+export class CategoriaPsListaComponent implements OnInit {
 
 	pagina: number = 0;
   qtdPorPagina: number = 200;
   qtdAdjacentes: number = 3;
-  listaCategorias = [];
-  objCategoria = [];
+  listaCategoriaPS = [];
+  objCategoriaPS = [];
   categorias = [];
-  totalCategorias = 0;
+  totalCategoriaPSsPS = 0;
   totalRegistrosCat: number = 0;
   cargaCompleta:boolean = false;
   inscricao: Subscription;
@@ -29,16 +29,16 @@ export class CategoriaListaComponent implements OnInit {
   txtFiltro: string = '';
 
 
-  constructor(private route: ActivatedRoute, private router: Router, private categoriaService: CategoriaService) {
+  constructor(private route: ActivatedRoute, private router: Router, private categoriapsService: CategoriaPSService) {
     console.log('Entrei no construtor');
-    this.carregarListaCategorias();
+    this.carregarListaCategoriaPS();
   }
 
-  carregarListaCategorias() {
-    console.log('Recarregando a Lista de Categorias');
+  carregarListaCategoriaPS() {
+    console.log('Recarregando a Lista de CategoriaPSsPS');
     if(this.txtFiltro=='' || this.txtFiltro==undefined || this.txtFiltro==null) {
-      console.log('getCategorias');
-      this.categoriaService.getCategorias().then(snapshot => {
+      console.log('getCategoriaPSsPS');
+      this.categoriapsService.getCategorias().then(snapshot => {
         this.categorias=[];
         let obj = JSON.parse(JSON.stringify(snapshot.val()));
         let indicesCat = Object.keys(obj);
@@ -50,12 +50,10 @@ export class CategoriaListaComponent implements OnInit {
           this.cargaCompleta=true;
         });
         // this.paginar(this.pagina);
-        this.carregarCategorias();
+        this.carregarCategoriaPS();
       })    
     } else {
-      console.log('getCategoriasFiltro');
-      this.categoriaService.getCategoriasFiltro(this.txtFiltro).then(snapshot => {
-        console.log('getCategoriasFiltro - v1');
+      this.categoriapsService.getCategoriasFiltro(this.txtFiltro).then(snapshot => {
         if(snapshot.val()!=null && snapshot.val()!=undefined) {
           this.categorias=[];
           let obj = JSON.parse(JSON.stringify(snapshot.val()));
@@ -68,7 +66,7 @@ export class CategoriaListaComponent implements OnInit {
             this.cargaCompleta=true;
           });
           // this.paginar(this.pagina);
-          this.carregarCategorias();
+          this.carregarCategoriaPS();
         } else {
           this.stsMensagem = 'alert alert-dismissible alert-danger';
           this.txtMensagem = 'Nenhum registro filtrado!';
@@ -85,8 +83,8 @@ export class CategoriaListaComponent implements OnInit {
     }
   }
 
-  carregaTotalCategorias() {
-    this.categoriaService.getTotalRegistros()
+  carregaTotalCategoriaPSs() {
+    this.categoriapsService.getTotalRegistros()
     .then(totreg => {
       this.totalRegistrosCat = totreg;
     });    
@@ -103,24 +101,25 @@ export class CategoriaListaComponent implements OnInit {
     this.txtFiltro = this.txtFiltro.toLowerCase();
     this.pagina = 0;
     console.log('Filtro=', this.txtFiltro);
-    this.carregarListaCategorias();
+    this.carregarListaCategoriaPS();
   }
 
 	paginar($event: any) {
 		this.pagina = $event - 1;
-		this.carregarCategorias();
+		this.carregarCategoriaPS();
 	}
 
-  carregarCategorias() {
-    console.log('Alimentando a lista de Categorias');
+  carregarCategoriaPS() {
+    console.log('Alimentando a lista de CategoriaPSsPS');
     console.log('Página atual=', this.pagina);
     console.log('Total Registros=',this.totalRegistrosCat);
-		this.listaCategorias = [];
+		this.listaCategoriaPS = [];
 		for (let i = ( this.pagina * this.qtdPorPagina ); i < (this.pagina * this.qtdPorPagina + this.qtdPorPagina); i++) {
 			if (i >= this.totalRegistrosCat) {
 				break;
 			}
-      this.listaCategorias.push(this.categorias[i]);
+      this.listaCategoriaPS.push(this.categorias[i]);
 		}
   }
+
 }

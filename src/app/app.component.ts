@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { Component, NgModule, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Rx';
 import * as firebase from 'firebase';
+import { EmpresaVO } from 'app/model/empresaVO';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,8 @@ export class AppComponent {
   userLogado: firebase.User;
   nomeUsuario: string = 'Visitante';
   perfil: string = 'USU' // Perfil padrão
+  objEmpresa: EmpresaVO = new EmpresaVO();
+  indEmpresa: any;
   
   constructor(private authService: AuthService, private usuarioService: UsuarioService) {
  
@@ -37,9 +40,11 @@ export class AppComponent {
       this.usuarioService.getUsuario(usua.uid)
         .then(usuario => {
           this.userConected = usuario.val();
+          this.indEmpresa = Object.keys(this.userConected.empresa);
           this.authService.atualizarProfile(usua, this.userConected);
           this.nomeUsuario = this.userConected.usua_tx_login;
           this.perfil = this.userConected.usua_sg_perfil;
+          this.objEmpresa.empr_sq_id = this.userConected.empresa[this.indEmpresa[0]].empr_sq_id;
         });
     });
     

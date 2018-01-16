@@ -55,15 +55,13 @@
                                 <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/plano/lista']">Planos</a></li>
                                 <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/municipio/lista']">Municípios</a></li>
                                 <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/tipoanuncio/lista']">Tipos de Anúncios</a></li>
-                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Grupos de Usuários</a></li>
-                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Categoria de<br>Produtos/Serviços</a></li>
-                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Produtos/Serviços</a></li>
+                                <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/categoriaps/lista']">Categoria de<br>Produtos/Serviços</a></li>
                             </ul>
                         </li>
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/anuncio/lista']">Anúncios</a></li>
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/agenda/lista']">Agenda</a></li>
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/vitrine/lista']">Vitrine</a></li>
-                        <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/']">Tabela de Preço</a></li>
+                        <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/empresa', objEmpresa.empr_sq_id, 'tabelapreco']" [queryParams]="{perfUsu: 'PAR'}">Tabela de Preço</a></li>
                         <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/usuario/config']">Alterar Senha</a></li>
                         <li><a [routerLink]="['/']">Sair</a></li>
                       </ul>

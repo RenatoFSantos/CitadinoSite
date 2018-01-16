@@ -1,3 +1,6 @@
+import { municipios_route } from './../../cadastro/municipio/municipio.routing.module';
+import { LoginComponent } from './../../login/login.component';
+import { MunicipioVO } from './../../model/municipioVO';
 import { ContatoVO } from './../../model/contatoVO';
 import { CtdFuncoes } from './../../../ctd-funcoes';
 import { DescritorEmpresaVO } from './../../model/descritorEmpresaVO';
@@ -8,11 +11,13 @@ import { EmpresaVO } from './../../model/empresaVO';
 import { FirebaseService } from './../database/firebase.service';
 import { Injectable, Component } from '@angular/core';
 import * as firebase from 'firebase';
+import { Promise } from 'firebase';
 
 @Injectable()
 export class EmpresaService {
 
   descritor: DescritorVO;
+  municipio: MunicipioVO;
   descritorEmpresa: DescritorEmpresaVO;
 
   metadata = {
@@ -65,7 +70,6 @@ export class EmpresaService {
     err => {
        throw 'Empresas não encontradas.';
     });    
-
   }
 
   getEmpresaDescritores(idEmpresa: string) {
@@ -75,6 +79,23 @@ export class EmpresaService {
       },
       err => {
         throw 'Descritores inexistentes!';
+      });
+  }
+
+  getMunicipioEmpresa(idEmpresa: string) {
+    return firebase.database().ref(`/empresa/${idEmpresa}`).child('municipio').once('value')
+      .then(municipio => {
+        return municipio
+      });
+  }
+
+  getEmpresaMunicipios(idEmpresa: string) {
+    return firebase.database().ref(`/empresa/${idEmpresa}`).child('municipioanuncio').once('value')
+      .then((municipios) => { 
+        return municipios
+      },
+      err => {
+        throw 'Municipios inexistentes!';
       });
   }
 
@@ -94,10 +115,6 @@ export class EmpresaService {
   }
 
   atualizarEmpresa(empresa: EmpresaVO, empresaOld: EmpresaVO, tipo: string) {
-      console.log('Plano da empresa nova=', empresa.plano.plan_nm_plano);
-      console.log('Plano da empresa antiga=', empresaOld.plano.plan_nm_plano);
-      console.log('Verificando se manteve código do usuário=', empresa.usuario);
-      console.log('Verificando se manteve código do smartsite=', empresa.smartsite);
       let objRef;
       let result;
       let refEmp;
@@ -105,6 +122,7 @@ export class EmpresaService {
       let update = {};
       let modelJSON;
       this.descritor = new DescritorVO();
+      this.municipio = new MunicipioVO();
       this.descritorEmpresa = new DescritorEmpresaVO();
       let modelJSONEmpresaEmpresa;
       let modelJSONDescritorEmpresa;
@@ -142,18 +160,24 @@ export class EmpresaService {
         modelJSONDescritorEmpresa = this.criaEstruturaJSONDescritorEmpresa(this.descritorEmpresa);
         // Criando o modelo JSON da empresa
         modelJSON = this.criaEstruturaJSON(empresa);
-        update[`/descritorempresa/${refDesc}`] = modelJSONDescritorEmpresa;
+        update[`/_municipioflt/${empresa.municipio.muni_sq_id}/descritorempresa/${refDesc}`] = modelJSONDescritorEmpresa;
       } else {
         refEmp = empresa.empr_sq_id;
         // --- Retirando os valores anteriormente definidos.
-        objRef = firebase.database().ref(`/categoria/${empresaOld.categoria.cate_sq_id}/empresa/${refEmp}`);
+        objRef = firebase.database().ref(`/_municipioflt/${empresaOld.municipio.muni_sq_id}/categoriaempresa/${empresaOld.categoria.cate_sq_id}/empresa/${refEmp}`);
         objRef.remove();
         console.log('Retirando valor antigo de categoria', empresaOld.categoria.cate_nm_categoria);
         if(empresaOld.plano.plan_sq_id) {
           objRef = firebase.database().ref(`/plano/${empresaOld.plano.plan_sq_id}/empresa/${refEmp}`)
           objRef.remove();
-          //update[`/plano/${empresaOld.plano.plan_sq_id}/empresa/${refEmp}`] = null;
           console.log('Retirando valor antigo de plano', empresaOld.plano.plan_nm_plano);
+        }
+        // Retirando o município atrelado a esta empresa
+        if(empresaOld.municipio.muni_sq_id) {
+          objRef = firebase.database().ref(`/_municipioflt/${empresaOld.municipio.muni_sq_id}/empresa/${refEmp}`);
+          objRef.remove();
+          console.log('Retirando valor antigo de municipio', empresaOld.municipio.muni_nm_municipio);
+          console.log('Retirando valor antigo de empresa', refEmp);
         }
         // Criando o modelo JSON da empresa
         modelJSON = this.criaEstruturaJSON(empresa);
@@ -161,11 +185,27 @@ export class EmpresaService {
         modelJSONEmpresaDescritor = this.criaEstruturaJSONEmpresaDescritor(empresa);
         // Identificando os descritores que tem a empresa relacionada para alterar seus dados
         let codDescritor;
+        // Removendo os descritores associados ao município anterior.
+        if(empresaOld.municipio.muni_sq_id!==empresa.municipio.muni_sq_id) {
+          objRef = firebase.database().ref(`/_municipioflt/${empresaOld.municipio.muni_sq_id}/descritorempresa`);
+          objRef.remove();          
+        }
+
         for(let i=0; i<empresa.descritor.length; i++)
         {
           // Atualiza a relação do Descritor com a Empresa em um outro nó.
           codDescritor = empresa.descritor[i].desc_sq_id;
-          update[`/descritorempresa/${codDescritor}/empresa/${refEmp}`] = modelJSONEmpresaDescritor;
+
+          // Descritor Empresa
+          this.descritorEmpresa.desc_sq_id = empresa.descritor[i].desc_sq_id;;
+          this.descritorEmpresa.desc_nm_descritor = empresa.descritor[i].desc_nm_descritor;
+          this.descritorEmpresa.desc_nm_pesquisa = (CtdFuncoes.removerAcento(empresa.descritor[i].desc_nm_descritor)).toLowerCase();
+          this.descritorEmpresa.desc_in_privado = empresa.descritor[i].desc_in_privado;
+          this.descritorEmpresa.empresa.push(empresa);
+          // Criando o modelo JSON do descritor-empresa
+          modelJSONDescritorEmpresa = this.criaEstruturaJSONDescritorEmpresa(this.descritorEmpresa);
+
+          update[`/_municipioflt/${empresa.municipio.muni_sq_id}/descritorempresa/${codDescritor}`] = modelJSONDescritorEmpresa;
         }
       }
       
@@ -179,13 +219,15 @@ export class EmpresaService {
 
       // --- Atualizar Empresa dentro da Empresa selecionada
       modelJSONEmpresaEmpresa = this.criaEstruturaJSONEmpresaEmpresa(empresa);
-      update[`/categoria/${empresa.categoria.cate_sq_id}/empresa/${refEmp}`] = modelJSONEmpresaEmpresa;
-      console.log('Plano atribuido=', empresa.plano.plan_sq_id);
+      update[`/_municipioflt/${empresa.municipio.muni_sq_id}/categoriaempresa/${empresa.categoria.cate_sq_id}/empresa/${refEmp}`] = modelJSONEmpresaEmpresa;
       if(empresa.plano.plan_sq_id) {
-        console.log('Entrei na atualizacao do plano')
         update[`/plano/${empresa.plano.plan_sq_id}/empresa/${refEmp}`] = true;
-        console.log('Conteúdo Update=', update);
       }
+      // --- Atualizando o nó de _municipioflt com a empresa atualizada
+      if(empresa.municipio.muni_sq_id) {
+        update[`/_municipioflt/${empresa.municipio.muni_sq_id}/empresa/${refEmp}`] = true;
+      }
+
       console.log('Executando a atualização');
       result =  firebase.database().ref().update(update);
       return result;
@@ -253,7 +295,24 @@ export class EmpresaService {
       });
   }  
 
-  atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
+  atualizarEmpresaMunicipio(empresa: EmpresaVO, municipio: MunicipioVO, tipo: string) {
+    console.log('Valor do Descritor enviado:', municipio);
+    let result;
+    let update = {};
+    let refReg;
+    let modelJSON = this.criaEstruturaJSONMunicipio(municipio);
+    return new Promise((resolve) => {
+      if(tipo=='I') {
+        update[`/empresa/${empresa.empr_sq_id}/municipioanuncio/${municipio.muni_sq_id}`] = modelJSON;
+      } else {
+        update[`/empresa/${empresa.empr_sq_id}/municipioanuncio/${municipio.muni_sq_id}`] = null;
+      }
+      result =  firebase.database().ref().update(update);
+      resolve(result);
+    });
+}  
+
+atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
 
       let update = {};
 
@@ -350,15 +409,23 @@ export class EmpresaService {
   }
 
   carregaObjeto(objEmpresa):EmpresaVO {
-    console.log('Dentro da função - Empresa: ', objEmpresa.key);
     let objRetorno: EmpresaVO = new EmpresaVO();
     let objDescritor: DescritorVO;
+    let objMunicipio: MunicipioVO;
     let objValor = objEmpresa.val();
     // --- Converte objeto interno em objeto Javascript
     let obj = JSON.parse(JSON.stringify(objEmpresa.val()));
     let indEmpresa = Object.keys(obj.categoria);
     let indPlano = Object.keys(obj.plano);
     let indDescritor = Object.keys(obj.descritor);
+    let indMunicipio
+    if(obj.municipio!=null) {
+      indMunicipio = Object.keys(obj.municipio);
+    }
+    let indMunicipioAnuncio;
+    if(obj.municipioanuncio!=null) {
+      indMunicipioAnuncio = Object.keys(obj.municipioanuncio);
+    }
     let indUsuario;
     if(obj.usuario!=null) {
       indUsuario = Object.keys(obj.usuario);
@@ -367,7 +434,6 @@ export class EmpresaService {
     if(obj.smartsite!=null) {
       indSmartsite = Object.keys(obj.smartsite);
     }
-    console.log('indUsuario=', indUsuario);
     objRetorno.empr_sq_id = objEmpresa.key;
     objRetorno.empr_nm_razaosocial = objValor.empr_nm_razaosocial;
     objRetorno.empr_nm_fantasia = objValor.empr_nm_fantasia;
@@ -422,6 +488,22 @@ export class EmpresaService {
       objDescritor.desc_sq_id = objValor.descritor[indDescritor[i]].desc_sq_id;
       objDescritor.desc_nm_descritor = objValor.descritor[indDescritor[i]].desc_nm_descritor;
       objRetorno.descritor.push(objDescritor);
+    }
+    if(indMunicipio!=undefined) {
+      objMunicipio = new MunicipioVO();
+      objMunicipio.muni_sq_id = objValor.municipio[indMunicipio[0]].muni_sq_id;
+      objMunicipio.muni_nm_municipio = objValor.municipio[indMunicipio[0]].muni_nm_municipio;
+      console.log('Objeto Municipio na carga do objeto empresa=', objMunicipio);
+      objRetorno.municipio = objMunicipio;
+    }
+    if(indMunicipioAnuncio!=undefined) {
+      for(var i=0; i < indMunicipioAnuncio.length; i++) {
+        objMunicipio = new MunicipioVO();
+        objMunicipio.muni_sq_id = objValor.municipioanuncio[indMunicipioAnuncio[i]].muni_sq_id;
+        objMunicipio.muni_nm_municipio = objValor.municipioanuncio[indMunicipioAnuncio[i]].muni_nm_municipio;
+        console.log('Objeto Municipio Anúncio [' + i + '] na carga do objeto empresa=', objMunicipio);
+        objRetorno.municipioanuncio.push(objMunicipio);
+      }
     }
     return objRetorno;
   }
@@ -541,13 +623,36 @@ export class EmpresaService {
         '"plan_in_smartsite":' + model.plano.plan_in_smartsite + ',' +
         '"plan_in_tabpreco":' + model.plano.plan_in_tabpreco + ',' +
         '"plan_in_ecommerce":' + model.plano.plan_in_ecommerce + 
-        '}}'
+        '}},' +
+      '"municipio": {"' + model.municipio.muni_sq_id + '": ' +
+        '{' + 
+        '"muni_sq_id":"' + model.municipio.muni_sq_id + '",' +
+        '"muni_nm_municipio":"' + model.municipio.muni_nm_municipio + '"' +
+        '}}'        
         if(model.usuario!='' && model.usuario!=undefined) {
           json = json + ', "usuario": {"' + model.usuario + '": true}';
         }
         if(model.smartsite!='') {
           json = json + ', "smartsite": {"' + model.smartsite + '": true}';
         }
+        // --- MUNICÍPIO ANÚNCIO
+        if(model.municipioanuncio!='' && model.municipioanuncio!=undefined) {
+          for(var i = 0; i < model.municipioanuncio.length; i++) {
+            if(i==0) {
+              json = json + ', "municipioanuncio": {'
+            } else {
+              json = json + ', '  
+            }
+            json = json + 
+              '"' + model.municipioanuncio[i].muni_sq_id + '": ' +
+                '{' + 
+                '"muni_sq_id":"' + model.municipioanuncio[i].muni_sq_id + '",' +
+                '"muni_nm_municipio":"' + model.municipioanuncio[i].muni_nm_municipio + '"' +
+                '}'
+          }
+          json = json + '}';
+        }
+        // --- DESCRITOR
         for(var i = 0; i < model.descritor.length; i++) {
               console.log('Criando descritor ', i);
               if(i==0) {
@@ -577,6 +682,17 @@ export class EmpresaService {
     '{' +
         '"desc_sq_id":"' + model.desc_sq_id + '",' +
         '"desc_nm_descritor":"' + model.desc_nm_descritor + '"' + 
+    '}'
+    let convertJSON = JSON.parse(json);
+    return convertJSON;
+  }
+
+  criaEstruturaJSONMunicipio(model) {
+    let json: string;
+    json = 
+    '{' +
+        '"muni_sq_id":"' + model.muni_sq_id + '",' +
+        '"muni_nm_municipio":"' + model.muni_nm_municipio + '"' + 
     '}'
     let convertJSON = JSON.parse(json);
     return convertJSON;

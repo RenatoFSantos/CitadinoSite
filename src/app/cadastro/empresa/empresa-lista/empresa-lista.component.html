@@ -57,8 +57,10 @@
                                     <div style="float: right; margin-top: -5px;">
                                         <a class="btn btn-primary" [routerLink]="['/empresa', empresa.key]" [queryParams]="{modo: 'editar'}">Editar</a>
                                         <a class="btn btn-danger" [routerLink]="['/empresa', empresa.key]" [queryParams]="{modo: 'excluir'}">Excluir</a>
+                                        <a class="btn btn-success" [routerLink]="['/empresa', empresa.key, 'municipio']">Municípios</a>
                                         <a class="btn btn-success" [routerLink]="['/empresa', empresa.key, 'descritor']">Descritores</a>
                                         <a class="btn btn-success" [routerLink]="['/empresa', empresa.key, 'smartsite']">Smartsite</a>
+                                        <a class="btn btn-success" [routerLink]="['/empresa', empresa.key, 'tabelapreco']" [queryParams]="{perfUsu: 'ADM'}">Tabela de Preço</a>
                                     </div>
                                 </a>
                             </div>

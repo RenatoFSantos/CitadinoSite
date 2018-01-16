@@ -1,3 +1,5 @@
+import { MunicipioService } from './../../provider/service/municipio.service';
+import { MunicipioVO } from './../../model/municipioVO';
 import { Subject } from 'rxjs/Subject';
 import { Subscription, Observable } from 'rxjs/Rx';
 import { Component, OnInit, NgModule } from '@angular/core';
@@ -32,16 +34,23 @@ export class UsuarioComponent implements OnInit {
   hideLoader: boolean = false;
   listaUsuarios: Array<UsuarioVO> = [];
   listaEmpresas: Array<EmpresaVO> = [];
+  listaMunicipios: Array<MunicipioVO> = [];
   objEmpresas: Observable<EmpresaVO[]>;
+  objMunicipios: Observable<MunicipioVO[]>;
   termosDaBusca: Subject<string> = new Subject<string>();
   idUsuario: string = '';
+  idMunicipio: string = '';
   listaUploads: Array<File> = [];
   numPerc: number = 0;
 
     
   model:UsuarioVO = new UsuarioVO();
   
-  constructor(private route: ActivatedRoute, private router: Router, private usuarioService: UsuarioService, private empresaService: EmpresaService) {
+  constructor(private route: ActivatedRoute, 
+    private router: Router, 
+    private usuarioService: UsuarioService, 
+    private municipioService: MunicipioService,
+    private empresaService: EmpresaService) {
     
   }
 
@@ -100,6 +109,25 @@ export class UsuarioComponent implements OnInit {
           })          
     })
 
+    // Municipios com Observables
+    this.objMunicipios = this.termosDaBusca
+      .debounceTime(500)
+      .distinctUntilChanged()
+      .switchMap(term => {        
+        return term ? this.municipioService.search(term) : this.municipioService.allMunicipios();
+      })
+      .catch(err => {
+        console.log(err);
+        return Observable.of<MunicipioVO[]>([]);
+      });
+
+    this.objMunicipios.subscribe((objMunicipios) => {
+          this.listaMunicipios = [];
+          objMunicipios.forEach((element: any) => {
+            this.listaMunicipios.push(element);
+          })          
+    })   
+
   }
 
   selecionaEmpresa(chv, valor) {
@@ -108,10 +136,20 @@ export class UsuarioComponent implements OnInit {
     console.log('Nome da empresa selecionada=', valor.empr_nm_razaosocial);
     this.model.empresa.empr_sq_id = chv;
     this.model.empresa.empr_nm_razaosocial = valor.empr_nm_razaosocial;
-  }   
+  }  
+  
+  selecionaMunicipio(chv, valor) {
+    this.idMunicipio = chv;
+    this.model.municipio.muni_sq_id = valor.muni_sq_id;
+    this.model.municipio.muni_nm_municipio = valor.muni_nm_municipio;
+  } 
 
   buscarEmpresaPorNome(term:string) {
       this.termosDaBusca.next(term);
+  }
+
+  buscarMunicipioPorNome(term:string) {
+    this.termosDaBusca.next(term);
   }
 
   fileChange(event) {

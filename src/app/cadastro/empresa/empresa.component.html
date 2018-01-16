@@ -110,7 +110,7 @@
                                     </div>
                                 </div>
                                 <!-- **************************************************** -->
-                                <!-- LINHA 5 - BAIRRO, CIDADE, UF E CEP                   -->
+                                <!-- LINHA 5 - BAIRRO, MUNICIPIO, UF E CEP                -->
                                 <!-- **************************************************** -->
                                 <div class="row">
                                     <div class="form-group col-lg-4">
@@ -118,10 +118,22 @@
                                         <input type="text" id="empr_tx_bairro" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_bairro" name="empr_tx_bairro" #bairro="ngModel" ngModel>
                                     </div>
 
-                                    <div class="form-group col-lg-4">
-                                        <label for="empr_tx_cidade" class="control-label">Cidade</label>
-                                        <input type="text" id="empr_tx_cidade" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_cidade" name="empr_tx_cidade" #cidade="ngModel" ngModel>
+                                    <div class="form-group col-lg-4"
+                                        [class.has-error]="!municipio.valid && municipio.touched" 
+                                        [class.has-feedback]="!municipio.valid && municipio.touched">
+                                        <label for="objmunicipio" class="control-label">Município</label>
+                                        <div class="input-group">
+                                            <input type="hidden" id="muni_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.municipio.muni_sq_id" name="muni_sq_id">
+                                            <input type="text" id="muni_nm_municipio" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.municipio.muni_nm_municipio" name="muni_nm_municipio" #municipio="ngModel" ngModel required>
+                                            <div class="input-group-btn">
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#modalMunicipio">Alterar...</a>
+                                            </div>
+                                        </div>
+                                        <span id="help_municipio" class="help-block" *ngIf="!municipio.valid && municipio.touched">Município é obrigatório!</span>
+                                        <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!municipio.valid && municipio.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                        <span id="municipio" class="sr-only">(error)</span>                                          
                                     </div>
+
 
                                     <div class="form-group col-lg-1">
                                         <label for="empr_sg_uf" class="control-label">UF</label>
@@ -420,4 +432,42 @@
         </div>
     </div>          
 
+    <!-- **************************************************** -->
+    <!-- MODAL DE MUNICÍPIOS                                  -->
+    <!-- **************************************************** -->
+    <div class="modal fade" id="modalMunicipio" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal Content-->
+            <div class="modal-content">
+            <!-- HEADER -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Municípios</h4>
+            </div>
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="box">
+                        <div class="col-lg-12">
+                            <input type="search" id="municipio_busca" class="form-control" placeholder="Digite sua busca..." #txtMunicipio (keyup)="buscarMunicipioPorNome(txtMunicipio.value)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="box" style="margin: 15px 0px 0px 15px;">
+                        <div class="list-group col-lg-12" >
+                            <a *ngFor="let c of listaMunicipios" class="list-group-item" data-dismiss="modal" (click)="selecionaMunicipio(c.key, c.val())">
+                                {{ c.val().muni_nm_municipio }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- FOOTER -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
 

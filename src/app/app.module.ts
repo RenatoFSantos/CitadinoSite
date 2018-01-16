@@ -25,6 +25,7 @@ import { UsuarioModule } from './cadastro/usuario/usuario.module';
 import { PlanoModule } from './cadastro/plano/plano.module';
 import { EmpresaModule } from './cadastro/empresa/empresa.module';
 import { CategoriaModule } from './cadastro/categoria/categoria.module';
+import { CategoriaPSModule } from './cadastro/categoria-ps/categoria-ps.module';
 import { DescritorModule } from './cadastro/descritor/descritor.module';
 import { MunicipioModule } from './cadastro/municipio/municipio.module';
 import { TipoAnuncioModule } from './cadastro/tipoanuncio/tipoanuncio.module';
@@ -32,6 +33,19 @@ import { AnuncioModule } from './cadastro/anuncio/anuncio.module';
 import { AgendaModule } from './cadastro/agenda/agenda.module';
 import { VitrineModule } from './cadastro/vitrine/vitrine.module';
 import { CtdFuncoes } from './../ctd-funcoes';
+import { CurrencyMaskModule } from "ng2-currency-mask";
+import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: "right",
+  allowNegative: true,
+  allowZero: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "R$ ",
+  suffix: "",
+  thousands: "."
+};
 
 // **************************
 // ******* TESTE    *********
@@ -47,26 +61,26 @@ import { CtdFuncoes } from './../ctd-funcoes';
 // **************************
 // **** DESENVOLVIMENTO  ****
 // **************************
-// export const firebaseConfig = {
-//     apiKey: "AIzaSyC0maPdTdMQ7ccxuiXHLcZ1IsgeX7qVD6I",
-//     authDomain: "citadinodsv.firebaseapp.com",
-//     databaseURL: "https://citadinodsv.firebaseio.com",
-//     projectId: "citadinodsv",
-//     storageBucket: "citadinodsv.appspot.com",
-//     messagingSenderId: "180769307423"
-//   };
+export const firebaseConfig = {
+    apiKey: "AIzaSyC0maPdTdMQ7ccxuiXHLcZ1IsgeX7qVD6I",
+    authDomain: "citadinodsv.firebaseapp.com",
+    databaseURL: "https://citadinodsv.firebaseio.com",
+    projectId: "citadinodsv",
+    storageBucket: "citadinodsv.appspot.com",
+    messagingSenderId: "180769307423"
+  };
 
 // **************************
 // ****     PRODUÇÃO     ****
 // **************************
-export const firebaseConfig = {
-    apiKey: "AIzaSyCuOY5Kt7_Zo08khwYFiLsIQC4kFe5LWwE",
-    authDomain: "citadinoprd-13651.firebaseapp.com",
-    databaseURL: "https://citadinoprd-13651.firebaseio.com",
-    projectId: "citadinoprd-13651",
-    storageBucket: "citadinoprd-13651.appspot.com",
-    messagingSenderId: "960817085241"  
-};
+// export const firebaseConfig = {
+//     apiKey: "AIzaSyCuOY5Kt7_Zo08khwYFiLsIQC4kFe5LWwE",
+//     authDomain: "citadinoprd-13651.firebaseapp.com",
+//     databaseURL: "https://citadinoprd-13651.firebaseio.com",
+//     projectId: "citadinoprd-13651",
+//     storageBucket: "citadinoprd-13651.appspot.com",
+//     messagingSenderId: "960817085241"  
+// };
 
 @NgModule({
   declarations: [
@@ -74,7 +88,7 @@ export const firebaseConfig = {
     LoginComponent,
     SiteComponent,
     HomeComponent,
-    ContratoComponent
+    ContratoComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +99,7 @@ export const firebaseConfig = {
     UsuarioModule,
     EmpresaModule,
     CategoriaModule,
+    CategoriaPSModule,
     PlanoModule,
     DescritorModule,
     MunicipioModule,
@@ -94,9 +109,10 @@ export const firebaseConfig = {
     VitrineModule,
     CtdFuncoes,
     SharedModule,
+    CurrencyMaskModule
   ],
   providers: [
-    FirebaseService, 
+    FirebaseService,
     AuthService,
     AuthGuard,
     UsuarioGuards,
@@ -107,15 +123,18 @@ export const firebaseConfig = {
       deps: [SettingsService],
       // useFactory: (settingsService) => settingsService.getLocale()
       useValue: 'pt-BR'
-    }
+    },
+    {
+      provide: CURRENCY_MASK_CONFIG, 
+      useValue: CustomCurrencyMaskConfig  
+    },
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
 
   public rootRef: any = null;
   
-
   constructor() {
     firebase.initializeApp(firebaseConfig);
     this.rootRef = firebase.database().ref('/');

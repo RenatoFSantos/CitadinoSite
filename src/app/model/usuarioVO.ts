@@ -1,3 +1,4 @@
+import { MunicipioVO } from './municipioVO';
 import { CtdFuncoes } from './../../ctd-funcoes';
 import { EmpresaVO } from './empresaVO';
 
@@ -17,6 +18,7 @@ export class UsuarioVO {
     public usua_in_ajuda: boolean;
     public usua_sg_perfil: string;
     public empresa: EmpresaVO;
+    public municipio: MunicipioVO;
 
     constructor() {
         this.usua_sq_id = '';
@@ -34,6 +36,7 @@ export class UsuarioVO {
         this.usua_in_ajuda = false;
         this.usua_sg_perfil = 'USU'; // USU(Usuario comum)-ADM(Administrador)-PAR(Parceiro)-COL(Colunista)
         this.empresa = new EmpresaVO();
+        this.municipio = new MunicipioVO();
         // --- Formatando a data
         console.log('Data anterior = ', this.usua_dt_inclusao);
         console.log((new Date()).toLocaleString('pt-BR'));

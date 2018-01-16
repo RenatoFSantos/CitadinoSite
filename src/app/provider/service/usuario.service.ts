@@ -262,6 +262,11 @@ export class UsuarioService {
           '{' + 
           '"empr_sq_id":"' + model.empresa.empr_sq_id + '",' +
           '"empr_nm_razaosocial":"' + model.empresa.empr_nm_razaosocial + '"' +
+          '}},' +
+        '"municipio": {"' + model.municipio.muni_sq_id + '": ' +
+          '{' + 
+          '"muni_sq_id":"' + model.municipio.muni_sq_id + '",' +
+          '"muni_nm_municipio":"' + model.municipio.muni_nm_municipio + '"' +
           '}}' +
       '}'
     } else {
@@ -281,10 +286,16 @@ export class UsuarioService {
         '"usua_tx_observacao":"' + model.usua_tx_observacao + '",' +
         '"usua_sg_perfil":"' + model.usua_sg_perfil + '",' +
         '"usua_in_empresa":' + model.usua_in_empresa + ',' +
-        '"usua_in_ajuda":' + model.usua_in_ajuda +
+        '"usua_in_ajuda":' + model.usua_in_ajuda + ',' +
+        '"municipio": {"' + model.municipio.muni_sq_id + '": ' +
+          '{' + 
+          '"muni_sq_id":"' + model.municipio.muni_sq_id + '",' +
+          '"muni_nm_municipio":"' + model.municipio.muni_nm_municipio + '"' +
+          '}}' +        
       '}'      
     }
     let convertJSON = JSON.parse(json);
+    console.log('Json do Usuario=', convertJSON);
     return convertJSON;
   }
 
@@ -307,10 +318,13 @@ export class UsuarioService {
     // --- Converte objeto interno em objeto Javascript
     let obj = JSON.parse(JSON.stringify(objUsuario.val()));
     let indEmpresa = [];
+    let indMunicipio = [];
     if (obj.empresa!=null) {
        indEmpresa = Object.keys(obj.empresa);
     }
-
+    if (obj.municipio!=null) {
+      indMunicipio = Object.keys(obj.municipio);
+    }
     objRetorno.usua_sq_id = objUsuario.key;
     objRetorno.usua_nm_usuario = objValor.usua_nm_usuario;
     objRetorno.usua_tx_login = objValor.usua_tx_login;
@@ -329,6 +343,10 @@ export class UsuarioService {
       objRetorno.empresa.empr_sq_id = objValor.empresa[indEmpresa[0]].empr_sq_id;
       objRetorno.empresa.empr_nm_razaosocial = objValor.empresa[indEmpresa[0]].empr_nm_razaosocial;
     }
+    if(indMunicipio.length>0) {
+      objRetorno.municipio.muni_sq_id = objValor.municipio[indMunicipio[0]].muni_sq_id;
+      objRetorno.municipio.muni_nm_municipio = objValor.municipio[indMunicipio[0]].muni_nm_municipio;
+    }    
     return objRetorno;
   }
   

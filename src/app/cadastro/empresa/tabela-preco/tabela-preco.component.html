@@ -1,0 +1,284 @@
+<section id="contato" class="cabecalho">
+  <div class="faixa_branca">
+      <div class="container">
+          <div class="row">
+              <div class="box">
+                  <div class="col-lg-12">
+                      <hr>
+                      <h2 class="titulo-pagina text-left">
+                          <strong>Tabela de Preço</strong>
+                      </h2>
+                      <h3>Empresa: {{ objEmpresa?.empr_nm_razaosocial }}</h3>
+                      <hr>
+                  </div>
+              </div>
+          </div>
+
+          <!-- ***************** -->
+          <!-- MENSAGEM          -->        
+          <!-- ***************** -->
+
+          <div class="row" [hidden]="flagHidden">
+              <div class="{{ stsMensagem }}" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span [hidden]="flagHidden">&times;</span></button>
+                  {{txtMensagem}}
+              </div>
+          </div>                
+
+      </div>
+  </div>
+
+  <!-- **************************************************** -->
+  <!-- LISTA DE REGISTROS                                   -->
+  <!-- **************************************************** -->
+
+  <div class="faixa_branca" [hidden]="flagModo=='detalhe'">
+      <div class="container">
+          <!-- **************************************************** -->
+          <!-- LISTA                                                -->
+          <!-- **************************************************** -->                
+          <div class="row">
+            <div class="col-lg-12">
+                <div style="margin-bottom: 5px;">  
+                    <a class="btn btn-success" (click)="novoCadastro()" role="button">Novo</a>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6" style="text-align: center;">
+                <h4>Nome do Item</h4>
+                <hr>
+            </div>
+            <div class="col-lg-3" style="text-align: center;">
+                <h4>R$ Unitário</h4>
+                <hr>
+            </div>
+            <div class="col-lg-3" style="text-align: center;">
+                <h4>Ações</h4>
+                <hr>
+            </div>
+          </div>
+
+          <div id="tabelapreco" class="row" style="border-bottom: 1px dotted grey; padding: 5px 0px 5px 0px !important;" *ngFor="let item of listaItens">
+            <div class="col-lg-6" style="text-align: center; padding-top: 3px !important;">
+                    {{ item?.val().tapr_nm_item }}
+            </div>
+            <div class="col-lg-3" style="text-align: center; padding-top: 3px !important;">
+                    {{ item?.val().tapr_vl_unitario }}
+            </div>
+            <div class="col-lg-3">
+                <div class="list-group">
+                    <div style="float: right;">
+                        <a class="btn btn-primary btn-sm" (click)="selecionarItem(item.key, item.val(), 'editar')">Editar</a>
+                        <a class="btn btn-danger btn-sm" (click)="selecionarItem(item.key, item.val(), 'excluir')">Excluir</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <!-- **************************************************** -->
+          <!-- BOTÕES                                               -->
+          <!-- **************************************************** -->
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-lg-12">
+                <button type="button" class="btn btn-primary" [routerLink]="perfUsu=='ADM' ? ['/empresa/lista'] : ['/home']">Voltar</button>
+            </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- **************************************************** -->
+  <!-- FORMULÁRIO DE EDIÇÃO                                 -->
+  <!-- **************************************************** -->
+
+  <div class="faixa-branca" [hidden]="flagModo=='lista'">
+      <div class="container">
+          <div class="row">
+              <div class="box">
+                  <div class="col-lg-12">
+                      <h3 class="text-left">
+                          <strong>{{ subtitulo }}</strong>
+                      </h3>
+                      <hr>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="box">
+                  <div class="col-lg-12">
+                      <form id="formDetalhe" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                          <!-- **************************************************** -->
+                          <!-- LINHA 1 - ID                                         -->
+                          <!-- **************************************************** -->
+                          <div class="row">
+                            <div class="form-group col-lg-3">
+                                  <label>ID</label>
+                                  <input type="text" id="tapr_sq_id" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_sq_id" value="{{model.tapr_sq_id}}" name="tapr_sq_id" ngModel>
+                            </div>
+                          </div>
+                          <!-- **************************************************** -->
+                          <!-- LINHA 2 - NOME, TIPO, CATEGORIA                      -->
+                          <!-- **************************************************** -->
+                          <div class="row">
+                              <div class="form-group col-lg-6">
+                                  <label for="tapr_nm_item" class="control-label">Nome do Item</label>
+                                  <input type="text" id="tapr_nm_item" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_nm_item" value="{{model.tapr_nm_item}}" name="tapr_nm_item" ngModel>
+                              </div>
+                              <div class="form-group col-lg-2">
+                                  <label for="tapr_tp_item" class="control-label">Tipo</label>
+                                  <select class="form-control" id="tapr_tp_item" class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_tp_item" value="{{model.tapr_tp_item}}" name="tapr_tp_item" ngModel>
+                                        <option selected>Produto</option>
+                                        <option>Serviço</option>
+                                  </select>                                  
+                              </div>
+                              <div class="form-group col-lg-4"
+                                  [class.has-error]="!categoriaps.valid && categoriaps.touched" 
+                                  [class.has-feedback]="!categoriaps.valid && categoriaps.touched">
+                                  <label for="objcategoriaps" class="control-label">Categoria</label>
+                                  <div class="input-group">
+                                      <input type="hidden" id="caps_sq_id" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.categoriaps.caps_sq_id" name="caps_sq_id">
+                                      <input type="text" id="caps_nm_categoria" class="form-control" readonly [class.text-red]="modo=='excluir'" [(ngModel)]="model.categoriaps.caps_nm_categoria" name="caps_nm_categoria" #categoriaps="ngModel" ngModel required>
+                                      <div class="input-group-btn">
+                                          <a class="btn btn-default" data-toggle="modal" data-target="#modalCategoriaPS">Alterar...</a>
+                                      </div>
+                                  </div>
+                                  <span id="help_categoriaps" class="help-block" *ngIf="!categoriaps.valid && categoriaps.touched">Categoria é obrigatória!</span>
+                                  <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!categoriaps.valid && categoriaps.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                  <span id="categoriaps" class="sr-only">(error)</span>                                          
+                              </div>
+                              <!-- **************************************************** -->
+                              <!-- LINHA 3 - DESCRIÇÃO DO ITEM                          -->
+                              <!-- **************************************************** -->
+                              <div class="form-group col-lg-12">
+                                    <label for="tapr_ds_item" class="control-label">Descrição</label>
+                                    <textarea id="tapr_ds_item" class="form-control" rows="6" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_ds_item" name="tapr_ds_item" #descricao="ngModel" ngModel></textarea>
+                              </div>
+                              <!-- **************************************************** -->
+                              <!-- LINHA 4 - UPLOAD IMAGEM                              -->
+                              <!-- **************************************************** -->
+                              <div class="form-group col-lg-6">
+                                    <label for="tapr_tx_imagem" class="control-label">Imagem</label>
+                                    <input type="text" id="tapr_tx_imagem" name="tapr_tx_imagem" readonly class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_tx_imagem" #imagem="ngModel" ngModel>
+                              </div>
+                              <div class="form-group col-lg-6">
+                                    <label for="arquivoupload" class="control-label">Upload Imagem</label>
+                                    <input type="file" id="arquivoupload" class="form-control" (change)="fileChange($event, 'imagem')" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'"  #fileInput="ngModel" name="arquivoupload" ngModel>
+                              </div>
+                              <!-- ********************************************************************** -->
+                              <!-- LINHA 5 - PREVIEW IMAGEM, UNIDADE, VL. UNITÁRIO, DESCONTO PERCENTUAL   -->
+                              <!-- ********************************************************************** -->
+                              <div class="form-group col-lg-6">
+                                  <label for="preview" class="control-label">Preview Imagem</label>
+                                  <!-- <output id="imgprv"></output> -->
+                                  <!-- <img id="imgprv" [src]="imagemPreview" height="200" width="455"> -->
+                                  <div id="imgprv"></div>
+                              </div>
+                              <div class="form-group col-lg-1">
+                                  <label for="tapr_ds_unidade" class="control-label">Unidade</label>
+                                  <select class="form-control" id="tapr_ds_unidade" class="form-control" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_ds_unidade" value="{{model.tapr_ds_unidade}}" name="tapr_ds_unidade" ngModel>
+                                          <option selected>und</option>
+                                          <option>l</option>
+                                          <option>kg</option>
+                                  </select>                                    
+                              </div>
+                              <div class="form-group col-lg-3">
+                                      <label for="tapr_vl_unitario" class="control-label">R$ unitário</label>
+                                      <input type="text" id="tapr_vl_unitario" class="form-control" maxlength="15" placeholder="0,00" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_vl_unitario" name="tapr_vl_unitario"  #valor="ngModel" ngModel kzMaskCurrency>
+                                    </div>
+                              <div class="form-group col-lg-2">
+                                      <label for="tapr_vl_perc_desconto" class="control-label">Desconto (%)</label>
+                                      <input type="text" id="tapr_vl_perc_desconto" class="form-control" maxlength="5" placeholder="0,00" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_vl_perc_desconto" name="tapr_vl_perc_desconto" #percdesconto="ngModel" ngModel kzMaskCurrency>
+                              </div>
+                              <!-- ********************************************************************** -->
+                              <!-- LINHA 6 - OBSERVAÇÃO                                                   -->
+                              <!-- ********************************************************************** -->
+                              <div class="form-group off-set-lg-6 col-lg-6">
+                                    <label for="tapr_tx_observacao" class="control-label">Observação</label>
+                                    <textarea id="tapr_tx_observacao" class="form-control" rows="6" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_tx_observacao" name="tapr_tx_observacao" #observacao="ngModel" ngModel></textarea>
+                              </div>
+                              <!-- ********************************************************************** -->
+                              <!-- LINHA 7 - PREÇO SOBCONSULTA                                            -->
+                              <!-- ********************************************************************** -->
+                              <div class="form-group col-lg-12">
+                                  <div class="checkbox">
+                                      <label for="tapr_in_sobconsulta" class="control-label">
+                                          <input type="checkbox" id="tapr_in_sobconsulta" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_in_sobconsulta" name="tapr_in_sobconsulta" ngModel> Preço sob consulta
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- **************************************************** -->
+                          <!-- BOTÕES                                               -->
+                          <!-- **************************************************** -->
+                          <div class="row">
+                              <div class="form-group col-lg-12">
+                                  <button *ngIf="modo=='editar' || modo=='inserir'"  type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload"  [disabled]="!f.valid">Salvar</button>
+                                  <button *ngIf="modo=='excluir'" type="button" class="btn btn-danger" (click)="excluirItem()">Confirmar Exclusão</button>
+                                  <button type="button" class="btn btn-primary" (click)="cancelarManutencao()">Voltar</button>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- **************************************************** -->
+<!-- MODAL DE CATEGORIA                                   -->
+<!-- **************************************************** -->
+<div class="modal fade" id="modalCategoriaPS" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal Content-->
+        <div class="modal-content">
+        <!-- HEADER -->
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Categoria de Produto/Serviço</h4>
+        </div>
+        <!-- CONTEÚDO PRINCIPAL -->            
+        <div class="modal-body">
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <input type="search" id="categoria_busca" class="form-control" placeholder="Digite sua busca..." #txtCategoria (keyup)="buscarCategoriaPorNome(txtCategoria.value)">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="box" style="margin: 15px 0px 0px 15px;">
+                    <div class="list-group col-lg-12" >
+                        <a *ngFor="let cat of listaCategorias" class="list-group-item" data-dismiss="modal" (click)="selecionaCategoria(cat?.key, cat?.val())">
+                            {{ cat?.val().caps_nm_categoria }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>  
+
+<!-- **************************************************** -->
+<!-- MODAL DE UPLOAD                                      -->
+<!-- **************************************************** -->
+<div class="modal fade" id="modalUpload" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal Content-->
+        <div class="modal-content">
+            <!-- HEADER -->
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div style="margin: 20px">
+                    <h3>Aguarde....salvando dados.</h3>
+                </div>
+            </div>
+            <!-- FOOTER -->
+        </div>
+    </div>
+</div>          
+

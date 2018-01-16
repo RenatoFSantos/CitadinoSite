@@ -21,6 +21,7 @@ const app_routes: Routes = [
     { path: 'anuncio', loadChildren: 'app/cadastro/anuncio/anuncio.module#AnuncioModule', canActivate: [AuthGuard]},
     { path: 'agenda', loadChildren: 'app/cadastro/agenda/agenda.module#AgendaModule', canActivate: [AuthGuard]},
     { path: 'vitrine', loadChildren: 'app/cadastro/vitrine/vitrine.module#VitrineModule', canActivate: [AuthGuard]},
+    { path: 'categoriaps', loadChildren: 'app/cadastro/categoria-ps/categoria-ps.module#CategoriaPSModule', canActivate: [AuthGuard]},
     { path: 'contrato', component: ContratoComponent},
     { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}

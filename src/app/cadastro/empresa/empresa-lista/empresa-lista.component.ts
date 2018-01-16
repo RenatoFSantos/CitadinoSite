@@ -111,7 +111,7 @@ export class EmpresaListaComponent implements OnInit {
 		this.carregarEmpresas();
 	}
 
-  carregarEmpresas() {
+carregarEmpresas() {
 		this.listaEmpresas = [];
 		for (let i = ( this.pagina * this.qtdPorPagina ); i < (this.pagina * this.qtdPorPagina + this.qtdPorPagina); i++) {
 			if (i >= this.totalRegistros) {

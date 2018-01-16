@@ -1,3 +1,4 @@
+import { MunicipioVO } from './municipioVO';
 import { UsuarioVO } from './usuarioVO';
 import { DescritorVO } from './descritorVO';
 import { PlanoVO } from './planoVO';
@@ -34,6 +35,8 @@ export class EmpresaVO {
     public categoria: CategoriaVO;
     public plano: PlanoVO;
     public descritor: Array<DescritorVO>;
+    public municipioanuncio: Array<MunicipioVO>;
+    public municipio: MunicipioVO;
     public usuario: string;
     public smartsite: string;
 
@@ -69,6 +72,8 @@ export class EmpresaVO {
         this.plano = new PlanoVO();
         this.usuario = '';
         this.descritor = [];
+        this.municipioanuncio = [];
+        this.municipio = new MunicipioVO();
         this.smartsite = '';
     }
 

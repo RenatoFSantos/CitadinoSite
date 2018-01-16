@@ -1,3 +1,5 @@
+import { MunicipioVO } from './../../model/municipioVO';
+import { MunicipioService } from './../../provider/service/municipio.service';
 import { PlanoService } from './../../provider/service/plano.service';
 import { categorias_route } from './../categoria/categoria.routing.module';
 import { element } from 'protractor';
@@ -37,14 +39,17 @@ export class EmpresaComponent implements OnInit {
   id: string = '';
   idCategoria: string ='';
   idPlano: string = '';
+  idMunicipio: string = '';
   modo: string = '';
   hideLoader: boolean = false;
   listaCategorias: Array<CategoriaVO> = [];
+  listaMunicipios: Array<MunicipioVO> = [];
   listaPlanos: Array<PlanoVO> = [];
   listaUploads: Array<File> = [];
   listaDiretorios: Array<string> = [];
   objCategorias: Observable<CategoriaVO[]>;
   objPlanos: Observable<PlanoVO[]>;
+  objMunicipios: Observable<MunicipioVO[]>;
   termosDaBusca: Subject<string> = new Subject<string>();
   numPerc: number = 0;
   fileList: FileList;
@@ -57,6 +62,7 @@ export class EmpresaComponent implements OnInit {
     private router: Router, 
     private empresaService: EmpresaService, 
     private categoriaService: CategoriaService,
+    private municipioService: MunicipioService,
     private planoService: PlanoService,
     private elementRef: ElementRef
     ) { }
@@ -73,19 +79,16 @@ export class EmpresaComponent implements OnInit {
           this.empresaService.getEmpresa(this.id).then((empresa) => {
             console.log('Codigo Empresa: ', empresa.key);
             this.model = this.empresaService.carregaObjeto(empresa);
-            console.log('Copiando Objeto model para modelOld');
+            console.log('Conteúdo do model de empresa=', this.model);
+            // this.modelOld = this.model;
+            // console.log('Model Old=', this.modelOld);
+            this.modelOld.municipio.muni_sq_id = this.model.municipio.muni_sq_id;
+            this.modelOld.municipio.muni_nm_municipio = this.model.municipio.muni_nm_municipio;
             this.modelOld.plano.plan_sq_id = this.model.plano.plan_sq_id;
             this.modelOld.plano.plan_nm_plano = this.model.plano.plan_nm_plano;
-            console.log('total de descritores encontrados=', this.model.descritor.length);
-          
-            // this.model = empresa.val();
-            // console.log('model=', this.model);
-            // let obj = JSON.parse(JSON.stringify(empresa.val()));
-            // console.log('obj=', obj);
-            // let iterator = obj.categoria["-KjJl5Y9a4C8B8P5CfTN"].cate_nm_categoria;
-            // let iterator = Object.keys(obj.categoria);
-            // console.log('Chv Categoria=', empresa.val().categoria[iterator[0]]);
-            // console.log('Chv Categoria=', this.model.categoria[iterator[0]].cate_nm_categoria);
+            this.modelOld.categoria.cate_sq_id = this.model.categoria.cate_sq_id;
+            this.modelOld.categoria.cate_nm_categoria = this.model.categoria.cate_nm_categoria;
+            console.log('Município anterior = ', this.modelOld.municipio.muni_sq_id);
           }),
           err => {
             console.log(err);
@@ -129,6 +132,13 @@ export class EmpresaComponent implements OnInit {
         this.listaPlanos.push(childSnapshot);
       });
     })
+
+    // Listar todos os municipios
+    this.municipioService.getMunicipios().then(snapshot => {
+      snapshot.forEach((childSnapshot) => {
+        this.listaMunicipios.push(childSnapshot);
+      });
+    })
     
     // Categorias com Observables
     this.objCategorias = this.termosDaBusca
@@ -167,6 +177,25 @@ export class EmpresaComponent implements OnInit {
             this.listaPlanos.push(element)
           })          
     })
+
+    // Municipios com Observables
+    this.objMunicipios = this.termosDaBusca
+      .debounceTime(500)
+      .distinctUntilChanged()
+      .switchMap(term => {        
+        return term ? this.municipioService.search(term) : this.municipioService.allMunicipios();
+      })
+      .catch(err => {
+        console.log(err);
+        return Observable.of<MunicipioVO[]>([]);
+      });
+
+    this.objMunicipios.subscribe((objMunicipios) => {
+          this.listaMunicipios = [];
+          objMunicipios.forEach((element: any) => {
+            this.listaMunicipios.push(element);
+          })          
+    })      
   }
 
   fileChange(event, diretorio) {
@@ -180,9 +209,10 @@ export class EmpresaComponent implements OnInit {
           file = this.fileList[i];
           this.listaUploads.push(file);
           this.listaDiretorios.push(diretorio);
+          console.log('Diretorio da logomarca=', diretorio);
         }
     }
-}  
+  }  
 
   uploadArquivos(lista: Array<File>, listaDir: Array<string>, idEmpresa):Promise<boolean> {
     let arquivo: File;
@@ -229,6 +259,12 @@ export class EmpresaComponent implements OnInit {
     this.model.plano.plan_in_ecommerce = valor.plan_in_ecommerce;
   } 
 
+  selecionaMunicipio(chv, valor) {
+    this.idMunicipio = chv;
+    this.model.municipio.muni_sq_id = valor.muni_sq_id;
+    this.model.municipio.muni_nm_municipio = valor.muni_nm_municipio;
+  } 
+
   buscarCategoriaPorNome(term:string) {
       this.termosDaBusca.next(term);
   }
@@ -237,12 +273,16 @@ export class EmpresaComponent implements OnInit {
       this.termosDaBusca.next(term);
   }
 
+  buscarMunicipioPorNome(term:string) {
+    this.termosDaBusca.next(term);
+  }
+
   onSubmit(form:NgForm) {
     if(this.id === undefined || this.id == '' || this.id == null) {
       // *******************************************************************
       // - Rotina de Inclusão de Registro
       // *******************************************************************
-      console.log('Rotina de inclusão');
+      console.log('Rotina de inclusão', this.model);
       this.empresaService.atualizarEmpresa(this.model, this.modelOld, "I")
           .then(() => {
               this.stsMensagem = 'alert alert-dismissible alert-success';
@@ -314,6 +354,7 @@ export class EmpresaComponent implements OnInit {
     this.id='';
     this.idCategoria='';
     this.idPlano='';
+    this.idMunicipio='';
     this.listaUploads = [];
     this.model = new EmpresaVO();
   }

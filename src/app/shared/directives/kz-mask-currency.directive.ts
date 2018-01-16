@@ -44,9 +44,10 @@ export class KzMaskCurrencyDirective implements ControlValueAccessor, OnInit {
   }
 
   writeValue(value: any): void {
+    console.log('Value=',value);
     if (value) {
       if (!isNaN(value)) {
-        value = value.toFixed(2);
+        value = parseFloat(value).toFixed(2);
       }
       this.el.nativeElement.value = this.aplicarMascara(String(value));
     }
@@ -62,9 +63,7 @@ export class KzMaskCurrencyDirective implements ControlValueAccessor, OnInit {
 
   @HostListener('keyup', ['$event']) 
   onKeyup($event: any) {
-
     let valor: string = this.aplicarMascara($event.target.value);
-
     if (valor === '') {
       this.onChange('');
       $event.target.value = '';
@@ -84,7 +83,7 @@ export class KzMaskCurrencyDirective implements ControlValueAccessor, OnInit {
   @HostListener('blur', ['$event']) 
   onBlur($event: any) {
     var pattern = '0' + this.separadorDecimal + '00';
-    if ($event.target.value.indexOf(pattern) === -1) {
+    if ($event.target.value.indexOf(pattern) === -1 || $event.target.value!=pattern) {
       return;
     }
     this.onChange('');
@@ -101,7 +100,6 @@ export class KzMaskCurrencyDirective implements ControlValueAccessor, OnInit {
     let valorNum = parseInt(valorConverter.replace(/\D/g, ''), 10);
     let valorMask = '';
     let valor: string;
-
     if (isNaN(valorNum)) {
       return '';
     }
@@ -122,7 +120,6 @@ export class KzMaskCurrencyDirective implements ControlValueAccessor, OnInit {
        default:
          break;
      }
-
     if (valorMask === '') {
       let sepMilhar = 0;
       for (let i = (valor.length - 3); i >= 0; i--) {

@@ -14,6 +14,9 @@ import { EmpresaService } from './../../provider/service/empresa.service';
 import { SmartsiteService } from './../../provider/service/smartsite.service';
 import { EmpresaDescritorComponent } from './empresa-descritor/empresa-descritor.component';
 import { SmartsiteComponent } from './empresa-smartsite/empresa-smartsite.component';
+import { TabelaPrecoComponent } from './tabela-preco/tabela-preco.component';
+import { TabelaPrecoService } from 'app/provider/service/tabela-preco.service';
+import { EmpresaMunicipioComponent } from './empresa-municipio/empresa-municipio.component';
 
 @NgModule({
     imports: [
@@ -27,9 +30,11 @@ import { SmartsiteComponent } from './empresa-smartsite/empresa-smartsite.compon
         EmpresaComponent,
         EmpresaListaComponent,
         EmpresaDescritorComponent,
-        SmartsiteComponent
+        SmartsiteComponent,
+        TabelaPrecoComponent,
+        EmpresaMunicipioComponent
     ],
-    providers: [EmpresaService, CategoriaService, PlanoService, SmartsiteService]
+    providers: [EmpresaService, CategoriaService, PlanoService, SmartsiteService, TabelaPrecoService]
 })
 
 export class EmpresaModule {
