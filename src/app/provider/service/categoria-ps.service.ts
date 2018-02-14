@@ -115,4 +115,15 @@ export class CategoriaPSService {
     return convertJSON;
   }
 
+  carregaObjeto(objCategoriaPS):CategoriaPSVO {
+    let objRetorno: CategoriaPSVO = new CategoriaPSVO();
+    let objValor = objCategoriaPS.val();
+    // --- Converte objeto interno em objeto Javascript
+    let obj = JSON.parse(JSON.stringify(objCategoriaPS.val()));
+    objRetorno.caps_sq_id = objCategoriaPS.key;
+    objRetorno.caps_nm_categoria= objValor.caps_nm_categoria;
+    objRetorno.caps_nm_pesquisa= objValor.caps_nm_pesquisa;    
+    return objRetorno;
+  }
+  
 }

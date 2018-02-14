@@ -254,7 +254,7 @@
                                     </div>
                                 </div>
                                 <!-- **************************************************** -->
-                                <!-- LINHA 10 - CATEGORIA E SUBCATEGORIA                  -->
+                                <!-- LINHA 11 - CATEGORIA E SUBCATEGORIA                  -->
                                 <!-- **************************************************** -->
                                 <div class="row">
                                     <div class="form-group col-lg-6"
@@ -278,7 +278,7 @@
                                     </div>
                                 </div>
                                 <!-- **************************************************** -->
-                                <!-- LINHA 11 - SITE                                      -->
+                                <!-- LINHA 12 - SITE                                      -->
                                 <!-- **************************************************** -->
                                 <div class="row">
                                     <div class="form-group col-lg-12">
@@ -287,7 +287,7 @@
                                     </div>
                                 </div>                                
                                 <!-- **************************************************** -->
-                                <!-- LINHA 12 - SOBRE E OBSERVAÇÕES                       -->
+                                <!-- LINHA 13 - SOBRE E OBSERVAÇÕES                       -->
                                 <!-- **************************************************** -->
                                 <div class="row">
                                     <div class="form-group col-lg-6">
@@ -300,22 +300,35 @@
                                     </div>
                                 </div>
                                 <!-- **************************************************** -->
-                                <!-- LINHA 12 - INDICADOR SE DESEJA RECEBER MENSAGENS E   --> 
-                                <!-- E SE É PARCEIRO DE NEGÓCIOS                          -->
+                                <!-- LINHA 14 - INDICADOR SE DESEJA RECEBER MENSAGENS E   --> 
+                                <!-- SE TEM TABELA DE PREÇOS                              -->
                                 <!-- **************************************************** -->
-                                <div class="row">
-                                    <div class="form-group col-lg-12">
-                                        <div class="checkbox">
+                                <div class="row checkbox">
+                                        <div class="form-group col-lg-6">
                                             <label for="empr_in_mensagem" class="control-label">
-                                                <input type="checkbox" id="empr_in_mensagem" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_mensagem" name="empr_in_mensagem" ngModel> Desejo trocar mensagens com usuários.
+                                                <input type="checkbox" id="empr_in_mensagem" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_mensagem" name="empr_in_mensagem" ngModel> Desejo trocar mensagens com usuários
                                             </label>
                                         </div>
-                                        <div class="checkbox">
+                                        <div class="form-group col-lg-6">
+                                            <label for="empr_in_tabelapreco" class="control-label">
+                                                <input type="checkbox" id="empr_in_tabelapreco" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_tabelapreco" name="empr_in_tabelapreco" ngModel> Tenho tabela de preço
+                                            </label>
+                                        </div>
+                                </div>
+                                <!-- **************************************************** -->
+                                <!-- LINHA 15 - INDICADOR SE É PARCEIRO E SE FAZ DELIVERY -->
+                                <!-- **************************************************** -->
+                                <div class="row checkbox">
+                                        <div class="form-group col-lg-6">
                                             <label for="empr_in_parceiro" class="control-label">
-                                                <input type="checkbox" id="empr_in_parceiro" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_parceiro" name="empr_in_parceiro" ngModel> Sou um parceiro.
+                                                <input type="checkbox" id="empr_in_parceiro" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_parceiro" name="empr_in_parceiro" ngModel> Sou um parceiro
                                             </label>
                                         </div>
-                                    </div>
+                                        <div class="form-group col-lg-6">
+                                            <label for="empr_in_delivery" class="control-label">
+                                                <input type="checkbox" id="empr_in_delivery" class="form-control margin-checkbox noborder" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_in_delivery" name="empr_in_delivery" ngModel> Faço entregas
+                                            </label>
+                                        </div>
                                 </div>
                                 <!-- **************************************************** -->
                                 <!-- BOTÕES                                               -->

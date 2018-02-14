@@ -45,6 +45,13 @@ export class EmpresaService {
       })
   }
 
+  getEmpresasPedido(inDelivery: boolean) {
+    return firebase.database().ref('/empresa').orderByChild('empr_in_delivery').equalTo(inDelivery).once('value')
+      .then(empresas => {
+        return empresas;
+      })
+  }
+
   getEmpresas() {
     return firebase.database().ref('/empresa').orderByChild('empr_nm_razaosocial').once('value').then((empresas) => {
        return empresas;
@@ -64,6 +71,7 @@ export class EmpresaService {
   }  
 
   getEmpresa(id: string) {
+    console.log('Estou pesquisando a empresa');
     return firebase.database().ref('/empresa/' + id).once('value').then((empresa) => {
        return empresa;
     },
@@ -128,12 +136,18 @@ export class EmpresaService {
       let modelJSONDescritorEmpresa;
       let modelJSONEmpresaDescritor;
 
-      // Verificando se Indicador de Privado está nulo
+      // Verificando se checkbox estão definidos
       if(empresa.empr_in_mensagem===undefined || empresa.empr_in_mensagem===null) {
         empresa.empr_in_mensagem = false;
       }
       if(empresa.empr_in_parceiro===undefined || empresa.empr_in_parceiro===null) {
         empresa.empr_in_parceiro = false;
+      }
+      if(empresa.empr_in_tabelapreco===undefined || empresa.empr_in_tabelapreco===null) {
+        empresa.empr_in_tabelapreco = false;
+      }
+      if(empresa.empr_in_delivery===undefined || empresa.empr_in_delivery===null) {
+        empresa.empr_in_delivery = false;
       }
       // Verificando se subcategoria está indefinida
       if(empresa.empr_tx_subcategoria===undefined) {
@@ -409,6 +423,7 @@ atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
   }
 
   carregaObjeto(objEmpresa):EmpresaVO {
+    console.log('Carregando o objeto Empresa=', objEmpresa.val());
     let objRetorno: EmpresaVO = new EmpresaVO();
     let objDescritor: DescritorVO;
     let objMunicipio: MunicipioVO;
@@ -459,6 +474,8 @@ atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
     objRetorno.empr_nr_reputacao = objValor.empr_nr_reputacao;
     objRetorno.empr_in_mensagem = objValor.empr_in_mensagem;
     objRetorno.empr_in_parceiro = objValor.empr_in_parceiro;
+    objRetorno.empr_in_tabelapreco = objValor.empr_in_tabelapreco;
+    objRetorno.empr_in_delivery = objValor.empr_in_delivery;
     objRetorno.empr_sg_pessoa = objValor.empr_sg_pessoa;
     objRetorno.empr_tx_subcategoria = objValor.empr_tx_subcategoria;
     objRetorno.categoria.cate_sq_id = objValor.categoria[indEmpresa[0]].cate_sq_id;
@@ -606,6 +623,8 @@ atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
       '"empr_nr_reputacao":"' + model.empr_nr_reputacao + '",' +
       '"empr_in_mensagem":' + model.empr_in_mensagem + ',' +
       '"empr_in_parceiro":' + model.empr_in_parceiro + ',' +
+      '"empr_in_tabelapreco":' + model.empr_in_tabelapreco + ',' +
+      '"empr_in_delivery":' + model.empr_in_delivery + ',' +
       '"empr_sg_pessoa":"' + model.empr_sg_pessoa + '",' +
       '"empr_tx_subcategoria":"' + model.empr_tx_subcategoria + '",' +
       '"categoria": {"' + model.categoria.cate_sq_id + '": ' +

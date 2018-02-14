@@ -61,10 +61,10 @@
 
           <div id="tabelapreco" class="row" style="border-bottom: 1px dotted grey; padding: 5px 0px 5px 0px !important;" *ngFor="let item of listaItens">
             <div class="col-lg-6" style="text-align: center; padding-top: 3px !important;">
-                    {{ item?.val().tapr_nm_item }}
+                    {{ item?.val().tapr_nm_item}}
             </div>
             <div class="col-lg-3" style="text-align: center; padding-top: 3px !important;">
-                    {{ item?.val().tapr_vl_unitario }}
+                    {{ item?.val().tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
             </div>
             <div class="col-lg-3">
                 <div class="list-group">

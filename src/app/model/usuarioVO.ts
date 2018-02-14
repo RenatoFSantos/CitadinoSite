@@ -1,6 +1,7 @@
 import { MunicipioVO } from './municipioVO';
 import { CtdFuncoes } from './../../ctd-funcoes';
 import { EmpresaVO } from './empresaVO';
+import { EnderecoVO } from './enderecoVO';
 
 export class UsuarioVO {
     public usua_sq_id: string;
@@ -19,6 +20,7 @@ export class UsuarioVO {
     public usua_sg_perfil: string;
     public empresa: EmpresaVO;
     public municipio: MunicipioVO;
+    public endereco: Array<EnderecoVO>;
 
     constructor() {
         this.usua_sq_id = '';
@@ -37,13 +39,8 @@ export class UsuarioVO {
         this.usua_sg_perfil = 'USU'; // USU(Usuario comum)-ADM(Administrador)-PAR(Parceiro)-COL(Colunista)
         this.empresa = new EmpresaVO();
         this.municipio = new MunicipioVO();
-        // --- Formatando a data
-        console.log('Data anterior = ', this.usua_dt_inclusao);
-        console.log((new Date()).toLocaleString('pt-BR'));
-        
+        this.endereco = [];
         this.usua_dt_inclusao = CtdFuncoes.convertDateToStr(new Date(), 1);
-        // this.usua_dt_inclusao.substring(6,10)+'-'+this.usua_dt_inclusao.substring(3,5)+'-'+this.usua_dt_inclusao.substring(0,2)
-        console.log('Data atualizada = '+this.usua_dt_inclusao);
     }
 
 }

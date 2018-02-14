@@ -29,6 +29,7 @@ import { CategoriaPSModule } from './cadastro/categoria-ps/categoria-ps.module';
 import { DescritorModule } from './cadastro/descritor/descritor.module';
 import { MunicipioModule } from './cadastro/municipio/municipio.module';
 import { TipoAnuncioModule } from './cadastro/tipoanuncio/tipoanuncio.module';
+import { PedidoModule } from './pedido/pedido.module';
 import { AnuncioModule } from './cadastro/anuncio/anuncio.module';
 import { AgendaModule } from './cadastro/agenda/agenda.module';
 import { VitrineModule } from './cadastro/vitrine/vitrine.module';
@@ -107,9 +108,10 @@ export const firebaseConfig = {
     TipoAnuncioModule,
     AgendaModule,
     VitrineModule,
+    PedidoModule,
     CtdFuncoes,
     SharedModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
   ],
   providers: [
     FirebaseService,

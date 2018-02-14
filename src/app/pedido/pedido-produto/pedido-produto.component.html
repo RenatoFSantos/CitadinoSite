@@ -1,0 +1,554 @@
+<section id="contato" class="cabecalho">
+    <div class="faixa_branca">
+        <div class="container">
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-5">
+                        <h2 class="titulo-pagina text-left">
+                            <strong>PEDIDO</strong>
+                        </h2>
+                        <h1>{{ objEmpresa?.empr_nm_fantasia }}</h1>
+                    </div>
+                    <div [hidden]="flagModo=='carrinho' || flagModo=='fechar' || flagModo=='finalizar' || flagModo=='concluido'" class="col-lg-7" style="margin-top: 60px; text-align: right !important;">
+                        {{ objPedido.pedi_qn_item }} selecionado(s)
+                        <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                        <button class="btn btn-success" (click)="verCarrinho()">Ver Carrinho</button>
+                    </div>
+                    <div [hidden]="flagModo!='carrinho' && flagModo!='fechar'" class="col-lg-7" style="margin-top: 62px; text-align: right !important;">
+                        <span style="font-size: 150%; font-weight: 700">Valor Total {{ objPedido.pedi_vl_total | currency:'BRL':true:'1.2-2' }}  </span>
+                        <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                        <button class="btn btn-success" [disabled]="flagModo!='carrinho'" (click)="fecharPedido()">Fechar Pedido</button>
+                    </div>
+                </div>  
+            </div>
+  
+            <!-- ***************** -->
+            <!-- MENSAGEM          -->        
+            <!-- ***************** -->
+  
+            <div class="row" [hidden]="flagHidden">
+                <div class="{{ stsMensagem }}" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span [hidden]="flagHidden">&times;</span></button>
+                    {{txtMensagem}}
+                </div>
+            </div>                
+  
+        </div>
+    </div>
+
+    <!-- **************************************************** -->
+    <!-- FILTRO                                               -->
+    <!-- **************************************************** -->
+
+    <div class="faixa_branca" [hidden]="flagModo!='lista'">
+        <div class="container">
+            <div class="row" style="background-color: grey; padding-top: 15px;">
+                <div class="box">
+                    <div class="col-lg-8">
+                        <form id="formfiltro" class="form-inline" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                            <div class="form-group">
+                                <label for="txtFiltro" class="control-label">Filtro: </label>
+                                <input style="width: 490px;" type="text" id="txtFiltro" class="form-control" [(ngModel)]="txtFiltro" value="{{txtFiltro}}" name="txtFiltro" ngModel>
+                            </div>
+                            <button type="submit" class="btn btn-success">Filtrar</button>
+                        </form>
+                    </div>
+                    <div class="form-group form-inline col-lg-4">
+                        <label for="objcategoria" class="control-label">Categoria:</label>
+                        <div class="input-group">
+                            <input type="hidden" class="form-control" id="caps_sq_id" name="caps_sq_id" [(ngModel)]="objCategoriaPSFiltro.caps_sq_id" ngModel>
+                            <input type="text" class="form-control" id="caps_nm_categoria" readonly name="caps_nm_categoria" [(ngModel)]="objCategoriaPSFiltro.caps_nm_categoria" ngModel>
+                            <div class="input-group-btn">
+                                <a class="btn btn-default" data-toggle="modal" (click)="carregaItensTabelaPreco(idEmpresa, '', '')" data-target="#modalCategoria">Selecionar...</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <!-- **************************************************** -->
+    <!-- LISTA DE PRODUTOS/SERVIÇOS DISPONÍVEIS               -->
+    <!-- **************************************************** -->
+  
+    <div class="faixa_branca" [hidden]="flagModo!='lista'">
+        <div class="container">
+            <!-- **************************************************** -->
+            <!-- LISTA                                                -->
+            <!-- **************************************************** -->
+            <div id="tabelapreco" class="row" style="border-bottom: 1px dotted grey; padding: 5px 0px 5px 0px !important;" *ngFor="let item of listaItens">
+                <div class="col-lg-3">
+                    <div id="imgprv">
+                        <img [src]="item?.tapr_tx_imagem" alt="item?.tapr_nm_item" width="250" height="110">
+                    </div>
+                </div>
+                <div class="col-lg-3" style="text-align: left; padding-top: 3px !important;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <strong>{{ item?.tapr_nm_item }}</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="color: grey;">
+                            {{ item?.tapr_ds_item }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 25px; font-size:130% !important;">
+                    {{ item?.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
+                </div>
+                <div class="col-lg-3">
+                    <div class="list-group">
+                        <div style="float: right; margin-top: 25px !important;">
+                          <i class="fa fa-shopping-cart fa-3x" (click)="manterItem(item, 'mais')" aria-hidden="true" data-toggle="modal" data-target="#modalSelecao"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- **************************************************** -->
+            <!-- BOTÕES                                               -->
+            <!-- **************************************************** -->
+            <div class="row" style="margin-top: 10px;">
+              <div class="col-lg-12">
+                  <button type="button" class="btn btn-primary" [routerLink]="['/pedidoempresa']">Voltar</button>
+              </div>
+            </div>
+        </div>
+    </div> 
+    
+    <!-- **************************************************** -->
+    <!-- CARRINHO                                             -->
+    <!-- **************************************************** -->
+
+    <div class="faixa_branca" [hidden]="flagModo!='carrinho' && flagModo!='fechar'">
+        <div class="container">
+            <!-- **************************************************** -->
+            <!-- LISTA  DOS PRODUTOS NO CARRINHO                      -->
+            <!-- **************************************************** -->
+            <div id="carrinho" class="row" style="background-color: rgb(252, 208, 88); border-bottom: 1px dotted grey; padding: 5px 0px 5px 0px !important;" *ngFor="let item of listaItensSelecionados">
+                <div class="col-lg-3">
+                    <div id="imgprv">
+                        <img [src]="item?.tabelapreco.tapr_tx_imagem" width="250" height="110">
+                    </div>
+                </div>
+                <div class="col-lg-3" style="text-align: left; padding-top: 3px !important;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <strong>{{ item?.tabelapreco.tapr_nm_item }}</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="color: grey;">
+                            {{ item?.tabelapreco.tapr_ds_item }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1" style="text-align: center; padding-top: 3px; margin-top: 25px !important;">
+                    <div class="row">
+                        <div class="col-lg-12" style="color: grey;">
+                            Unitário
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {{ item?.tabelapreco.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 30px; font-size:130% !important;">
+                    <div class="row">
+                        <div class="col-lg-12" style="color: grey;">
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {{ item?.peit_vl_total | currency:'BRL':true:'1.2-2' }}
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 30px; font-size:130% !important;">
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <a class="btn btn-default" (click)="manterItem(item.tabelapreco, 'menos')"> - </a>
+                        </div>                        
+                        <input type="text" class="form-control" id="quantidade" size="10" readonly name="quantidade" placeholder="0" [value]="item?.peit_vl_quantidade" #quantidade>
+                        <div class="input-group-btn">
+                            <a class="btn btn-default" (click)="manterItem(item.tabelapreco, 'mais')"> + </a>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="list-group">
+                        <div style="float: right; margin: 25px 25px !important;">
+                          <i class="fa fa-times fa-3x" (click)="manterItem(item.tabelapreco, 'excluir')" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" [hidden]="flagModo!='fechar'" style="background-color: darkgrey; margin-top: 10px; border: 1px solid grey;">
+                <div class="col-lg-6">
+                    <h2 class="titulo-pagina text-left">
+                        <strong>ENDEREÇO</strong>
+                        <button type="button" class="btn btn-success" data-toggle="modal" (click)="novoEndereco()" data-target="#modalEndereco">Novo</button>
+                    </h2>
+                </div>
+                <div class="col-lg-6" style="text-align: right; padding: 10px;">
+                </div>
+                <div id="endereco" class="radio col-lg-12" style="border-top: 1px dotted grey; padding-top: 5px;" *ngFor="let endereco of listaEnderecos" >
+                    <label><input type="radio" name="optEndereco" checked="checked" (change)="onSelectionChangeEndereco(endereco)" [value]="endereco">{{ endereco.ende_cd_endereco }} - <small style="color: rgb(67, 67, 67)">({{ endereco.ende_tx_endereco }} - {{ endereco.ende_tx_bairro }} - {{ endereco.ende_tx_cidade.trim()}}/{{ endereco.ende_sg_uf }})</small></label>
+                </div>
+            </div>
+
+            <div class="row" [hidden]="flagModo!='fechar'" style="background-color: darkgrey; margin-top: 10px; border: 1px solid grey;">
+                    <div class="col-lg-12">
+                        <h2 class="titulo-pagina text-left">
+                            <strong>FORMA DE PAGAMENTO</strong>
+                        </h2>
+                    </div>
+                    <div id="formapagto" class="radio col-lg-12" style="border-top: 1px dotted grey; padding-top: 5px;" *ngFor="let optforma of listaFormaPagamento" >
+                        <label><input id="optforma" type="radio" name="optforma" checked="checked" (change)="onSelectionChangeForma(optforma)" [value]="optforma">{{ optforma }}</label>
+                    </div>
+            </div>
+            <!-- **************************************************** -->
+            <!-- BOTÕES                                               -->
+            <!-- **************************************************** -->
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-lg-6">
+                    <button type="button" class="btn btn-primary" (click)="verCarrinho()">Continuar Comprando</button>
+                </div>
+                <div class="col-lg-6" style="text-align: right;" [hidden]="flagModo!='fechar'">
+                    <button type="button" class="btn btn-success" (click)="finalizarPedido()">Finalizar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>      
+
+    <!-- **************************************************** -->
+    <!-- FINALIZAR O PEDIDO                                   -->
+    <!-- **************************************************** -->
+
+    <div class="faixa_branca" [hidden]="flagModo!='finalizar'">
+        <div class="container">
+            <!-- **************************************************** -->
+            <!-- LISTA  DOS PRODUTOS NO CARRINHO                      -->
+            <!-- **************************************************** -->
+            <div id="carrinho" class="row" style="border-top: 1px solid rgb(143, 143, 143); padding: 5px 0px 5px 0px !important;" *ngFor="let item of listaItensSelecionados">
+                <div class="col-lg-3">
+                    <div id="imgprv">
+                        <img [src]="item?.tabelapreco.tapr_tx_imagem" width="250" height="110">
+                    </div>
+                </div>
+                <div class="col-lg-3" style="text-align: left; padding-top: 3px !important;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <strong>{{ item?.tabelapreco.tapr_nm_item }}</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12" style="color: grey;">
+                            {{ item?.tabelapreco.tapr_ds_item }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1" style="text-align: center; padding-top: 3px; margin-top: 25px !important;">
+                    <div class="row">
+                        <div class="col-lg-12" style="color: grey;">
+                            Unitário
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {{ item?.tabelapreco.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 30px; font-size:130% !important;">
+                    <div class="row">
+                        <div class="col-lg-12" style="color: grey;">
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {{ item?.peit_vl_total | currency:'BRL':true:'1.2-2' }}
+                        </div>
+                    </div>                    
+                </div>
+                <div class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 30px; font-size:130% !important;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="quantidade" size="10" readonly name="quantidade" placeholder="0" [value]="item?.peit_vl_quantidade" #quantidade>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="list-group">
+                        <div style="float: right; margin: 25px 25px !important;">
+                          <i class="fa fa-times fa-3x" (click)="manterItem(item.tabelapreco, 'excluir')" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12" style="background-color: grey; text-align: right !important;">
+                    <span style="font-size: 150%; font-weight: 700">Valor Total {{ objPedido.pedi_vl_total | currency:'BRL':true:'1.2-2' }}  </span>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-lg-6">
+                    <h2 class="titulo-pagina text-left">
+                        <strong>ENDEREÇO</strong>
+                    </h2>
+                </div>
+                <div class="col-lg-12" style="border-top: 1px dotted grey; padding-top: 5px;">
+                    <span>{{ objEndereco.ende_cd_endereco }} - <small style="color: rgb(67, 67, 67)">({{ objEndereco.ende_tx_endereco }} - {{ objEndereco.ende_tx_bairro }} - {{ objEndereco.ende_tx_cidade.trim()}}/{{ objEndereco.ende_sg_uf }})</small></span>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-lg-12">
+                    <h2 class="titulo-pagina text-left">
+                        <strong>FORMA DE PAGAMENTO</strong>
+                    </h2>
+                </div>
+                <div id="formapagto" class="col-lg-12" style="border-top: 1px dotted grey; padding-top: 5px;">
+                    <span>{{ formaPagto }}</span>
+                </div>
+            </div>
+
+            <!-- **************************************************** -->
+            <!-- BOTÕES                                               -->
+            <!-- **************************************************** -->
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-lg-6">
+                    <button type="button" class="btn btn-primary" (click)="verCarrinho()">Continuar Comprando</button>
+                </div>
+                <div class="col-lg-6" style="text-align: right;">
+                    <button type="button" class="btn btn-success" (click)="salvarPedido()">Confirmar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>      
+
+    <!-- **************************************************** -->
+    <!-- PEDIDO CONCLUÍDO                                     -->
+    <!-- **************************************************** -->
+
+    <div class="faixa_branca" [hidden]="flagModo!='concluido'">
+        <div class="container">
+            <!-- **************************************************** -->
+            <!-- MENSAGEM APÓS CONCLUSÃO DO PEDIDO                    -->
+            <!-- **************************************************** -->
+            <div class="row" style="border-top: 1px solid rgb(143, 143, 143); padding: 5px 0px 5px 0px !important;">
+                <div class="col-lg-12">
+                    <h2>Seu pedido foi enviado com sucesso!</h2>
+                </div>
+            </div>
+            <!-- **************************************************** -->
+            <!-- BOTÕES                                               -->
+            <!-- **************************************************** -->
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-primary" [routerLink]="['/pedidoempresa']">Voltar</button>
+                    <button type="button" class="btn btn-success">Acompanhar Pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>      
+
+
+
+</section>
+  
+  
+<!-- **************************************************** -->
+<!-- MODAL DE CATEGORIA                                   -->
+<!-- **************************************************** -->
+<div class="modal fade" id="modalCategoria" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal Content-->
+        <div class="modal-content">
+        <!-- HEADER -->
+        <div class="modal-header">
+            <button type="button" class="close" (click)="limparCategoria()" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Categoria</h4>
+        </div>
+        <!-- CONTEÚDO PRINCIPAL -->            
+        <div class="modal-body">
+            <!-- <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <input type="search" id="categoria_busca" class="form-control" placeholder="Digite sua busca..." #txtCategoria (keyup)="buscarCategoriaPorNome(txtCategoria.value)">
+                    </div>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="box" style="margin: 15px 0px 0px 15px;">
+                    <div class="list-group col-lg-12" >
+                        <a *ngFor="let c of listaCategorias" class="list-group-item" data-dismiss="modal" (click)="selecionaCategoria(c.caps_sq_id, c)">
+                            {{ c?.caps_nm_categoria }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="limparCategoria()" data-dismiss="modal">Todas as Categorias</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- **************************************************** -->
+<!-- MODAL DE UPLOAD                                      -->
+<!-- **************************************************** -->
+<div class="modal fade" id="modalSelecao" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal Content-->
+        <div class="modal-content">
+            <!-- HEADER -->
+            <!-- CONTEÚDO PRINCIPAL -->            
+            <div class="modal-body">
+                <div style="margin: 20px">
+                    <span id="mensagem" style="font-size: 130%; font-weight: 700;">{{ mensagem }}</span>
+                </div>
+            </div>
+            <!-- FOOTER -->
+        </div>
+    </div>
+</div>
+
+<!-- **************************************************** -->
+<!-- MODAL DE ENDERECO                                    -->
+<!-- **************************************************** -->
+<div class="modal fade" id="modalEndereco" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal Content-->
+        <div class="modal-content">
+        <!-- HEADER -->
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Endereço</h4>
+        </div>
+        <!-- CONTEÚDO PRINCIPAL -->            
+        <div class="modal-body">
+
+            <div class="row" >
+                <div class="box">
+                    <div class="col-lg-12">
+                        <form id="formEndereco" (ngSubmit)="onSubmitEndereco(f)" #f="ngForm">
+                            <!-- **************************************************** -->
+                            <!-- LINHA 1 - ID, USUÁRIO                                -->
+                            <!-- **************************************************** -->
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    <label>ID</label>
+                                    <input type="text" id="usua_sq_id" readonly class="form-control" [(ngModel)]="objUsuario.usua_sq_id" name="usua_sq_id" >
+                                </div>
+                                <div class="form-group col-lg-offset-2 col-lg-6">
+                                    <label>Usuário</label>
+                                    <input type="text" id="usua_nm_usuario" readonly class="form-control" [(ngModel)]="objUsuario.usua_nm_usuario" name="usua_nm_usuario" ngModel>
+                                </div>
+                            </div>
+                            <!-- **************************************************** -->
+                            <!-- LINHA 2 - TIPO DE ENDEREÇO                           -->
+                            <!-- **************************************************** -->
+                            <div class="row">
+                                <div class="form-group col-lg-12"
+                                    [class.has-error]="!tipo.valid && tipo.touched" 
+                                    [class.has-feedback]="!tipo.valid && tipo.touched" >
+                                    <label for="ende_cd_endereco" class="control-label">Tipo</label>
+                                    <input type="text" id="ende_cd_endereco" class="form-control" [(ngModel)]="objEndereco.ende_cd_endereco" name="ende_cd_endereco" #tipo="ngModel" ngModel required>
+                                    <span id="help_tipo" class="help-block" *ngIf="!tipo.valid && tipo.touched">Tipo é obrigatório</span>
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!tipo.valid && tipo.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                    <span id="tipo" class="sr-only">(error)</span>  
+                                </div>
+                            </div>
+                            <!-- **************************************************** -->
+                            <!-- LINHA 3 - ENDEREÇO                                   -->
+                            <!-- **************************************************** -->
+                            <div class="row">
+                                <div class="form-group col-lg-12"
+                                    [class.has-error]="!endereco.valid && endereco.touched" 
+                                    [class.has-feedback]="!endereco.valid && endereco.touched" >
+                                    <label for="ende_tx_endereco" class="control-label">Endereço</label>
+                                    <input type="text" id="ende_tx_endereco" class="form-control" [(ngModel)]="objEndereco.ende_tx_endereco" name="ende_tx_endereco" #endereco="ngModel" ngModel required>
+                                    <span id="help_endereco" class="help-block" *ngIf="!endereco.valid && endereco.touched">Endereço é obrigatório</span>
+                                    <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!endereco.valid && endereco.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                    <span id="endereco" class="sr-only">(error)</span>  
+                                </div>
+                            </div>
+                            <!-- **************************************************** -->
+                            <!-- LINHA 4 - BAIRRO, CIDADE, UF E CEP                   -->
+                            <!-- **************************************************** -->
+                            <div class="row">
+                                <div class="form-group col-lg-5">
+                                    <label for="ende_tx_bairro" class="control-label">Bairro</label>
+                                    <input type="text" id="ende_tx_bairro" class="form-control" [(ngModel)]="objEndereco.ende_tx_bairro" name="ende_tx_bairro" #bairro="ngModel" ngModel>
+                                </div>
+
+                                <div class="form-group col-lg-5">
+                                    <label for="ende_tx_cidade" class="control-label">Cidade</label>
+                                    <input type="text" id="ende_tx_cidade" class="form-control" [(ngModel)]="objEndereco.ende_tx_cidade" name="ende_tx_cidade" #cidade="ngModel" ngModel>
+                                </div>
+
+                                <div class="form-group col-lg-2">
+                                    <label for="ende_sg_uf" class="control-label">UF</label>
+                                    <div>
+                                        <select id="ende_sg_uf" name="ende_sg_uf" class="form-control" [(ngModel)]="objEndereco.ende_sg_uf" name="empr_sg_uf" #uf="ngModel" ngModel>
+                                            <option value="AC">AC</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AP">AP</option>
+                                            <option value="AM">AM</option>
+                                            <option value="BA">BA</option>
+                                            <option value="CE">CE</option>
+                                            <option value="DF">DF</option>
+                                            <option value="ES">ES</option>
+                                            <option value="GO">GO</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MT">MT</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MG">MG</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PB">PB</option>
+                                            <option value="PR">PR</option>
+                                            <option value="PE">PE</option>
+                                            <option value="PI">PI</option>
+                                            <option value="RJ">RJ</option>
+                                            <option value="RN">RN</option>
+                                            <option value="RS">RS</option>
+                                            <option value="RO">RO</option>
+                                            <option value="RR">RR</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SP">SP</option>
+                                            <option value="SE">SE</option>
+                                            <option value="TO">TO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-lg-3">
+                                    <label for="ende_nr_cep" class="control-label">CEP</label>
+                                    <input type="text" id="ende_nr_cep" class="form-control" [(ngModel)]="objEndereco.ende_nr_cep" name="ende_nr_cep" maxlength="9" #cep="ngModel" ngModel kzMask="99999-999">
+                                </div>
+                            </div>
+                            <!-- **************************************************** -->
+                            <!-- BOTÕES                                               -->
+                            <!-- **************************************************** -->
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <button id="btnEndereco" type="submit" class="btn btn-primary" [disabled]="!f.valid" (click)="mudarNome()">Salvar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <!-- <div class="modal-footer">
+            <button type="button" class="btn btn-default" (click)="limparCategoria()" data-dismiss="modal">Salvar</button>
+        </div> -->
+        <!-- </div> -->
+    </div>
+</div>
+    

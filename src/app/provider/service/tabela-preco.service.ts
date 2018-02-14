@@ -81,9 +81,7 @@ export class TabelaPrecoService {
     }
 
     // Verificando se empresa está carregada no objeto
-    console.log('Validando conteudo variável tabelaPreco.empresa.empr_sq_id=', tabelaPreco.empresa.empr_sq_id)
     if(tabelaPreco.empresa.empr_sq_id===undefined || tabelaPreco.empresa.empr_sq_id===null || tabelaPreco.empresa.empr_sq_id==''){
-      console.log('Atualizando valores da empresa no modelo tabelaPreco', empresa.empr_sq_id);
       tabelaPreco.empresa.empr_sq_id = empresa.empr_sq_id;
       tabelaPreco.empresa.empr_nm_razaosocial = empresa.empr_nm_razaosocial;
     }
@@ -108,7 +106,6 @@ export class TabelaPrecoService {
   }
 
   atualizarImagemTabelaPreco(id, txImagem, dir, refEmp) {
-    console.log('Imagem a ser atualizada=', txImagem);
     firebase.database().ref().child(`/tabelapreco/${refEmp}/${id}`).update({tapr_tx_imagem: txImagem});
   }
 
@@ -166,31 +163,45 @@ export class TabelaPrecoService {
     let objRetorno: TabelaPrecoVO = new TabelaPrecoVO();
     let objEmpresa: EmpresaVO;
     let objCategoriaPS: CategoriaPSVO;
-    let objValor = objTabelaPreco.val();
+    let objValor: any;
+    let obj: any;
+    let indEmpresa: any;
+    let indCategoriaPS: any;
+    if(objTabelaPreco.tapr_sq_id!=undefined) {
+      objValor = objTabelaPreco;
+      obj = JSON.parse(JSON.stringify(objTabelaPreco));
+      console.log('obj=', obj);
+      objRetorno = obj;
+    } else {
+      objValor = objTabelaPreco.val();
+      obj = JSON.parse(JSON.stringify(objTabelaPreco.val()));
+      indEmpresa = Object.keys(obj.empresa);
+      indCategoriaPS = Object.keys(obj.categoriaps);
+      // --- Converte objeto interno em objeto Javascript
+      objRetorno.tapr_sq_id = objTabelaPreco.key;
+      objRetorno.tapr_nm_item = obj.tapr_nm_item;
+      objRetorno.tapr_ds_item = obj.tapr_ds_item;
+      objRetorno.tapr_tp_item = obj.tapr_tp_item;
+      objRetorno.tapr_ds_unidade = obj.tapr_ds_unidade;
+      objRetorno.tapr_tx_observacao = obj.tapr_tx_observacao;
+      if(obj.tapr_tx_imagem==undefined || obj.tapr_tx_imagem==null || obj.tapr_tx_imagem=='') {
+        objRetorno.tapr_tx_imagem = '../../../assets/img/banner-citadino.jpg';
+      } else {
+        objRetorno.tapr_tx_imagem = obj.tapr_tx_imagem;
+      }
+      objRetorno.tapr_in_sobconsulta = obj.tapr_in_sobconsulta;
+      objRetorno.tapr_vl_unitario = obj.tapr_vl_unitario;
+      objRetorno.tapr_vl_perc_desconto = obj.tapr_vl_perc_desconto;
+      objRetorno.empresa.empr_sq_id = obj.empresa[indEmpresa[0]].empr_sq_id;
+      objRetorno.empresa.empr_nm_razaosocial = obj.empresa[indEmpresa[0]].empr_nm_razaosocial;
+      objRetorno.categoriaps.caps_sq_id = obj.categoriaps[indCategoriaPS[0]].caps_sq_id;
+      objRetorno.categoriaps.caps_nm_categoria = obj.categoriaps[indCategoriaPS[0]].caps_nm_categoria;
+    }
 
-    // --- Converte objeto interno em objeto Javascript
-    let obj = JSON.parse(JSON.stringify(objTabelaPreco.val()));
-    let indEmpresa = Object.keys(obj.empresa);
-    let indCategoriaPS = Object.keys(obj.categoriaps);
-    objRetorno.tapr_sq_id = objTabelaPreco.key;
-    objRetorno.tapr_nm_item = obj.tapr_nm_item;
-    objRetorno.tapr_ds_item = obj.tapr_ds_item;
-    objRetorno.tapr_tp_item = obj.tapr_tp_item;
-    objRetorno.tapr_ds_unidade = obj.tapr_ds_unidade;
-    objRetorno.tapr_tx_observacao = obj.tapr_tx_observacao;
-    objRetorno.tapr_tx_imagem = obj.tapr_tx_imagem;
-    objRetorno.tapr_in_sobconsulta = obj.tapr_in_sobconsulta;
-    objRetorno.tapr_vl_unitario = obj.tapr_vl_unitario;
-    objRetorno.tapr_vl_perc_desconto = obj.tapr_vl_perc_desconto;
-    objRetorno.empresa.empr_sq_id = obj.empresa[indEmpresa[0]].empr_sq_id;
-    objRetorno.empresa.empr_nm_razaosocial = obj.empresa[indEmpresa[0]].empr_nm_razaosocial;
-    objRetorno.categoriaps.caps_sq_id = obj.categoriaps[indCategoriaPS[0]].caps_sq_id;
-    objRetorno.categoriaps.caps_nm_categoria = obj.categoriaps[indCategoriaPS[0]].caps_nm_categoria;
     return objRetorno;
   }
 
   criaEstruturaJSON(model) {
-
     let json: string;
     json = 
     '{' +
@@ -199,15 +210,15 @@ export class TabelaPrecoService {
       '"tapr_ds_item":"' + model.tapr_ds_item + '",' +
       '"tapr_ds_unidade":"' + model.tapr_ds_unidade + '",' +
       '"tapr_tp_item":"' + model.tapr_tp_item + '",' +
-      '"tapr_vl_unitario":"' + model.tapr_vl_unitario + '",' +
-      '"tapr_vl_perc_desconto":"' + model.tapr_vl_perc_desconto + '",' +
+      '"tapr_vl_unitario":"' + (model.tapr_vl_unitario.toString()).replace(",",".") + '",' +
+      '"tapr_vl_perc_desconto":"' + (model.tapr_vl_perc_desconto.toString()).replace(",",".") + '",' +
       '"tapr_in_sobconsulta":' + model.tapr_in_sobconsulta + ',' +
       '"tapr_tx_observacao":"' + model.tapr_tx_observacao + '",' +
       '"tapr_tx_imagem":"' + model.tapr_tx_imagem + '",' +
       '"empresa": {"' + model.empresa.empr_sq_id + '": ' +
         '{' + 
         '"empr_sq_id":"' + model.empresa.empr_sq_id + '",' +
-        '"emp_nm_razaosocial":"' + model.empresa.empr_nm_razaosocial + '"' +
+        '"empr_nm_razaosocial":"' + model.empresa.empr_nm_razaosocial + '"' +
         '}},' +
       '"categoriaps": {"' + model.categoriaps.caps_sq_id + '": ' +
       '{' + 
@@ -215,10 +226,8 @@ export class TabelaPrecoService {
       '"caps_nm_categoria":"' + model.categoriaps.caps_nm_categoria + '"' +
       '}}'
     json = json + '}';
-    console.log('JSON criado da tabelaPreco=', json);
 
     let convertJSON = JSON.parse(json);
     return convertJSON;
   }
-
 }

@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth-guards';
 import { UsuarioGuards } from './guards/usuario-guards';
 import { ContratoComponent } from './contrato/contrato.component';
+import { PedidoEmpresaComponent } from './pedido/pedido-empresa/pedido-empresa.component';
 import { HomeComponent } from './home/home.component';
 
 const app_routes: Routes = [
@@ -22,6 +23,7 @@ const app_routes: Routes = [
     { path: 'agenda', loadChildren: 'app/cadastro/agenda/agenda.module#AgendaModule', canActivate: [AuthGuard]},
     { path: 'vitrine', loadChildren: 'app/cadastro/vitrine/vitrine.module#VitrineModule', canActivate: [AuthGuard]},
     { path: 'categoriaps', loadChildren: 'app/cadastro/categoria-ps/categoria-ps.module#CategoriaPSModule', canActivate: [AuthGuard]},
+    { path: 'pedidoempresa', component: PedidoEmpresaComponent},
     { path: 'contrato', component: ContratoComponent},
     { path: 'login', component: LoginComponent},
     { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}

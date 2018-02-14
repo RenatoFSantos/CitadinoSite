@@ -1,0 +1,79 @@
+<section id="contato" class="cabecalho">
+    <div class="faixa_branca">
+        <div class="container">
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <hr>
+                        <h2 class="titulo-pagina text-left">
+                            <strong>Pedido</strong>
+                        </h2>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ***************** -->
+            <!-- MENSAGEM          -->        
+            <!-- ***************** -->
+
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{txtMensagem}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <form id="formfiltro" class="form-inline" (ngSubmit)="onSubmit(f)" #f="ngForm">
+                            <div class="form-group col-lg-6">
+                                <label for="txtFiltro" class="control-label">Filtro: </label>
+                                <input style="width: 490px;" type="text" id="txtFiltro" class="form-control" [(ngModel)]="txtFiltro" value="{{txtFiltro}}" name="txtFiltro" ngModel>
+                            </div>
+                            <button type="submit" class="btn btn-success">Filtrar</button>
+                            <div class="form-group col-lg-6"></div>
+                        </form>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+          
+
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <div class="list-group">
+                            <a *ngFor="let empresa of listaEmpresas" class="list-group-item" >
+                                {{ empresa?.empr_nm_razaosocial }}
+                                <div style="float: right; margin-top: -5px;">
+                                    <a class="btn btn-primary" [routerLink]="['/pedidoempresa', empresa.empr_sq_id]">Fazer Pedido</a>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <section>
+                    <article>
+                        <kz-paginacao 
+                            [qtdPorPagina]="qtdPorPagina" 
+                            [totalRegistros]="totalRegistros"
+                            [qtdAdjacentes]="qtdAdjacentes"
+                            (onPaginate)="paginar($event)">
+                        </kz-paginacao>
+                    </article>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

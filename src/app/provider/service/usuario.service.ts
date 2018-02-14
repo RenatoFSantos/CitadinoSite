@@ -5,6 +5,7 @@ import { UsuarioVO } from './../../model/usuarioVO';
 import { FirebaseService } from './../database/firebase.service';
 import { Injectable, Component } from '@angular/core';
 import * as firebase from 'firebase';
+import { EnderecoVO } from './../../model/enderecoVO';
 
 @Injectable()
 export class UsuarioService {
@@ -315,15 +316,20 @@ export class UsuarioService {
     console.log('Dentro da função - Usuario: ', objUsuario.key);
     let objRetorno: UsuarioVO = new UsuarioVO();
     let objValor = objUsuario.val();
+    let objEndereco: EnderecoVO;
     // --- Converte objeto interno em objeto Javascript
     let obj = JSON.parse(JSON.stringify(objUsuario.val()));
     let indEmpresa = [];
     let indMunicipio = [];
+    let indEndereco = [];
     if (obj.empresa!=null) {
        indEmpresa = Object.keys(obj.empresa);
     }
     if (obj.municipio!=null) {
       indMunicipio = Object.keys(obj.municipio);
+    }
+    if (obj.endereco!=null) {
+      indEndereco = Object.keys(obj.endereco);
     }
     objRetorno.usua_sq_id = objUsuario.key;
     objRetorno.usua_nm_usuario = objValor.usua_nm_usuario;
@@ -346,7 +352,13 @@ export class UsuarioService {
     if(indMunicipio.length>0) {
       objRetorno.municipio.muni_sq_id = objValor.municipio[indMunicipio[0]].muni_sq_id;
       objRetorno.municipio.muni_nm_municipio = objValor.municipio[indMunicipio[0]].muni_nm_municipio;
-    }    
+    }
+    for(var i = 0; i < indEndereco.length; i++) {
+      objEndereco = new EnderecoVO();
+      objEndereco.ende_sq_id = objValor.endereco[indEndereco[i]].ende_sq_id;
+      objEndereco.ende_cd_endereco = objValor.endereco[indEndereco[i]].ende_cd_endereco;
+      objRetorno.endereco.push(objEndereco);
+    }   
     return objRetorno;
   }
   

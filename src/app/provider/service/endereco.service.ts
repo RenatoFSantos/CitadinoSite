@@ -86,9 +86,17 @@ export class EnderecoService {
 
   carregaObjeto(objEndereco):EnderecoVO {
     let objRetorno: EnderecoVO = new EnderecoVO();
-    let objValor = objEndereco.val();
-    // --- Converte objeto interno em objeto Javascript
-    let obj = JSON.parse(JSON.stringify(objEndereco.val()));
+    let objValor: any;
+    let obj: any;
+    if(objEndereco.ende_sq_id!=undefined) {
+      objValor = objEndereco;
+      obj = JSON.parse(JSON.stringify(objEndereco));
+    } else {
+      console.log('Objeto Tabela de Preco com VAL()');
+      objValor = objEndereco.val();
+      obj = JSON.parse(JSON.stringify(objEndereco.val()));
+    }
+
     let indUsuario = Object.keys(obj.usuario);
 
     objRetorno.ende_sq_id = objEndereco.key;

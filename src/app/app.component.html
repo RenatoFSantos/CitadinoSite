@@ -62,6 +62,7 @@
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/agenda/lista']">Agenda</a></li>
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/vitrine/lista']">Vitrine</a></li>
                         <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/empresa', objEmpresa.empr_sq_id, 'tabelapreco']" [queryParams]="{perfUsu: 'PAR'}">Tabela de Preço</a></li>
+                        <li><a [routerLink]="['/pedidoempresa']">Pedido</a></li>
                         <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/usuario/config']">Alterar Senha</a></li>
                         <li><a [routerLink]="['/']">Sair</a></li>
                       </ul>

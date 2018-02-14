@@ -30,6 +30,8 @@ export class EmpresaVO {
     public empr_nr_reputacao: number;
     public empr_in_mensagem: boolean;
     public empr_in_parceiro: boolean;
+    public empr_in_tabelapreco: boolean;
+    public empr_in_delivery: boolean;
     public empr_sg_pessoa: string;
     public empr_tx_subcategoria: string;
     public categoria: CategoriaVO;
@@ -66,6 +68,8 @@ export class EmpresaVO {
         this.empr_nr_reputacao= 0;
         this.empr_in_mensagem = true;
         this.empr_in_parceiro = true;
+        this.empr_in_tabelapreco = false;
+        this.empr_in_delivery = false;
         this.empr_sg_pessoa = 'PJ';
         this.empr_tx_subcategoria = '';
         this.categoria = new CategoriaVO();

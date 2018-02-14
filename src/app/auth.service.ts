@@ -115,7 +115,6 @@ export class AuthService {
 
   // -- Retorna Usuario Autenticado
   getLoggedInUser() {
-    console.log('Usuário corrente=', firebase.auth().currentUser);
     return firebase.auth().currentUser;
   }
 

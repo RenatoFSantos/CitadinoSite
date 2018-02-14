@@ -1,3 +1,4 @@
+import { ItemService } from './../provider/service/item.service';
 import { ProgressDirective } from './directives/progress.directive';
 import { BarComponent } from './components/bar/bar.component';
 import { FileUploader } from './components/file-upload/file-uploader.class';
@@ -69,7 +70,10 @@ import { DateFormatPipePipe } from './pipes/date-format-pipe.pipe';
     BarComponent,
     ProgressDirective,
     ProgressbarComponent,
-    DateFormatPipePipe
+    DateFormatPipePipe,
+  ],
+  providers: [
+    ItemService
   ]
 })
 export class SharedModule {}
