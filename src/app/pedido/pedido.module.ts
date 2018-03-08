@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 
 import * as firebase from 'firebase';
 import { PedidoProdutoComponent } from './pedido-produto/pedido-produto.component';
+import { PedidoDeliveryComponent } from './pedido-delivery/pedido-delivery.component';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import { PedidoProdutoComponent } from './pedido-produto/pedido-produto.componen
     exports: [],
     declarations: [
         PedidoEmpresaComponent,
-        PedidoProdutoComponent
+        PedidoProdutoComponent,
+        PedidoDeliveryComponent
     ],
     providers: [PedidoService]
 })

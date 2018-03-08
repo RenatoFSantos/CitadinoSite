@@ -44,7 +44,7 @@
                   </div>
                   <div class="collapse navbar-collapse" id="navbar1" role="navigation">
                       <ul class="nav navbar-nav navbar-right">
-                        <li><a [routerLink]="['/home']">Principal</a></li>
+                        <li><a [routerLink]="['/home']">Home</a></li>
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'" class="dropdown-submenu">
                             <a href="#opc1" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cadastros <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -61,8 +61,9 @@
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/anuncio/lista']">Anúncios</a></li>
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/agenda/lista']">Agenda</a></li>
                         <li [style.display]="perfil=='ADM' ? 'block' : 'none'"><a [routerLink]="['/vitrine/lista']">Vitrine</a></li>
-                        <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/empresa', objEmpresa.empr_sq_id, 'tabelapreco']" [queryParams]="{perfUsu: 'PAR'}">Tabela de Preço</a></li>
+                        <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/empresa', objEmpresa.empr_sq_id, 'tabelapreco']" [queryParams]="{perfUsu: 'PAR'}">Tab. Preço</a></li>
                         <li><a [routerLink]="['/pedidoempresa']">Pedido</a></li>
+                        <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/pedidodelivery', objEmpresa.empr_sq_id]">Delivery</a></li>
                         <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/usuario/config']">Alterar Senha</a></li>
                         <li><a [routerLink]="['/']">Sair</a></li>
                       </ul>
