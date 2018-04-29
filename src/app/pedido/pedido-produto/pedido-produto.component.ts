@@ -58,6 +58,7 @@ export class PedidoProdutoComponent implements OnInit {
   listaFormaPagamento: Array<string> = [];
   user: any = '';
   formaPagto: any = '';
+  flagButton: boolean = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -82,6 +83,7 @@ export class PedidoProdutoComponent implements OnInit {
       'Dinheiro', 'Cheque', 'Cartão'
     ]
     this.formaPagto = 'Cartão'
+    this.objEndereco = new EnderecoVO();
     // -- Identificando o Usuário do Pedido
     this.objUsuario = new UsuarioVO();
     this.user = this.authService.getLoggedInUser();
@@ -142,15 +144,17 @@ export class PedidoProdutoComponent implements OnInit {
   carregaEnderecosDoUsuario() {
     this.listaEnderecos=[];
     // Carregando os endereços deste usuário
-    this.objUsuario.endereco.forEach((endUsuario) => {
-      this.objEndereco = new EnderecoVO();
-      this.enderecoService.getEnderecoUsuario(this.objUsuario.usua_sq_id, endUsuario.ende_sq_id)
-        .then((end) => {
-          this.objEndereco = this.enderecoService.carregaObjeto(end);
-          this.listaEnderecos.push(this.objEndereco);
+    if(this.objUsuario.endereco!=null && this.objUsuario.endereco!=undefined) {
+      this.objUsuario.endereco.forEach((endUsuario) => {
+        this.objEndereco = new EnderecoVO();
+        this.enderecoService.getEnderecoUsuario(this.objUsuario.usua_sq_id, endUsuario.ende_sq_id)
+          .then((end) => {
+            this.objEndereco = this.enderecoService.carregaObjeto(end);
+            this.listaEnderecos.push(this.objEndereco);
+          })
         })
-      })
-    console.log('Lista de Enderecos carregada=', this.listaEnderecos);
+      console.log('Lista de Enderecos carregada=', this.listaEnderecos);
+    }
     console.log('Usuário do Pedido=', this.objUsuario);
   }
 
@@ -208,6 +212,7 @@ export class PedidoProdutoComponent implements OnInit {
   } 
 
   novoEndereco() {
+    this.flagButton=false;
     this.objEndereco = new EnderecoVO();
   }
 
@@ -218,6 +223,7 @@ export class PedidoProdutoComponent implements OnInit {
 
   onSubmitEndereco(form:NgForm) { 
     console.log('Entrei no Submit');
+    this.flagButton=true;
     this.objEndereco.usuario.usua_sq_id = this.objUsuario.usua_sq_id;
     this.objEndereco.usuario.usua_nm_usuario = this.objUsuario.usua_nm_usuario;
     console.log('Entrei no submit do endereço', this.objEndereco);
@@ -251,6 +257,12 @@ export class PedidoProdutoComponent implements OnInit {
     let result: boolean = false;
     this.listaItensSelecionados=this.pedidoService.atualizaItemPedido(item, this.listaItensSelecionados, modo);
     this.objPedido = this.pedidoService.atualizaPedido(this.listaItensSelecionados);
+    this.objPedido.pedi_vl_entrega = this.objEmpresa.empr_vl_entrega;
+    if(!Number.isNaN(this.objPedido.pedi_vl_entrega)) {
+      this.objPedido.pedi_vl_entrega=0;
+    }
+    this.objPedido.pedi_vl_total = this.objPedido.pedi_vl_total.valueOf() + this.objPedido.pedi_vl_entrega.valueOf();
+    
     if(modo=='mais') {
       // --- Fechando formulário Modal
       setTimeout(() => {
@@ -271,15 +283,11 @@ export class PedidoProdutoComponent implements OnInit {
   }
 
   fecharPedido() {
-    this.flagModo='fechar';
+    this.flagModo='fechar';    
   }
 
   finalizarPedido() {
     this.flagModo='finalizar';
-    console.log('Pedido=', this.objPedido);
-    console.log('Itens Pedidos=', this.listaItensSelecionados);
-    console.log('Usuario solicitante=', this.objUsuario);
-    console.log('Endereço=', this.objEndereco);
   }
 
   salvarPedido() {
@@ -312,6 +320,7 @@ export class PedidoProdutoComponent implements OnInit {
   }
 
   mudarNome() {
+    this.flagButton=true;
     console.log('Nome do botão=', (<HTMLFormElement>document.getElementById('btnEndereco')).value);
     (<HTMLFormElement>document.getElementById('btnEndereco')).value = 'Aguarde...';
   }

@@ -86,6 +86,12 @@ export class TabelaPrecoService {
       tabelaPreco.empresa.empr_nm_razaosocial = empresa.empr_nm_razaosocial;
     }
 
+    // Verificando se não tem desconto carregado
+    console.log('Valor do desconto=', tabelaPreco.tapr_vl_perc_desconto);
+    if(tabelaPreco.tapr_vl_perc_desconto===undefined || tabelaPreco.tapr_vl_perc_desconto===null || tabelaPreco.tapr_vl_perc_desconto<0) {
+      tabelaPreco.tapr_vl_perc_desconto=0;
+    }
+
     if(tipo=='I') {
       refTab = firebase.database().ref(`tabelapreco/${empresa.empr_sq_id}`).push().key;
       tabelaPreco.tapr_sq_id = refTab;

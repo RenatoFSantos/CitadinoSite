@@ -53,5 +53,13 @@
             return newDate;
         }
      
+        public leftPad(value, totalWidth, paddingChar) {
+            var length = totalWidth - value.toString().length + 1;
+            return Array(length).join(paddingChar || '0') + value;
+        }
 
+        public dateTransform(d) {
+            var s = (new Date(d)).toString().split(' ');
+            return [s[2],s[1],s[3]].join('-');
+        }
     } 

@@ -135,20 +135,34 @@ export class EmpresaService {
       let modelJSONEmpresaEmpresa;
       let modelJSONDescritorEmpresa;
       let modelJSONEmpresaDescritor;
+      let modelJSONCategoria;
 
       // Verificando se checkbox estão definidos
       if(empresa.empr_in_mensagem===undefined || empresa.empr_in_mensagem===null) {
         empresa.empr_in_mensagem = false;
       }
+
       if(empresa.empr_in_parceiro===undefined || empresa.empr_in_parceiro===null) {
         empresa.empr_in_parceiro = false;
       }
+
       if(empresa.empr_in_tabelapreco===undefined || empresa.empr_in_tabelapreco===null) {
         empresa.empr_in_tabelapreco = false;
       }
+
       if(empresa.empr_in_delivery===undefined || empresa.empr_in_delivery===null) {
         empresa.empr_in_delivery = false;
       }
+
+      // Verificando se não tem desconto carregado
+      let validaDesconto = 1 / empresa.empr_vl_entrega;
+      if (!Number.isNaN(validaDesconto)) {
+        empresa.empr_vl_entrega=0;
+      }
+      if(empresa.empr_vl_entrega===undefined || empresa.empr_vl_entrega===null || empresa.empr_vl_entrega.valueOf()<0) {
+        empresa.empr_vl_entrega=0;
+      }      
+
       // Verificando se subcategoria está indefinida
       if(empresa.empr_tx_subcategoria===undefined) {
         empresa.empr_tx_subcategoria='';
@@ -264,7 +278,7 @@ export class EmpresaService {
           this.descritorEmpresa.desc_nm_descritor = descritor.desc_nm_descritor;
           this.descritorEmpresa.desc_nm_pesquisa = descritor.desc_nm_pesquisa;
           this.descritorEmpresa.desc_in_privado = descritor.desc_in_privado;
-          firebase.database().ref(`/descritorempresa/${descritor.desc_sq_id}`).once('value')
+          firebase.database().ref(`/_municipioflt/${empresa.municipio.muni_sq_id}/descritorempresa/${descritor.desc_sq_id}`).once('value')
           .then((elemento) => {
             if (elemento.val()===null) {
               console.log('Elemento vazio, nova inclusão de descritor.');
@@ -289,13 +303,13 @@ export class EmpresaService {
               update[`/empresa/${empresa.empr_sq_id}/descritor/${descritor.desc_sq_id}`] = modelJSON;
               console.log('modelJSON final=', modelJSON);
               // Atualiza em Descritores os dados da empresa
-              update[`/descritorempresa/${descritor.desc_sq_id}`] = modelJSONDescritorEmpresa;
+              update[`/_municipioflt/${empresa.municipio.muni_sq_id}/descritorempresa/${descritor.desc_sq_id}`] = modelJSONDescritorEmpresa;
               console.log('modelJSONDescritorEmpresa final=', modelJSONDescritorEmpresa);
             } else {
               console.log('Excluindo registro EmpresaDescritor');
               update[`/empresa/${empresa.empr_sq_id}/descritor/${descritor.desc_sq_id}`] = null;
               // Atualiza em Descritores os dados da empresa
-              update[`/descritorempresa/${descritor.desc_sq_id}/empresa/${empresa.empr_sq_id}`] = null;  
+              update[`/_municipioflt/${empresa.municipio.muni_sq_id}/descritorempresa/${descritor.desc_sq_id}/empresa/${empresa.empr_sq_id}`] = null;  
             }
             
             result =  firebase.database().ref().update(update);
@@ -478,6 +492,7 @@ atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
     objRetorno.empr_in_delivery = objValor.empr_in_delivery;
     objRetorno.empr_sg_pessoa = objValor.empr_sg_pessoa;
     objRetorno.empr_tx_subcategoria = objValor.empr_tx_subcategoria;
+    objRetorno.empr_vl_entrega = parseFloat(objValor.empr_vl_entrega);
     objRetorno.categoria.cate_sq_id = objValor.categoria[indEmpresa[0]].cate_sq_id;
     objRetorno.categoria.cate_nm_categoria = objValor.categoria[indEmpresa[0]].cate_nm_categoria;
     objRetorno.plano.plan_sq_id = objValor.plano[indPlano[0]].plan_sq_id;
@@ -627,6 +642,7 @@ atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
       '"empr_in_delivery":' + model.empr_in_delivery + ',' +
       '"empr_sg_pessoa":"' + model.empr_sg_pessoa + '",' +
       '"empr_tx_subcategoria":"' + model.empr_tx_subcategoria + '",' +
+      '"empr_vl_entrega":"' + (model.empr_vl_entrega.toString()).replace(",",".") + '",' +
       '"categoria": {"' + model.categoria.cate_sq_id + '": ' +
         '{' + 
         '"cate_sq_id":"' + model.categoria.cate_sq_id + '",' +
@@ -768,70 +784,6 @@ atualizarImagensEmpresa(idEmpresa, txImagem, dir) {
     '}';
     let convertJSON = JSON.parse(json);
     return convertJSON;    
-  }
-
-  // --- Estrutura Original da função que gravava toda a estrutura de empresa junto com o descritor
-  // --- e foi substituida pela função acima criaEstruturaJSONDescritorEmpresa e mantida aqui apenas
-  // --- por segurança, caso alguma necessidade seja lembrada e tenhamos que voltar com ela.
-  criaEstruturaJSONDescritorEmpresa_Original(model) {
-    let json: string;
-    json = 
-    '{' +
-      '"desc_sq_id":"' + model.desc_sq_id + '",' +
-      '"desc_nm_descritor":"' + model.desc_nm_descritor + '",' +
-      '"desc_in_privado":"' + model.desc_in_privado + '",'
-      for(var i = 0; i < model.empresa.length; i++) {
-            if(i==0) {
-              json = json + ' "empresa": {'
-            } else {
-              json = json + ', '  
-            }
-            json = json + 
-              '"' + model.empresa[i].empr_sq_id + '": ' +
-                '{' + 
-                  '"empr_sq_id":"' + model.empresa[i].empr_sq_id + '",' +
-                  '"empr_nm_razaosocial":"' + model.empresa[i].empr_nm_razaosocial + '",' +
-                  '"empr_sg_alfabetica":"' + model.empresa[i].empr_nm_razaosocial.slice(0,1) + '",' +
-                  '"empr_tx_logomarca":"' + model.empresa[i].empr_tx_logomarca + '",' +
-                  '"empr_tx_endereco":"' + model.empresa[i].empr_tx_endereco + '",' +
-                  '"empr_tx_bairro":"' + model.empresa[i].empr_tx_bairro + '",' +
-                  '"empr_tx_cidade":"' + model.empresa[i].empr_tx_cidade + '",' +
-                  '"empr_sg_uf":"' + model.empresa[i].empr_sg_uf + '",' +
-                  '"empr_nr_cep":"' + model.empresa[i].empr_nr_cep + '",' +
-                  '"empr_tx_telefone_1":"' + model.empresa[i].empr_tx_telefone_1 + '",' +
-                  '"empr_tx_telefone_2":"' + model.empresa[i].empr_tx_telefone_2 + '",' +
-                  '"empr_nm_contato":"' + model.empresa[i].empr_nm_contato + '",' +
-                  '"empr_ds_email":"' + model.empresa[i].empr_ds_email + '",' +
-                  '"empr_ds_site":"' + model.empresa[i].empr_ds_site + '",' +
-                  '"empr_tx_sobre":"' + model.empresa[i].empr_tx_sobre + '",' +
-                  '"empr_nr_reputacao":"' + model.empresa[i].empr_nr_reputacao + '",' +
-                  '"empr_in_mensagem":' + model.empresa[i].empr_in_mensagem + ',' +
-                  '"empr_in_parceiro":' + model.empresa[i].empr_in_parceiro + ',' +
-                  '"empr_sg_pessoa":"' + model.empresa[i].empr_sg_pessoa + '",' +
-                  '"empr_tx_subcategoria":"' + model.empresa[i].empr_tx_subcategoria + '",' +
-                  '"categoria": {"' + model.empresa[i].categoria.cate_sq_id + '": ' +
-                    '{' + 
-                    '"cate_sq_id":"' + model.empresa[i].categoria.cate_sq_id + '",' +
-                    '"cate_nm_categoria":"' + model.empresa[i].categoria.cate_nm_categoria + '"' +
-                    '}},' +
-                  '"plano": {"' + model.empresa[i].plano.plan_sq_id + '": ' +
-                    '{' + 
-                      '"plan_sq_id":"' + model.empresa[i].plano.plan_sq_id + '",' +
-                      '"plan_nm_plano":"' + model.empresa[i].plano.plan_nm_plano + '",' +
-                      '"plan_ds_descricao":"' + model.empresa[i].plano.plan_ds_descricao + '",' +
-                      '"plan_vl_plano":"' + model.empresa[i].plano.plan_vl_plano + '",' +
-                      '"plan_tp_valor":"' + model.empresa[i].plano.plan_tp_valor + '",' +
-                      '"plan_in_smartsite":' + model.empresa[i].plano.plan_in_smartsite + ',' +
-                      '"plan_in_tabpreco":' + model.empresa[i].plano.plan_in_tabpreco + ',' +
-                      '"plan_in_ecommerce":' + model.empresa[i].plano.plan_in_ecommerce + 
-                    '}}' +
-                '}'
-      }
-    json = json + '}}';
-    console.log('JSON criado da descritorempresa=', json);
-
-    let convertJSON = JSON.parse(json);
-    return convertJSON;
   }
   
 }

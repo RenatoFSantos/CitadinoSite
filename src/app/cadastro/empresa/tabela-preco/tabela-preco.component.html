@@ -45,12 +45,16 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-6" style="text-align: center;">
+            <div class="col-lg-4" style="text-align: center;">
                 <h4>Nome do Item</h4>
                 <hr>
             </div>
             <div class="col-lg-3" style="text-align: center;">
                 <h4>R$ Unitário</h4>
+                <hr>
+            </div>
+            <div class="col-lg-2" style="text-align: center;">
+                <h4>Desconto (%)</h4>
                 <hr>
             </div>
             <div class="col-lg-3" style="text-align: center;">
@@ -60,11 +64,14 @@
           </div>
 
           <div id="tabelapreco" class="row" style="border-bottom: 1px dotted grey; padding: 5px 0px 5px 0px !important;" *ngFor="let item of listaItens">
-            <div class="col-lg-6" style="text-align: center; padding-top: 3px !important;">
+            <div class="col-lg-4" style="text-align: center; padding-top: 3px !important;">
                     {{ item?.val().tapr_nm_item}}
             </div>
             <div class="col-lg-3" style="text-align: center; padding-top: 3px !important;">
                     {{ item?.val().tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
+            </div>
+            <div class="col-lg-2" style="text-align: center; padding-top: 3px !important;">
+                    {{ item?.val().tapr_vl_perc_desconto | number:'1.2-2' }}%
             </div>
             <div class="col-lg-3">
                 <div class="list-group">
@@ -184,9 +191,14 @@
                                       <label for="tapr_vl_unitario" class="control-label">R$ unitário</label>
                                       <input type="text" id="tapr_vl_unitario" class="form-control" maxlength="15" placeholder="0,00" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_vl_unitario" name="tapr_vl_unitario"  #valor="ngModel" ngModel kzMaskCurrency>
                                     </div>
-                              <div class="form-group col-lg-2">
+                              <div class="form-group col-lg-2"
+                                      [class.has-error]="!percDesconto.valid && percDesconto.touched" 
+                                      [class.has-feedback]="!percDesconto.valid && percDesconto.touched">
                                       <label for="tapr_vl_perc_desconto" class="control-label">Desconto (%)</label>
-                                      <input type="text" id="tapr_vl_perc_desconto" class="form-control" maxlength="5" placeholder="0,00" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_vl_perc_desconto" name="tapr_vl_perc_desconto" #percdesconto="ngModel" ngModel kzMaskCurrency>
+                                      <input type="text" id="tapr_vl_perc_desconto" class="form-control" maxlength="5" placeholder="0,00" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.tapr_vl_perc_desconto" name="tapr_vl_perc_desconto" #percDesconto="ngModel" ngModel required kzMaskCurrency>
+                                      <span id="help_percDesconto" class="help-block" *ngIf="!percDesconto.valid && percDesconto.touched">Percentual é obrigatória!</span>
+                                      <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!percDesconto.valid && percDesconto.touched" aria-hidden="true" style="margin-right: 15px;"></span>
+                                      <span id="percDesconto" class="sr-only">(error)</span>                                                                                    
                               </div>
                               <!-- ********************************************************************** -->
                               <!-- LINHA 6 - OBSERVAÇÃO                                                   -->

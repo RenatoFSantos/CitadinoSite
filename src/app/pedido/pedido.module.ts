@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import * as firebase from 'firebase';
 import { PedidoProdutoComponent } from './pedido-produto/pedido-produto.component';
 import { PedidoDeliveryComponent } from './pedido-delivery/pedido-delivery.component';
+import { PedidoStatusComponent } from './pedido-status/pedido-status.component';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { PedidoDeliveryComponent } from './pedido-delivery/pedido-delivery.compo
     declarations: [
         PedidoEmpresaComponent,
         PedidoProdutoComponent,
-        PedidoDeliveryComponent
+        PedidoDeliveryComponent,
+        PedidoStatusComponent
     ],
     providers: [PedidoService]
 })

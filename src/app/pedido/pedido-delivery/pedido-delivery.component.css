@@ -1,0 +1,8 @@
+
+#listaProduto.row:nth-child(odd){
+  background: gray !important;
+}
+
+#listaProduto.row:nth-child(even){
+  background: rgb(218, 217, 217) !important;
+}

@@ -34,6 +34,7 @@ export class EmpresaVO {
     public empr_in_delivery: boolean;
     public empr_sg_pessoa: string;
     public empr_tx_subcategoria: string;
+    public empr_vl_entrega: number;
     public categoria: CategoriaVO;
     public plano: PlanoVO;
     public descritor: Array<DescritorVO>;
@@ -72,6 +73,7 @@ export class EmpresaVO {
         this.empr_in_delivery = false;
         this.empr_sg_pessoa = 'PJ';
         this.empr_tx_subcategoria = '';
+        this.empr_vl_entrega = 0;
         this.categoria = new CategoriaVO();
         this.plano = new PlanoVO();
         this.usuario = '';

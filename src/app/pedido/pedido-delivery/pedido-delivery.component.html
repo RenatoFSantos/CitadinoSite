@@ -1,75 +1,223 @@
 <section id="pedido" class="cabecalho">
-  <div class="faixa_branca">
-      <div class="container">
-          <div class="row">
-              <div class="box">
-                  <div class="col-lg-12">
-                      <h1 class="titulo-pagina text-left">
+    <div class="faixa_branca">
+        <div class="container">
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <h1 class="titulo-pagina text-left">
                             {{ objEmpresa.empr_nm_razaosocial }}
-                      </h1>
-                      <h2 class="subtitulo-pagina text-left">
-                        Delivery
-                      </h2>
-                      <hr>
-                  </div>
-              </div>
-          </div>
-          
-          <!-- ***************** -->
-          <!-- MENSAGEM          -->        
-          <!-- ***************** -->
+                        </h1>
+                        <h2 class="subtitulo-pagina text-left">
+                            Delivery
+                        </h2>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ***************** -->
+            <!-- MENSAGEM          -->        
+            <!-- ***************** -->
 
-          <div class="row">
-              <div class="box">
-                  <div class="col-lg-12">
-                      <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
-                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                          {{txtMensagem}}
-                      </div>
-                  </div>
-              </div>
-          </div>
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <div class="{{ stsMensagem }}" [hidden]="flagHidden" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{txtMensagem}}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-          <!-- ***************** -->
-          <!-- FILTRO            -->        
-          <!-- ***************** -->          
+            <!-- ***************** -->
+            <!-- FILTRO            -->        
+            <!-- ***************** -->          
 
-          <div class="row">
-              <div class="box">
-                  <div class="col-lg-12">
-                      <form id="formfiltro" class="form-inline" (ngSubmit)="onSubmit(f)" #f="ngForm">
-                          <div class="form-group col-lg-6">
-                              <label for="txtFiltro" class="control-label">Filtro: </label>
-                              <input style="width: 490px;" type="text" id="txtFiltro" class="form-control" [(ngModel)]="txtFiltro" value="{{txtFiltro}}" name="txtFiltro" ngModel>
-                          </div>
-                          <button type="submit" class="btn btn-success">Filtrar</button>
-                          <div class="form-group col-lg-6"></div>
-                      </form>
-                      <hr>
-                  </div>
-              </div>
-          </div>
-        
-          <!-- ***************** -->
-          <!-- LISTA DE PEDIDOS  -->        
-          <!-- ***************** -->          
+            <div class="row">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <form id="formPedido" class="form-inline" (ngSubmit)="onSubmitPedido(f)" #f="ngForm">
+                            <div class="form-group">
+                                <label for="txtFiltro" class="control-label">Nome: </label>
+                                <input style="width: 490px;" type="text" id="txtFiltro" class="form-control" [(ngModel)]="txtFiltro" value="{{txtFiltro}}" name="txtFiltro" ngModel>
+                            </div>
+                            <button type="submit" class="btn btn-success">Filtrar</button>
+                        </form>
+                        <hr>
+                    </div>
+                    <div class="col-lg-12">
+                        <form id="formParametro" (ngSubmit)="onSubmitParametro(f)" #f="ngForm">
+                            <div class="row">
+                                <div class="form-group col-lg-2">
+                                    <label for="dtInicio" class="control-label">A partir de:</label>
+                                    <input type="date" id="dtInicio" class="form-control" name="dtInicio" [ngModel] ="dtInicio | date:'yyyy-MM-dd'" (ngModelChange)="dtInicio = $event" [value]="dtInicio | date:'yyyy-MM-dd'">
+                                </div>
+                                <br>
+                                <div class="form-group col-lg-12">
+                                    <div class="col-lg-3">
+                                        <label for="chk_P" class="control-label">
+                                            <input type="checkbox" id="chk_P" class="form-check margin-checkbox noborder" [(ngModel)]="chk_P" name="chk_P" ngModel> Pendente
+                                        </label>
+                                        <br>
+                                        <label for="chk_A" class="control-label">
+                                            <input type="checkbox" id="chk_A" class="form-check margin-checkbox noborder" [(ngModel)]="chk_A" name="chk_A" ngModel> Andamento
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="chk_F" class="control-label">
+                                            <input type="checkbox" id="chk_F" class="form-check margin-checkbox noborder" [(ngModel)]="chk_F" name="chk_F" ngModel> Fechado
+                                        </label>
+                                        <br>
+                                        <label for="chk_E" class="control-label">
+                                            <input type="checkbox" id="chk_E" class="form-check margin-checkbox noborder" [(ngModel)]="chk_E" name="chk_E" ngModel> Entrega
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="chk_C" class="control-label">
+                                            <input type="checkbox" id="chk_C" class="form-check margin-checkbox noborder" [(ngModel)]="chk_C" name="chk_C" ngModel> Concluído
+                                        </label>
+                                        <br>
+                                        <label for="chk_R" class="control-label">
+                                            <input type="checkbox" id="chk_R" class="form-check margin-checkbox noborder" [(ngModel)]="chk_R" name="chk_R" ngModel> Retorno
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label for="chk_X" class="control-label">
+                                            <input type="checkbox" id="chk_X" class="form-check margin-checkbox noborder" [(ngModel)]="chk_X" name="chk_X" ngModel> Cancelado
+                                        </label>
+                                        <br>
+                                        <button type="button" class="btn btn-success btn-sm" (click)="setarStatus()">Inverter</button>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                                    <button type="button" class="btn btn-default" (click)="verProdutos()">
+                                        Produtos <span class="glyphicon glyphicon-screenshot"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                    </div>
+                </div>
+            </div>
 
-          <div class="row">
-              <div class="box">
-                  <div class="col-lg-12">
-                      <div class="list-group">
-                          <a *ngFor="let pedido of listaPedidos" class="list-group-item" >
-                              {{ pedido?.pedi_sq_id }}
-                              <div style="float: right; margin-top: -5px;">
-                                  <a class="btn btn-primary" [routerLink]="['/pedidodelivery', pedido.pedi_sq_id]">Ver Pedido</a>
-                              </div>
-                          </a>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+            <!-- **************************************************************************************************************************************** -->
+            <!-- LISTA COM O TOTAL POR PRODUTO  ********************************************************************************************************* -->        
+            <!-- **************************************************************************************************************************************** -->          
+            
+            <div class="row" [style.display]="flagProdutos ? 'block' : 'none'">
+                <div class="box">
+                    <div class="row">
+                        <!-- CABEÇALHO DOS ITENS -->
+                        <div class="col-lg-12" style="background-color: black; color: white;">
+                            <div class="col-lg-1" style="padding: 10px !important; font-size: 120%;">
+                                QTD.
+                            </div>                                                    
+                            <div class="col-lg-11" style="padding: 10px !important; font-size: 120%;">
+                                DESCRIÇÃO
+                            </div>                                                    
+                        </div>
+                    </div>
+                    <!-- RELAÇÃO DOS ITENS -->
+                    <div id="listaProduto" class="row" *ngFor="let produto of listaProdutos">
+                        <div class="col-lg-12" style="border-top: 1px dotted black;" >
+                            <div class="col-lg-1" style="padding: 10px 15px 10px 30px !important; font-size: 120%;">
+                                {{ produto.pito_vl_quantidade }}
+                            </div>
+                            <div class="col-lg-11 text-left" style="padding: 10px 15px 10px 15px !important; font-size: 120%;">
+                                {{ produto.pito_nm_item }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- **************************************************************************************************************************************** -->
+            <!--  LISTA DE PEDIDOS ********************************************************************************************************************** -->
+            <!-- **************************************************************************************************************************************** -->
+
+            <div class="row" [style.display]="flagProdutos ? 'none' : 'block'">
+                <div class="box">
+                    <div class="col-lg-12">
+                        <div class="list-group">
+                            <div class="col-lg-12" style="border-bottom: 1px dotted black;" *ngFor="let pedido of listaPedidos" [style.backgroundColor]="pedido.pedi_in_status=='P' ? '#c1392b' : 
+                            pedido.pedi_in_status=='A' ? '#e67f22' : pedido.pedi_in_status=='E' ? '#f1c40f' :
+                            pedido.pedi_in_status=='F' ? '#16a086' : pedido.pedi_in_status=='R' ? '#2d3e50' :
+                            pedido.pedi_in_status=='C' ? '#297fb8' : '#8d44af'
+                            ">
+                                <div class="col-lg-1 horcenter" style="padding-top: 10px !important;">
+                                    <button type="button" class="btn btn-default" (click)="verItens(pedido?.pedi_sq_id)">
+                                        <span [class]="pedidoAtual==pedido?.pedi_sq_id ? 'glyphicon glyphicon-triangle-bottom' : 'glyphicon glyphicon-triangle-right'" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                                <div class="col-lg-7" width="100%">
+                                    <div class="col-lg-12">
+                                        <div style="text-align: left !important; padding-left: 5px !important;">
+                                            <strong>{{ pedido?.usuario.usua_nm_usuario }}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div style="text-align: left !important;  padding-left: 5px !important;">
+                                            {{ pedido?.endereco.ende_tx_bairro }} - {{ pedido?.pedi_dt_horapedido | date:'dd/MM/yyyy HH:mm' }}
+                                        </div>
+                                    </div>
+                                    <!-- CABEÇALHO DOS ITENS -->
+                                    <div class="col-lg-12" style="background-color: black; color: white;" [style.display]="pedidoAtual==pedido?.pedi_sq_id ? 'block' : 'none'">
+                                        <div class="col-lg-1" style="padding: 0px !important;">
+                                            QTD.
+                                        </div>                                                    
+                                        <div class="col-lg-11">
+                                            DESCRIÇÃO
+                                        </div>                                                    
+                                    </div>
+                                    <!-- RELAÇÃO DOS ITENS -->
+                                    <div class="col-lg-12" style="border-top: 1px dotted black;" *ngFor="let item of pedido.itens" [style.display]="pedidoAtual==pedido?.pedi_sq_id ? 'block' : 'none'">
+                                        <div class="col-lg-1" style="padding-left:15px !important;">
+                                            {{ item.peit_vl_quantidade }}
+                                        </div>                                                    
+                                        <div class="col-lg-11 text-left" style="padding-left:15px !important;">
+                                            - {{ item.tabelapreco.tapr_nm_item}}
+                                        </div>                                                    
+                                    </div>
+                                    <div class="col-lg-12" style="border: 1px solid black;" [style.display]="pedidoAtual==pedido?.pedi_sq_id ? 'block' : 'none'">
+                                        <div class="col-lg-12" style="text-align: left !important; padding-left: 5px !important;">
+                                            {{ pedido.endereco.ende_tx_endereco }} <br>
+                                            {{ pedido.endereco.ende_tx_bairro }} - {{ pedido.endereco.ende_tx_cidade }}/{{ pedido.endereco.ende_sg_uf }} <br>
+                                            <strong>{{ pedido.usuario.usua_ds_telefone }}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12" [style.display]="pedidoAtual==pedido?.pedi_sq_id ? 'block' : 'none'">
+                                        <div class="col-lg-12" style="text-align: right !important; padding-left: 5px !important;">
+                                            <strong>{{ pedido.pedi_in_formapagto }} - {{ pedido.pedi_vl_total | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 tempogasto" style="padding: 10px !important;">
+                                    <span>{{ pedido?.pedi_md_tempogasto }}</span>
+                                </div>
+                                <div class="col-lg-2 horcenter" style="padding: 10px !important;">
+                                    <button type="button" (click)="mudarStatus(pedido)" class="btn btn-default">
+                                        <span>{{  pedido?.pedi_in_status=='P' ? 'Pendente '
+                                                : pedido?.pedi_in_status=='A' ? 'Andamento'
+                                                : pedido?.pedi_in_status=='F' ? 'Fechado  '
+                                                : pedido?.pedi_in_status=='E' ? 'Entrega  '
+                                                : pedido?.pedi_in_status=='C' ? 'Concluído'
+                                                : pedido?.pedi_in_status=='R' ? 'Retorno  '
+                                                                              : 'Cancelado'                                               
+                                        }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
 </section>
 
 

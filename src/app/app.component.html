@@ -64,7 +64,7 @@
                         <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/empresa', objEmpresa.empr_sq_id, 'tabelapreco']" [queryParams]="{perfUsu: 'PAR'}">Tab. Preço</a></li>
                         <li><a [routerLink]="['/pedidoempresa']">Pedido</a></li>
                         <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/pedidodelivery', objEmpresa.empr_sq_id]">Delivery</a></li>
-                        <li [style.display]="perfil=='ADM' || perfil=='PAR' ? 'block' : 'none'"><a [routerLink]="['/usuario/config']">Alterar Senha</a></li>
+                        <li><a [routerLink]="['/usuario/config']">Alterar Senha</a></li>
                         <li><a [routerLink]="['/']">Sair</a></li>
                       </ul>
                   </div>

@@ -109,15 +109,14 @@
                                         <input type="text" id="empr_tx_endereco" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_endereco" name="empr_tx_endereco" #endereco="ngModel" ngModel>
                                     </div>
                                 </div>
-                                <!-- **************************************************** -->
-                                <!-- LINHA 5 - BAIRRO, MUNICIPIO, UF E CEP                -->
-                                <!-- **************************************************** -->
+                                <!-- *************************************************************** -->
+                                <!-- LINHA 5 - MUNICIPIO ENDEREÇO, UF                                -->
+                                <!-- *************************************************************** -->
                                 <div class="row">
                                     <div class="form-group col-lg-4">
                                         <label for="empr_tx_bairro" class="control-label">Bairro</label>
                                         <input type="text" id="empr_tx_bairro" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_bairro" name="empr_tx_bairro" #bairro="ngModel" ngModel>
                                     </div>
-
                                     <div class="form-group col-lg-4"
                                         [class.has-error]="!municipio.valid && municipio.touched" 
                                         [class.has-feedback]="!municipio.valid && municipio.touched">
@@ -133,8 +132,6 @@
                                         <span class="glyphicon glyphicon-remove form-control-feedback" *ngIf="!municipio.valid && municipio.touched" aria-hidden="true" style="margin-right: 15px;"></span>
                                         <span id="municipio" class="sr-only">(error)</span>                                          
                                     </div>
-
-
                                     <div class="form-group col-lg-1">
                                         <label for="empr_sg_uf" class="control-label">UF</label>
                                         <div>
@@ -169,7 +166,6 @@
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="form-group col-lg-3">
                                         <label for="empr_nr_cep" class="control-label">CEP</label>
                                         <input type="text" id="empr_nr_cep" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_nr_cep" name="empr_nr_cep" maxlength="9" #cep="ngModel" ngModel kzMask="99999-999">
@@ -248,9 +244,13 @@
                                 <!-- LINHA 10 - COORDENADAS GOOGLE MAPS                   -->
                                 <!-- **************************************************** -->
                                 <div class="row">
-                                    <div class="form-group col-lg-12">
+                                    <div class="form-group col-lg-6">
                                         <label for="empr_tx_googlemaps" class="control-label">Coordenada no Google Maps</label>
                                         <input type="text" id="empr_tx_googlemaps" class="form-control" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_tx_googlemaps" name="empr_tx_googlemaps" #googlemaps="ngModel" ngModel>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label for="empr_vl_entrega" class="control-label">Custo Entrega (Delivery)</label>
+                                        <input type="text" id="empr_vl_entrega" class="form-control"  name="empr_vl_entrega" [readOnly]="modo=='excluir'" [class.text-red]="modo=='excluir'" [(ngModel)]="model.empr_vl_entrega" #entrega="ngModel" ngModel kzMaskCurrency>
                                     </div>
                                 </div>
                                 <!-- **************************************************** -->

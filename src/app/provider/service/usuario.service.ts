@@ -52,8 +52,16 @@ export class UsuarioService {
     err => {
        throw 'Usuários não encontrado';
     });    
-
   }
+
+  getPedidosUsuario(id: string) {
+    return firebase.database().ref(`/usuario/${id}/pedido`).once('value').then((pedidos) => {
+       return pedidos;
+    },
+    err => {
+       throw 'Não existem usuários cadastrados.';
+    });
+  } 
 
   getUsuarioEmail(usuario: UsuarioVO) {
     console.log('Email informado=',usuario.usua_ds_email);

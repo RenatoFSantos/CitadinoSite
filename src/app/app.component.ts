@@ -1,3 +1,4 @@
+import { FILE_UPLOAD_DIRECTIVES } from './../ng2-file-upload';
 import { UsuarioVO } from './model/usuarioVO';
 import { UsuarioService } from './provider/service/usuario.service';
 import './rxjs-extensions';
@@ -23,7 +24,7 @@ export class AppComponent {
   nomeUsuario: string = 'Visitante';
   perfil: string = 'USU' // Perfil padrão
   objEmpresa: EmpresaVO = new EmpresaVO();
-  indEmpresa: any;
+  indEmpresa: any = [];
   
   constructor(private authService: AuthService, private usuarioService: UsuarioService) {
  
@@ -40,11 +41,15 @@ export class AppComponent {
       this.usuarioService.getUsuario(usua.uid)
         .then(usuario => {
           this.userConected = usuario.val();
-          this.indEmpresa = Object.keys(this.userConected.empresa);
+          if(this.userConected.empresa!=null && this.userConected.empresa!=undefined) {
+            this.indEmpresa = Object.keys(this.userConected.empresa);
+          }
           this.authService.atualizarProfile(usua, this.userConected);
           this.nomeUsuario = this.userConected.usua_tx_login;
           this.perfil = this.userConected.usua_sg_perfil;
-          this.objEmpresa.empr_sq_id = this.userConected.empresa[this.indEmpresa[0]].empr_sq_id;
+          if(this.indEmpresa.length>0) {
+            this.objEmpresa.empr_sq_id = this.userConected.empresa[this.indEmpresa[0]].empr_sq_id;
+          }
         });
     });
     

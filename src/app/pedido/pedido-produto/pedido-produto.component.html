@@ -77,6 +77,18 @@
             <!-- **************************************************** -->
             <!-- LISTA                                                -->
             <!-- **************************************************** -->
+            <div class="row" style="background-color: black; color: white;">
+                <div class="col-lg-6" style="padding: 10px !important; font-size: 120%; text-align: center;">
+                    DESCRIÇÃO
+                </div>
+                <div class="col-lg-2" style="padding: 10px !important; font-size: 120%; text-align: center;">
+                    R$ UNITÁRIO
+                </div>
+                <div class="col-lg-2" style="padding: 10px !important; font-size: 120%; text-align: center;">
+                    DESCONTO
+                </div>
+                <div class="col-lg-2"></div>                
+            </div>
             <div id="tabelapreco" class="row" style="border-bottom: 1px dotted grey; padding: 5px 0px 5px 0px !important;" *ngFor="let item of listaItens">
                 <div class="col-lg-3">
                     <div id="imgprv">
@@ -95,10 +107,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 25px; font-size:130% !important;">
-                    {{ item?.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
+                <div [hidden]="item?.tapr_vl_perc_desconto.valueOf()==0" class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 25px; font-size:130% !important;">
+                    <span style="text-decoration: line-through; font-size: 70%; color: rgb(207, 206, 206);">{{item?.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}</span><br>
+                    {{ item?.tapr_vl_unitario.valueOf() - (item?.tapr_vl_unitario.valueOf()*(item?.tapr_vl_perc_desconto.valueOf()/100)) | currency:'BRL':true:'1.2-2' }}
                 </div>
-                <div class="col-lg-3">
+                <div [hidden]="item?.tapr_vl_perc_desconto.valueOf()>0" class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 25px; font-size:130% !important;">
+                    <span>{{item?.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}</span>
+                </div>
+                <div class="col-lg-2" style="text-align: center; padding-top: 3px; margin-top: 25px; font-size:130% !important;">
+                    {{ item?.tapr_vl_perc_desconto | number:'1.2-2' }}%
+                </div>
+                <div class="col-lg-2">
                     <div class="list-group">
                         <div style="float: right; margin-top: 25px !important;">
                           <i class="fa fa-shopping-cart fa-3x" (click)="manterItem(item, 'mais')" aria-hidden="true" data-toggle="modal" data-target="#modalSelecao"></i>
@@ -144,14 +163,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-1" style="text-align: center; padding-top: 3px; margin-top: 25px !important;">
+                <div class="col-lg-1" style="text-align: center; padding-top: 3px; margin-top: 20px !important;">
                     <div class="row">
                         <div class="col-lg-12" style="color: grey;">
                             Unitário
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div [hidden]="item?.tabelapreco.tapr_vl_perc_desconto.valueOf()==0" class="col-lg-12">
+                            <span style="text-decoration: line-through; font-size: 70%; color: grey;">{{item?.tabelapreco.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}</span><br>
+                            {{ item?.tabelapreco.tapr_vl_unitario.valueOf() - (item?.tabelapreco.tapr_vl_unitario.valueOf()*(item?.tabelapreco.tapr_vl_perc_desconto.valueOf()/100)) | currency:'BRL':true:'1.2-2' }}
+                        </div>
+                                        
+                        <div [hidden]="item?.tabelapreco.tapr_vl_perc_desconto.valueOf()>0" class="col-lg-12">
                             {{ item?.tabelapreco.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
                         </div>
                     </div>
@@ -186,7 +210,17 @@
                     </div>
                 </div>
             </div>
-
+            <div class="row" [hidden]="flagModo!='fechar'" style="background-color: darkgrey; border: 1px solid grey;">
+                <div class="col-lg-12" style="background-color: rgb(192, 192, 192); text-align: right !important;">
+                    <span style="font-size: 120%; font-weight: 300">Subtotal {{ this.objPedido.pedi_vl_total.valueOf() - this.objPedido.pedi_vl_entrega.valueOf() | currency:'BRL':true:'1.2-2' }}</span>
+                </div>
+                <div class="col-lg-12" style="background-color: rgb(192, 192, 192); text-align: right !important;">
+                    <span style="font-size: 120%; font-weight: 300">Entrega {{ objPedido.pedi_vl_entrega | currency:'BRL':true:'1.2-2' }}</span>
+                </div>
+                <div class="col-lg-12" style="background-color: grey; text-align: right !important;">
+                    <span style="font-size: 150%; font-weight: 700">Valor Total {{ objPedido.pedi_vl_total | currency:'BRL':true:'1.2-2' }}</span>
+                </div>
+            </div>
             <div class="row" [hidden]="flagModo!='fechar'" style="background-color: darkgrey; margin-top: 10px; border: 1px solid grey;">
                 <div class="col-lg-6">
                     <h2 class="titulo-pagina text-left">
@@ -200,7 +234,6 @@
                     <label><input type="radio" name="optEndereco" checked="checked" (change)="onSelectionChangeEndereco(endereco)" [value]="endereco">{{ endereco.ende_cd_endereco }} - <small style="color: rgb(67, 67, 67)">({{ endereco.ende_tx_endereco }} - {{ endereco.ende_tx_bairro }} - {{ endereco.ende_tx_cidade.trim()}}/{{ endereco.ende_sg_uf }})</small></label>
                 </div>
             </div>
-
             <div class="row" [hidden]="flagModo!='fechar'" style="background-color: darkgrey; margin-top: 10px; border: 1px solid grey;">
                     <div class="col-lg-12">
                         <h2 class="titulo-pagina text-left">
@@ -259,7 +292,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div [hidden]="item?.tabelapreco.tapr_vl_perc_desconto.valueOf()==0" class="col-lg-12">
+                            <span style="text-decoration: line-through; font-size: 70%; color: grey;">{{item?.tabelapreco.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}</span><br>
+                            {{ item?.tabelapreco.tapr_vl_unitario.valueOf() - (item?.tabelapreco.tapr_vl_unitario.valueOf()*(item?.tabelapreco.tapr_vl_perc_desconto.valueOf()/100)) | currency:'BRL':true:'1.2-2' }}
+                        </div>
+                                        
+                        <div [hidden]="item?.tabelapreco.tapr_vl_perc_desconto.valueOf()>0" class="col-lg-12">
                             {{ item?.tabelapreco.tapr_vl_unitario | currency:'BRL':true:'1.2-2' }}
                         </div>
                     </div>
@@ -288,8 +326,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-12" style="background-color: rgb(192, 192, 192); text-align: right !important;">
+                <span style="font-size: 120%; font-weight: 300">Subtotal {{ this.objPedido.pedi_vl_total.valueOf() - this.objPedido.pedi_vl_entrega.valueOf() | currency:'BRL':true:'1.2-2' }}</span>
+            </div>
+            <div class="col-lg-12" style="background-color: rgb(192, 192, 192); text-align: right !important;">
+                <span style="font-size: 120%; font-weight: 300">Entrega {{ objPedido.pedi_vl_entrega | currency:'BRL':true:'1.2-2' }}</span>
+            </div>
             <div class="col-lg-12" style="background-color: grey; text-align: right !important;">
-                    <span style="font-size: 150%; font-weight: 700">Valor Total {{ objPedido.pedi_vl_total | currency:'BRL':true:'1.2-2' }}  </span>
+                <span style="font-size: 150%; font-weight: 700">Valor Total {{ objPedido.pedi_vl_total | currency:'BRL':true:'1.2-2' }}</span>
             </div>
             <div class="row" style="margin-top: 10px;">
                 <div class="col-lg-6">
@@ -347,7 +391,7 @@
             <div class="row" style="margin-top: 10px;">
                 <div class="col-lg-12">
                     <button type="button" class="btn btn-primary" [routerLink]="['/pedidoempresa']">Voltar</button>
-                    <button type="button" class="btn btn-success">Acompanhar Pedido</button>
+                    <button type="button" class="btn btn-success" [routerLink]="['/pedidostatus']">Acompanhar Pedido</button>
                 </div>
             </div>
         </div>
@@ -430,7 +474,6 @@
         </div>
         <!-- CONTEÚDO PRINCIPAL -->            
         <div class="modal-body">
-
             <div class="row" >
                 <div class="box">
                     <div class="col-lg-12">
